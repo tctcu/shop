@@ -1,0 +1,92 @@
+<h2>修改后台用户权限</h2>
+<div class="col-md-12" style="padding-left:0px;">
+	<div class="panel panel-default">
+				<div class="panel-heading">
+					<span class="app-panel-title" >修改后台用户【<?php echo $user_info['name']; ?>】的权限</span>
+				  	<a class="btn btn-sm btn-success app-panel-btn" href="/admin/adminuser/index/"> <i class="glyphicon glyphicon-chevron-right"></i> 返回用户列表</a>
+				  	<div style="clear:both;"></div> 
+				</div>
+
+				  <div class="panel-body">
+				    <form action="/admin/adminuser/role" method="post" role="form" id="user-form">
+						<input type="hidden" name="uid" value="<?php echo $user_info['uid']?>" />
+
+						<table class="table table-bordered table-striped">
+							<tr><td width="15%" align="center" style="vertical-align:middle;">商品管理</td>
+							<td width="85%">
+							<table class="table table-bordered table-striped">
+							<tr>
+			  	     	<?php for($i = 1001; $i < 2000; $i ++) { if(empty($access_list[$i])) { continue; } ?>
+						<td width="25%"><label for="<?php echo $i?>">&nbsp;&nbsp;<input type="checkbox" id="<?php echo $i?>" name="aids[]" value="<?php echo $i?>" <?php if($roles_list[$i]){echo "checked";} ?> >&nbsp;&nbsp;<?php echo $access_list[$i]?></label></td>
+						 <?php if(($i-1000) % 4 == 0): echo "</tr><tr>"; endif; ?>
+			  	     <?php }?>
+			  	      </tr></table>
+			  	     	</td> </tr>
+			  	     	<tr><td align="center" style="vertical-align:middle;">用户管理</td>
+							<td>
+							<table class="table table-bordered table-striped">
+							<tr>
+			  	     	<?php for($i = 2001; $i < 3000; $i ++) { if(empty($access_list[$i])) { continue; } ?>
+							<td width="25%"><label for="<?php echo $i?>">&nbsp;&nbsp;<input type="checkbox" id="<?php echo $i?>" name="aids[]" value="<?php echo $i?>" <?php if($roles_list[$i]){echo "checked";} ?> >&nbsp;&nbsp;<?php echo $access_list[$i]?></label></td>
+							<?php if(($i-2000) % 4 == 0): echo "</tr><tr>"; endif; ?>
+			  	     <?php }?>
+			  	     </tr></table>
+			  	     	</td> </tr>
+			  	     	<tr><td align="center" style="vertical-align:middle;">数据统计</td>
+							<td>
+							<table class="table table-bordered table-striped">
+							<tr>
+			  	     	<?php for($i = 3001; $i < 4000; $i ++) { if(empty($access_list[$i])) { continue; } ?>
+							<td width="25%"><label for="<?php echo $i?>">&nbsp;&nbsp;<input type="checkbox" id="<?php echo $i?>" name="aids[]" value="<?php echo $i?>" <?php if($roles_list[$i]){echo "checked";} ?> >&nbsp;&nbsp;<?php echo $access_list[$i]?></label></td>
+							<?php if(($i-3000) % 4 == 0): echo "</tr><tr>"; endif; ?>
+			  	     <?php }?>
+			  	     </tr></table>
+
+			  	     	</td> </tr>
+			  	     	<tr><td align="center" style="vertical-align:middle;">高级权限</td>
+							<td>
+							<table class="table table-bordered table-striped">
+							<tr>
+			  	     	<?php for($i = 8001; $i < 9000; $i ++) { if(empty($access_list[$i])) { continue; } ?>
+							<td width="25%"><label for="<?php echo $i?>">&nbsp;&nbsp;<input type="checkbox" id="<?php echo $i?>" name="aids[]" value="<?php echo $i?>" <?php if($roles_list[$i]){echo "checked";} ?> >&nbsp;&nbsp;<?php echo $access_list[$i]?></label></td>
+							<?php if(($i-8000) % 4 == 0): echo "</tr><tr>"; endif; ?>
+			  	     <?php }?>
+			  	     </tr></table>
+			  	     	</td> </tr>
+			  	     	<tr><td colspan="2">&nbsp;&nbsp;<input type="checkbox" name="chk_all" id="chk_all" onclick="checkAll('aids[]');" />&nbsp;&nbsp;全选 &nbsp;&nbsp;<input type="checkbox" name="unchk_all" id="unchk_all" onclick="checkAllNo('aids[]');" />&nbsp;&nbsp;全不选 </td> </tr>
+			  	 		</table>
+
+						<button type="submit" class="btn btn-default" >提交</button>
+					</form>
+				</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+
+function checkAll(name)
+{
+  var names=document.getElementsByName(name);
+  var len=names.length;
+  if(len>0)
+  {
+   var i=0;
+   for(i=0;i<len;i++)
+   names[i].checked=true;
+   
+  }
+}
+
+//全不选
+function checkAllNo(name)
+{
+  var names=document.getElementsByName(name);
+ var len=names.length;
+ if(len>0)
+  {
+    var i=0;
+    for(i=0;i<len;i++)
+    names[i].checked=false;
+  }
+}
+</script>

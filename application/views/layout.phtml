@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf8">
+<meta name="viewport" content="width=device-width, initial-scale=0.3">
+<!-- 最新 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<!-- 可选的Bootstrap主题文件（一般不用引入） -->
+<link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/docs.css">
+<?php if(isset($this->layout['css_block'])){ ?>
+	<?php if(is_array($this->layout['css_block'])){ ?>
+		<?php foreach ($this->layout['css_block'] as $css){ ?>
+			<link rel="stylesheet" href="<?php echo $css;?>">
+		<?php } ?>
+	<?php }else{ ?>
+		<link rel="stylesheet" href="<?php echo $this->layout['css_block'];?>">
+	<?php } ?>
+<?php } ?>
+
+<link rel="shortcut icon" href="favicon.ico" />
+<script src="/js/jquery.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.validate.min.js"></script>
+
+<?php if(isset($this->layout['javascript_block'])):?>
+	<?php if(is_array($this->layout['javascript_block'])):?>
+		<?php foreach ($this->layout['javascript_block'] as $js):?>
+			<script src="<?php echo $js;?>"></script>
+		<?php endforeach;?>
+	<?php else:?>
+		<script src="<?php echo $this->layout['javascript_block'];?>"></script>
+	<?php endif;?>
+<?php endif;?>
+
+<title><?php echo $this->layout['meta_title'];?></title>
+</head>
+<body>
+<div class="container container-site">
+	<nav class="navbar navbar-default" role="navigation">
+	  <div class="container-fluid">
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      
+	      <ul class="nav navbar-nav">
+	        <li <?php if($this->layout['current_controller'] == 'index' && $this->layout['current_module'] == 'index'){ ?> class="active" <?php } ?> ><a href="/admin/index/index"><i class="glyphicon glyphicon-home"></i> 首页</a></li>
+
+		 	<li <?php if($this->layout['current_controller'] == 'shop' && $this->layout['current_module'] == 'admin'){ ?> class="active" <?php }?> ><a rel="nofollow" href="/admin/shop/index"><i class="glyphicon glyphicon-book"> </i>商品管理</a> </li>
+
+			<li <?php if($this->layout['current_controller'] == 'user' && $this->layout['current_module'] == 'admin'){ ?> class="active" <?php }?> ><a rel="nofollow" href="/admin/user/index"><i class="glyphicon glyphicon-user"> </i>用户管理</a> </li>
+
+		 	<li <?php if($this->layout['current_controller'] == 'stat' && $this->layout['current_module'] == 'admin'){ ?> class="active" <?php } ?> ><a rel="nofollow" href="/admin/stat/index"><i class="glyphicon glyphicon-signal"> </i> 数据统计</a> </li>
+
+		 	<?php if($this->layout['user']['type'] > 5):?>
+		 	<li class="dropdown" ><a rel="nofollow" href="/admin/adminuser/index/" ><i class="glyphicon glyphicon-lock"></i>管理</a>
+		 	<?php endif;?>
+	      </ul>
+
+	      <ul class="nav navbar-nav navbar-right">
+	      	<?php if(isset($this->layout['user_is_logined']) && $this->layout['user_is_logined'] === 0){ ?>
+	        <li><a href="/admin/index/login" class='btn-login' ><span type="button" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-user"></i> 登录 </span></a></li>
+	    	<?php }else{ ?>
+	    	<li <?php if($this->layout['current_controller'] == 'adminuser' && $this->layout['current_module'] == 'index'){ ?> class="active" <?php } ?> ><a rel="nofollow"  href="/admin/index/changePassword"><i class="glyphicon glyphicon-user"></i> <?php echo $this->layout['user']['name'];?></a> </li>
+	    	<li><a href="/admin/index/logout" class='btn-login' ><span type="button" class="btn btn-sm btn-success"> 退出 </span></a></li>
+			<?php } ?>
+	      </ul>
+
+	    </div><!-- /.navbar-collapse -->
+	  	</div><!-- /.container-fluid -->
+	</nav>
+</div>
+<div class="container content">
+	<?php if(isset($this->layout['flush_message']) && !empty($this->layout['flush_message'])){ ?>
+	<div id="alert-message" class="alert alert-danger">
+	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		<?php echo htmlspecialchars($this->layout['flush_message'])?>
+	</div>
+	<?php } ?>
+	<?php echo $this->content;?>
+</div>
+<div class="container">
+	<div class="row">
+		<p class="text-center text-muted copyright"> xxx.com</p>
+	</div>
+</div>
+<script type="text/javascript">
+	$( document ).ready(function() {
+		//flash message alert
+		<?php if(isset($this->layout['flush_message']) && !empty($this->layout['flush_message'])){ ?>
+			$("#alert-message").fadeIn(10000,function(){
+		 		$(this).fadeOut(10000);
+		 	});
+		<?php } ?>
+
+		$('.bs-sidebar li').click(function(e) {
+			$('.bs-sidebar li').removeClass('active');
+			$(this).addClass('active');
+		});
+	});
+	
+	function delAlert(url) {
+		if(confirm("确认执行此项操作吗？")) {
+			window.location.href= url ;
+		} else {
+			return false;
+		}
+	}
+</script>
+</body>
+</html>

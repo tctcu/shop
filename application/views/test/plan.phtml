@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.3">
+    <!-- 最新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <!-- 可选的Bootstrap主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/docs.css">
+    <link rel="stylesheet" href="/css/jquery.datetimepicker.css">
+
+    <link rel="shortcut icon" href="favicon.ico" />
+    <script src="/js/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.validate.min.js"></script>
+    <script src="/js/jquery.datetimepicker.hour.js"></script>
+    <title>测试排课</title>
+</head>
+<body>
+<div class="container content">
+    <div class="row" style="margin-top:40px;">
+        <div class="col-md-12">
+            <style>
+                .form-div{display:inline-block; min-width:400px;margin-bottom:15px;}
+                .form-div label{width:120px;}
+            </style>
+            <form class="form-inline" role="form" action = "" method = "POST">
+                <div class="form-div" >
+                    <label>按每：</label>
+                    <select name="level">
+                        <option value="0" <?php if(!isset($params['level']) || $params['level'] == '0' ){ echo "selected"; } ?>><?php echo '请选择';?></option>
+                        <?php foreach($level as $k=>$v){ ?>
+                            <option value="<?php echo $k;?>" <?php if(isset($params['level']) && $params['level'] == $k ){ echo "selected"; } ?>><?php echo $v;?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <div class="form-div" >
+                    <label>排：</label>
+                    <input type="text"  name="times" value="<?php if(!empty($params['times'])){ echo $params['times']; } ?>"/>次
+                </div>
+                <br/>
+                <div class="form-div">
+                    <label>单次课时：</label>
+                    <select name="once">
+                        <option value="0" <?php if(!isset($params['once']) || $params['once'] == '0' ){ echo "selected"; } ?>><?php echo '请选择';?></option>
+                        <?php foreach($once as $k=>$v){ ?>
+                            <option value="<?php echo $k;?>" <?php if(isset($params['once']) && $params['once'] == $k ){ echo "selected"; } ?>><?php echo $v;?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <br>
+
+                <div class="form-div">
+                    <label for="start_plan">开始时间:</label>
+                    <label >
+                        <input type="text" name="start_plan" id="start_plan" value="<?php if(isset($params['start_plan'])){ echo $params['start_plan'] ; } ?>" />
+                    </label>
+                    <span class="help-block error"></span>
+                </div>
+                <div class="form-div">
+                    <label for="end_plan">结束时间:</label>
+                    <label >
+                        <input type="text" name="end_plan" id = "end_plan" value="<?php if(isset($params['end_plan'])){ echo $params['end_plan'] ; } ?>" />
+                    </label>
+                </div>
+            <div id="week">
+                <div class="form-div" >
+                    <label>按周排：</label>
+                    <select name="week">
+                        <option value="0" <?php if(!isset($params['week']) || $params['week'] == '0' ){ echo "selected"; } ?>><?php echo '请选择';?></option>
+                        <?php foreach($hope[1] as $k=>$v){ ?>
+                            <option value="<?php echo $k;?>" <?php if(isset($params['week']) && $params['week'] == $k ){ echo "selected"; } ?>><?php echo $v;?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <div class="form-div">
+                    <label for="time">指定时间:</label>
+                    <label >
+                        <input type="text" name="time" id="start" value="<?php if(isset($params['start'])){ echo $params['start'] ; } ?>" />
+                    </label>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    至
+
+                    <label >
+                        <input type="text" name="time" id="end" value="<?php if(isset($params['end'])){ echo $params['end'] ; } ?>" />
+                    </label>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+                <a href="">增加</a>
+                <br>
+            </div>
+                <div id="week2">
+                    <div class="form-div" >
+                        <label>按二周排：</label>
+                        <select name="week2">
+                            <option value="0" <?php if(!isset($params['week2']) || $params['week2'] == '0' ){ echo "selected"; } ?>><?php echo '请选择';?></option>
+                            <?php foreach($hope[2] as $k=>$v){ ?>
+                                <option value="<?php echo $k;?>" <?php if(isset($params['week2']) && $params['week2'] == $k ){ echo "selected"; } ?>><?php echo $v;?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="form-div">
+                        <label for="time">指定时间:</label>
+                        <label >
+                            <input type="text" name="time" id="start2" value="<?php if(isset($params['start'])){ echo $params['start'] ; } ?>" />
+                        </label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        至
+
+                        <label >
+                            <input type="text" name="time" id="end2" value="<?php if(isset($params['end'])){ echo $params['end'] ; } ?>" />
+                        </label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                    <a href="">增加</a>
+                    <br>
+                </div>
+                <div id="week3">
+                    <div class="form-div" >
+                        <label>按三周排：</label>
+                        <select name="week3">
+                            <option value="0" <?php if(!isset($params['week3']) || $params['week3'] == '0' ){ echo "selected"; } ?>><?php echo '请选择';?></option>
+                            <?php foreach($hope[3] as $k=>$v){ ?>
+                                <option value="<?php echo $k;?>" <?php if(isset($params['week3']) && $params['week3'] == $k ){ echo "selected"; } ?>><?php echo $v;?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="form-div">
+                        <label for="time">指定时间:</label>
+                        <label >
+                            <input type="text" name="time" id="start3" value="<?php if(isset($params['start'])){ echo $params['start'] ; } ?>" />
+                        </label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        至
+
+                        <label >
+                            <input type="text" name="time" id="end3" value="<?php if(isset($params['end'])){ echo $params['end'] ; } ?>" />
+                        </label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                    <a href="">增加</a>
+                    <br>
+                </div>
+
+                <div id="month">
+                <div class="form-div" >
+                    <label>按月排：</label>
+                    <select name="month">
+                        <option value="0" <?php if(!isset($params['month']) || $params['month'] == '0' ){ echo "selected"; } ?>><?php echo '请选择';?></option>
+                        <?php foreach($hope[5] as $k=>$v){ ?>
+                            <option value="<?PHP echo $k?>" <?php if(isset($params['month']) && $params['month'] == $k ){ echo "selected"; } ?>><?PHP echo $v?></option>
+                        <?PHP } ?>
+
+                    </select>
+                </div>
+                    <div class="form-div">
+                        <label for="time">指定时间:</label>
+                        <label >
+                            <input type="text" name="time" id="start5" value="<?php if(isset($params['start'])){ echo $params['start'] ; } ?>" />
+                        </label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        至
+
+                        <label >
+                            <input type="text" name="time" id="end5" value="<?php if(isset($params['end'])){ echo $params['end'] ; } ?>" />
+                        </label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                <a href="">增加</a>
+                <br>
+            </div>
+            <div id="day">
+
+                <div class="form-div">
+                    <label for="day">按天排:</label>
+                </div>
+                <div class="form-div">
+                    <label for="time">指定时间:</label>
+                    <label >
+                        <input type="text" name="time" id="start6" value="<?php if(isset($params['start'])){ echo $params['start'] ; } ?>" />
+                    </label>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    至
+
+                    <label >
+                        <input type="text" name="time" id="end6" value="<?php if(isset($params['end'])){ echo $params['end'] ; } ?>" />
+                    </label>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+
+                <a href="">增加</a>
+            </div>
+                <br>
+                <br/>
+                <button type="submit" class="btn btn-default">计算排课</button>
+                <br/><br/>
+            </form>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="app-panel-title" >总课次:<?php echo $course_times;?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span class="app-panel-title" >总课小时:<?php echo $course_hour;?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <div style="clear:both;"></div>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-striped">
+                        <tr><td>时间</td><td>星期</td><td>第几周</td><td>排课时间范围</td><td>课时</td></tr>
+                        <?php foreach($show_list as $val){ ?>
+                            <tr>
+                                <td><?php echo $val['date'];?></td>
+                                <td><?php echo $val['xq'];?></td>
+                                <td><?php echo $val['week'];?></td>
+                                <td><?php echo $val['plan_time'];?></td>
+                                <td><?php echo $val['once'];?></td>
+                            </tr>
+                        <?php } ?>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><script type="text/javascript">
+    $( document ).ready(function() {
+        jQuery('#start_plan').datetimepicker();
+        jQuery( "#end_plan" ).datetimepicker();
+        jQuery('#start').datetimepicker();
+        jQuery( "#end" ).datetimepicker();
+        jQuery('#start2').datetimepicker();
+        jQuery( "#end2" ).datetimepicker();
+        jQuery('#start3').datetimepicker();
+        jQuery( "#end3" ).datetimepicker();
+        jQuery('#start5').datetimepicker();
+        jQuery( "#end5" ).datetimepicker();
+        jQuery('#start6').datetimepicker();
+        jQuery( "#end6" ).datetimepicker();
+    });
+
+</script>
+</body>
+</html>

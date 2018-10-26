@@ -1,0 +1,32 @@
+<div class="row" style="margin-top:40px;">
+    <div class="col-md-3">
+        <?php include(dirname(dirname(__FILE__)).'/admin_left_menu.phtml');?>
+    </div>
+    <div class="col-md-9">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="app-panel-title" >广告列表</span>
+                <a class="btn btn-sm btn-success app-panel-btn" href="/admin/shop/createbanner"> <i class="glyphicon glyphicon-plus"></i>增加广告</a>
+                <div style="clear:both;"></div>
+            </div>
+
+            <div class="panel-body">
+                <table class="table table-bordered table-striped">
+                    <tr><td>ID</td><td>图片</td><td>位置</td><td>更新日期</td><td>管理</td></tr>
+                    <?php foreach ($show_list as $row){ ?>
+                        <tr>
+                            <td><?php echo $row['id'];?></td>
+                            <td><img src="<?php echo CommonModel::IMAGE_URL . $row['pic']?>" width="200" height="100"> </td>
+                            <td><?php echo $row['position']?></td>
+                            <td><?php echo date('Y-m-d H:i',$row['updated_at']);?></td>
+                            <td>
+                                <a class="btn btn-success btn-xs" href="/admin/shop/createbanner?id=<?php echo $row['id']?>"><i class="glyphicon glyphicon-edit"> </i> 编辑</a>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </table>
+                <?php //$pager->render();?>
+            </div>
+        </div>
+    </div>
+</div>

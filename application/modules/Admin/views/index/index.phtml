@@ -1,0 +1,17 @@
+<div id="message_div"> </div>
+
+<div class="hero-unit unit_home">
+    <div class="row">
+        <div class="col-md-6">
+            <h1>电商</h1>
+            <p>* 淘宝客</p>
+            <p>* 拼多多</p>
+            <?php if(!$user_is_logined){ ?>
+                <p>
+                    <a href="/admin/index/login" class="btn btn-success btn-large">登录系统</a>
+                </p>
+            <?php }; ?>
+        </div>
+        <div class="col-md-6"></div>
+    </div>
+</div>

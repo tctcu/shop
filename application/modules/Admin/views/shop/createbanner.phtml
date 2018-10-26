@@ -1,0 +1,56 @@
+<h2>增加/编辑广告</h2>
+<div class="col-md-12" style="padding-left:0px;">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span class="app-panel-title" >增加/编辑广告</span>
+            <a class="btn btn-sm btn-success app-panel-btn" href="/admin/shop/banner/"> <i class="glyphicon glyphicon-chevron-right"></i> 返回广告列表</a>
+            <div style="clear:both;"></div>
+        </div>
+
+        <div class="panel-body">
+            <?php if(!empty($message)){ ?>
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <?php echo htmlspecialchars($message)?>
+                </div>
+            <?php } ?>
+            <form action="/admin/shop/createbanner" method="post" role="form"  enctype="multipart/form-data">
+
+                <?php if(!empty($info)){ ?>
+                    <input type="hidden" name="id" value="<?php echo $info['id']?>" />
+                <?php } ?>
+                <div class="form-group">
+                    <label for="name">位置:</label>
+                    <select name="position">
+                        <option value="banner" <?php if($info['position']=='banner'){ echo 'selected';}?> >banner</option>
+                    </select>
+                    <span class="help-block error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">类型:</label>
+                    <select name="type">
+                        <option value="1" <?php if($info['type']=='1'){ echo 'selected';}?> >链接</option>
+                    </select>
+                    <span class="help-block error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="goto">指向:</label>
+                    <input type="text" class="form-control" name="goto" <?php if(!empty($info)){ ?>value="<?php echo $info['goto']?>" <?php } ?> placeholder="跳转链接">
+                    <span class="help-block error"></span>
+                </div>
+
+                <div class="form-group">
+                     <?php if(!empty($info['pic'])){ ?><img src="<?php echo CommonModel::IMAGE_URL . $info['pic']?>" width="400" height="200"> <?php } ?>
+                    <label for="goto">图片:</label>
+                    <input type="file" class="form-control" name="upload_file" >
+                    <span class="help-block error"></span>
+                </div>
+
+                <button type="submit" class="btn btn-default" >提交</button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>

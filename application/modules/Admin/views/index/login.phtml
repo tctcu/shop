@@ -1,0 +1,31 @@
+
+	<div class="login-panel">
+		<div class="panel panel-default">
+			<div class="panel-heading">登录</div>
+			  <div class="panel-body">
+			  	<?php if(!empty($message)){ ?>
+			  	<div class="alert alert-danger">
+			  		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			  		<?php echo htmlspecialchars($message)?>
+			  	</div>
+			  	<?php } ?>
+			    <form action="/admin/index/login" method="post" role="form">
+			    	<?php if($redirect_url){ ?>
+			    	<input type="hidden" name="redirect_url" value="<?php echo $redirect_url?>" />
+			   	 	<?php } ?>
+					<div class="form-group">
+						<label for="exampleInputMobile">手机号</label>
+			    		<input type="text" class="form-control" name="mobile" id="exampleInputMobile" placeholder="请输入手机号">
+					</div>
+
+					<div class="form-group">
+					    <label for="exampleInputPassword">密码</label>
+					    <input type="password" class="form-control"  name="password" id="exampleInputPassword" placeholder="请输入密码">
+					  </div>
+					<button type="submit" class="btn btn-default" >登录</button>
+				</form>
+			  </div>
+		</div>
+	</div>
+</div>
+

@@ -1,0 +1,836 @@
+/* (1366x768) WXGA Display */
+
+@media screen and (min-width: 1368px) and (max-width: 1920px) {
+    .mlt-hero .hero-content p {
+        padding: 0 5%;
+    }
+    
+@keyframes fadeWhite {
+    100% {
+        color: white;
+    }
+}
+
+@media screen and (min-width: 1368px) and (max-width: 1440px) {
+    .testimonial-area .right-thumb{
+        display: none;
+    }
+}
+
+@keyframes glitch {
+    0% {
+        clip: rect(26px, 9999px, 2px, 0);
+    }
+    5% {
+        clip: rect(46px, 9999px, 93px, 0);
+    }
+    10% {
+        clip: rect(8px, 9999px, 5px, 0);
+    }
+    15% {
+        clip: rect(90px, 9999px, 7px, 0);
+    }
+    20% {
+        clip: rect(74px, 9999px, 28px, 0);
+    }
+    25% {
+        clip: rect(3px, 9999px, 15px, 0);
+    }
+    30% {
+        clip: rect(25px, 9999px, 12px, 0);
+    }
+    35% {
+        clip: rect(4px, 9999px, 67px, 0);
+    }
+    40% {
+        clip: rect(79px, 9999px, 33px, 0);
+    }
+    45% {
+        clip: rect(61px, 9999px, 31px, 0);
+    }
+    50% {
+        clip: rect(80px, 9999px, 64px, 0);
+    }
+    55% {
+        clip: rect(66px, 9999px, 22px, 0);
+    }
+    60% {
+        clip: rect(84px, 9999px, 32px, 0);
+    }
+    65% {
+        clip: rect(10px, 9999px, 36px, 0);
+    }
+    70% {
+        clip: rect(50px, 9999px, 62px, 0);
+    }
+    75% {
+        clip: rect(45px, 9999px, 21px, 0);
+    }
+    80% {
+        clip: rect(97px, 9999px, 98px, 0);
+    }
+    85% {
+        clip: rect(24px, 9999px, 16px, 0);
+    }
+    90% {
+        clip: rect(51px, 9999px, 70px, 0);
+    }
+    95% {
+        clip: rect(28px, 9999px, 72px, 0);
+    }
+    100% {
+        clip: rect(68px, 9999px, 43px, 0);
+    }
+}
+}
+
+/*Medium Desktop Device*/
+
+@media screen and (min-width: 1025px) and (max-width: 1367px) {
+    .music-content h2 {
+        font-size: 54px;
+    }
+    .mlt-hero .hero-content p {
+        padding: 0 5%;
+    }
+    .testimonial-area .right-thumb{
+        display: none;
+    }
+    .yoga-content {
+        height: 400px;
+        width: 400px;
+    }
+    .slider-area {
+        min-height: 690px;
+    }
+    .tst-title h2 {
+        font-size: 62px;
+        line-height: 64px;
+    }
+    .tst-title p {
+        font-size: 34px;
+    }
+}
+
+/* Normal desktop :992px. */
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* home one */
+    .pt--100{
+        padding-top: 90px;
+    }
+    .ptb--100{
+        padding: 90px 0px;
+    }
+    .abt-content h2 {
+        font-size: 51px;
+    }
+    .right-thumb{
+        display: none;
+    }
+    .tst-title h2 {
+        font-size: 55px;
+        margin-bottom: 15px;
+    }
+    .tst-title p {
+        font-size: 34px;
+    }
+    .main-menu nav ul li a {
+        margin-left: 22px;
+    }
+    /* home Three */
+    .abt-msc-content h4 {
+        font-size: 25px;
+        margin-bottom: 30px;
+    }
+    .music-content h2 {
+        font-size: 48px;
+        line-height: 63px;
+    }
+
+    /* home Four */
+    .fs-abt-content h2,
+    .fs-abt-content h3 {
+        font-size: 35px;
+        line-height: 37px;
+    }
+
+    /* Home Five */
+    .hero-content h2 {
+        font-size: 50px;
+        line-height: 52px;
+    }
+    .app-slider .hero-content h3 {
+        font-size: 37px;
+    }
+    .app-slider:before,
+    .app-slider:after {
+        border-top: 78px solid transparent;
+    }
+    .feature-item {
+        margin-top: 38px;
+    }
+    .tst2-thumb {
+        flex-basis: 598px;
+    }
+
+    /* Home Six */
+    .mlt-hero .hero-content h2 {
+        font-size: 38px;
+    }
+
+    /* Home Seven */
+    .abt3-content h2 {
+        font-size: 28px;
+    }
+
+
+
+
+}
+
+/* small mobile :320px. */
+
+@media (max-width: 768px) {
+    /* home one */
+    .header-area {
+        padding: 22px 0px 0;
+    }
+    .right-thumb{
+        display: none;
+    }
+    .children {
+        padding-left: 30px;
+    }
+}
+
+/* Large Mobile :480px. */
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+    /* home one */
+    .pt--100{
+        padding-top: 80px;
+    }
+    .ptb--100{
+        padding: 80px 0px;
+    }
+    .pb--100{
+        padding-bottom: 80px;
+    }
+    .hero-content h2 {
+        font-size: 38px;
+    }
+    .hero-area {
+        min-height: 605px;
+    }
+    .section-title h2 {
+        font-size: 28px;
+    }
+    .abt-content h2 ,
+    .title-back{
+        font-size: 42px;
+    }
+    .abt-content {
+        margin-bottom: 70px;
+    }
+    .single-trainer{
+        margin-bottom: 40px;
+    }
+    .trainer-area{
+        padding-bottom: 50px;
+    }
+    .tst-title h2 {
+        font-size: 51px;
+        line-height: 51px;
+    }
+    .tst-title p {
+        font-size: 27px;
+    }
+    .feature-blog {
+        padding-bottom: 30px;
+    }
+    .single-blog {
+        margin-bottom: 50px;
+    }
+    .pt-x-none{
+        padding-top: 0;
+    }
+    .contact-content {
+        margin: auto;
+        margin-bottom: 50px;
+        overflow: hidden;
+    }
+    .contact-content ul li{
+        margin-top: 0;
+    }
+
+    /* home two */
+    .yoga-content {
+        height: 400px;
+        width: 400px;
+        margin-top: 120px;
+    }
+    .yoga-content h2 {
+        font-size: 35px;
+        line-height: 35px;
+        margin-bottom: 17px;
+    }
+
+    /* home Three */
+    .abt-msc-content h2 {
+        font-size: 41px;
+        margin-bottom: 20px;
+    }
+    .abt-msc-content h4 {
+        font-size: 25px;
+        margin-bottom: 29px;
+    }
+    .music-content h2 {
+        font-size: 48px;
+        line-height: 70px;
+    }
+    .slider-area {
+        min-height: 712px;
+    }
+    .abt-music-area {
+        margin-top: -51px;
+        padding: 137px 0px 88px;
+    }
+    .upv-content h2 {
+        font-size: 38px;
+    }
+    .msc-abt-right{
+        margin-top: 50px;
+    }
+    .count-down .cdown {
+        height: 120px;
+        width: 120px;
+        margin: 0px 7px;
+        padding-top: 15px;
+    }
+    .count-down .cdown .time-count{
+        font-size: 40px;
+    }
+
+    /* home Four */
+    .ph-slider-content h2 {
+        font-size: 60px;
+    }
+    .header-st2{
+        padding-bottom: 22px;
+        background-color: #fff;
+    }
+    .fs-abt-content h2,
+    .fs-abt-content h3 {
+        font-size: 35px;
+        line-height: 37px;
+    }
+    .screen-slides {
+        right: 16px;
+        top: 49px;
+        width: 175px;
+    }
+
+    /* Home Five */
+    .app-slider .hero-content h3 {
+        font-size: 28px;
+    }
+    .app-slider .hero-content h2 {
+        font-size: 25px;
+        line-height: 31px;
+        margin-bottom: 10px;
+    }
+    .app-slider:before {
+        border-top: 57px solid transparent;
+    }
+    .app-slider:after {
+        border-top: 40px solid transparent;
+    }
+    .single-service {
+        margin-bottom: 20px;
+        border-bottom: 1px solid #2cd6ba;
+        box-shadow: 0px 0px 34px rgba(0,0,0,0.08);
+    }
+    .appcta-content h2 {
+        font-size: 28px;
+    }
+    .app-feature-area{
+        padding-bottom: 0;
+    }
+    .feature-item {
+        margin-top: 0;
+        margin-bottom: 70px;
+    }
+    .tst2-thumb {
+        flex-basis: 800px;
+        margin-right: 30px;
+        padding-right: 0;
+        border: none;
+    }
+    .testimonial-two {
+        padding: 100px 0px;
+    }
+    .prc-single{
+        margin-bottom: 40px;
+    }
+    .pricing-area{
+        padding-bottom: 40px;
+    }
+    .faq-area{
+        padding-bottom: 80px;
+    }
+    .download-area{
+        padding: 80px 0;
+    }
+    .single-download-links {
+        padding: 12px 16px;
+    }
+
+    /* Home Six */
+    .mlt-hero .hero-content h2 {
+        font-size: 35px;
+        line-height: 49px;
+    }
+    .cta-contact {
+        padding: 100px 0px;
+    }
+    .abt2-thumb{
+        margin-bottom: 60px;
+    }
+
+    /* Home Seven */
+    .game-hero-area .hero-content h2 {
+        font-size: 54px;
+        margin-bottom: 35px;
+    }
+    .abt3-content h2 {
+        font-size: 28px;
+    }
+    .google-map-fullwidth#google_map {
+        height: 350px;
+    }
+
+
+
+
+
+
+
+
+}
+
+/* small mobile :320px. */
+
+@media (min-width: 240px) and (max-width: 480px) {
+    /* home one */
+    .pt--100{
+        padding-top: 70px;
+    }
+    .ptb--100{
+        padding: 70px 0px;
+    }
+    .pb--100{
+        padding-bottom: 70px;
+    }
+    .header-area {
+        opacity: 1;
+        position: inherit;
+        background: #0b0b0b;
+    }
+    .hero-area {
+        height: 501px;
+        min-height: auto;
+    }
+    .hero-content span {
+        font-size: 16px;
+    }
+    .hero-content h2 {
+        font-size: 24px;
+        line-height: 37px;
+    }
+    a.scrl_me_down{
+        display: none;
+    }
+    .title-back {
+        font-size: 34px;
+    }
+    .section-title h2 {
+        font-size: 26px;
+    }
+    .abt-content h2 {
+        font-size: 26px;
+        margin-bottom: 18px;
+    }
+    .abt-content {
+        padding-left: 24px;
+        margin-bottom: 70px;
+    }
+    ul.meta-info {
+        display: block;
+        text-align: center;
+    }
+    ul.meta-info li{
+        display: inline-block;
+        margin: 0px 5px;
+    }
+    .single-trainer{
+        margin-bottom: 40px;
+    }
+    .trainer-area{
+        padding-bottom: 40px;
+    }
+    .tst-title h2 {
+        font-size: 28px;
+        line-height: 31px;
+        margin-bottom: 13px;
+    }
+    .tst-title p {
+        font-size: 18px;
+    }
+    .tst-item p {
+        font-size: 15px;
+        line-height: 33px;
+    }
+    .tst-title {
+        text-align: center;
+    }
+    .testimonials-carousel {
+        margin-top: 43px;
+        padding-bottom: 60px;
+    }
+    .feature-blog {
+        padding-bottom: 20px;
+    }
+    .single-blog {
+        margin-bottom: 50px;
+    }
+    .pt-x-none{
+        padding-top: 0;
+    }
+    .join-form form{
+        display: block;
+    }
+    .join-form form input{
+        width: 100%;
+        margin: 5px 0px;
+    }
+    .contact-content ul li{
+        margin-top: 0;
+    }
+    .contact-content{
+        margin-bottom: 40px;
+        overflow: hidden;
+    }
+
+    /* home Two */
+    .yoga-content {
+        height: 300px;
+        width: 300px;
+        float: none;
+        margin-top: 52px;
+        right: 12px;
+    }
+    .yoga-hero{
+        height: 416px;
+    }
+    .yoga-content h2 {
+        font-size: 40px;
+        margin-bottom: 14px;
+    }
+    .yoga-exp-content{
+        margin-top: 50px;
+    }
+    .yoga-exp-content h2 {
+        font-size: 22px;
+    }
+
+    
+    /* home Three */
+    .music-content h2 {
+        font-size: 21px;
+        line-height: 34px;
+    }
+    .music-content a{
+        margin-top: 42px;
+    }
+    .slider-area {
+        min-height: 544px;
+        padding-bottom: 100px;
+    }
+    .abt-music-area {
+        margin-top: -28px;
+        padding: 100px 0px 70px;
+    }
+    .abt-msc-content h2 {
+        font-size: 28px;
+        margin-bottom: 10px;
+    }
+    .abt-msc-content h4 {
+        font-size: 14px;
+        margin-bottom: 32px;
+        letter-spacing: 0.01em;
+    }
+    .msc-title.section-title h2 {
+        font-size: 27px;
+    }
+    .upv-content h2 {
+        font-size: 23px;
+        margin-bottom: 3px;
+        line-height: 36px;
+    }
+    .upv-content h3 {
+        font-size: 20px;
+        line-height: 29px;
+        margin-bottom: 29px;
+    }
+    .upv-content h4 {
+        font-size: 14px;
+        margin-bottom: 27px;
+    }
+    .count-down .cdown,
+    .fact-item{
+        margin-bottom: 30px;
+    }
+    .upcooming-events,
+    .facts-area{
+        padding-bottom: 40px;
+    }
+
+    /* Home Four */
+    .header-st2{
+        padding-bottom: 22px;
+        background-color: #fff;
+    }
+    .header-st2 .container-fluid{
+        padding: 0px 30px;
+    }
+    .ph-slider-content h2 {
+        font-size: 33px;
+        line-height: 37px;
+        margin-bottom: 39px;
+    }
+    .ph-slider-content h4 {
+        font-size: 28px;
+        line-height: 31px;
+    }
+    .ph-slider-item {
+        height: auto;
+        min-height: 503px;
+    }
+    .fs-abt-content{
+        margin-top: 40px;
+    }
+    .fs-abt-content h2 {
+        font-size: 27px;
+        line-height: 30px;
+        margin-bottom: 5px;
+    }
+    .fs-abt-content h3 {
+        font-size: 27px;
+        line-height: 30px;
+        margin-bottom: 39px;
+    }
+    .portfolio-menu{
+        display: block;
+    }
+    .prt-menu{
+        margin-top: 40px;
+    }
+    .portfolio-menu .prt-menu button {
+        margin-left: 0;
+        padding-right: 0;
+        margin-right: 16px;
+        border: none;
+    }
+    .work-area{
+        padding-bottom: 50px;
+    }
+
+    /* Home Five */
+    .app-slider{
+        height: auto;
+        padding: 80px 0px;
+    }
+    .app-slider .hero-content h3 {
+        font-size: 20px;
+        margin-bottom: 30px;
+    }
+    .app-slider .hero-content h2 {
+        font-size: 18px;
+        line-height: 29px;
+        margin-bottom: 10px;
+    }
+    .screen-slides-area {
+        display: none;
+    }
+    .app-slider:before {
+        border-right: 44vw solid #fff;
+        border-top: 48px solid transparent;
+    }
+    .app-slider:after {
+        border-left: 88vw solid #fff;
+        border-top: 41px solid transparent;
+    }
+    .single-service {
+        margin-bottom: 20px;
+        border-bottom: 1px solid #2cd6ba;
+        box-shadow: 0px 0px 34px rgba(0,0,0,0.08);
+    }
+    .appcta-content h2 {
+        font-size: 24px;
+    }
+    .appcta-content .links a {
+        margin-right: 3px;
+        padding: 10px 18px;
+    }
+    .mscreen-right{
+        margin-top: 50px;
+    }
+    .mscreen-left{
+        margin-bottom: 40px;
+    }
+    .ad-video-box {
+        height: 300px;
+    }
+    .app-feature-area{
+        padding-bottom: 0;
+    }
+    .feature-item {
+        margin-top: 0;
+        margin-bottom: 70px;
+    }
+    .feature-item .icon {
+        float: left;
+        margin-left: 0;
+        margin-right: 19px;
+    }
+    .feature-item .content {
+        text-align: left;
+    }
+    .screenshot-area .h5-title {
+        margin-bottom: 47px;
+    }
+    .screenshot-area .swiper-slide {
+        width: 100%;
+    }
+    .tst-two-carousel .swiper-slide{
+        display: block;
+        text-align: center;
+    }
+    .tst2-thumb{
+        margin-bottom: 50px;
+    }
+    .tst-two-carousel{
+        padding-bottom: 0;
+        margin-top: 0;
+    }
+    .testimonial-two,
+    .download-area,
+    .cta-contact{
+        padding: 70px 0;
+    }
+    .tst2-thumb{
+        margin-right: 0;
+        padding-right: 0;
+        border: none;
+    }
+    .prc-single{
+        margin-bottom: 40px;
+    }
+    .pricing-area{
+        padding-bottom: 30px;
+    }
+    .faq-left-thumb{
+        text-align: center;
+        margin-top: 60px;
+    }
+    .accordion-area .card-header h5 span{
+        display: none;
+    }
+    .accordion-area .card-header h5 button{
+        width: 100%;
+    }
+    .download-title h2 {
+        font-size: 23px;
+    }
+    .download-app{
+        display: block;
+    }
+    .single-download-links{
+        max-width: 250px;
+        margin: auto;
+        margin-bottom: 15px;
+    }
+
+    /* Home Six */
+    .mlt-hero .hero-content h2 {
+        font-size: 22px;
+    }
+    .mlt-hero {
+        height: auto;
+        padding: 80px 0;
+    }
+    .abt2-thumb{
+        margin-bottom: 50px;
+    }
+    .ctac-content h5 {
+        text-align: center;
+        font-size: 20px;
+        line-height: 29px;
+        margin-bottom: 60px;
+    }
+    .ctac-action{
+        text-align: center;
+    }
+    .section-title p {
+        font-size: 16px;
+    }
+
+    /* Home Seven */
+    .game-hero-area .hero-content h2 {
+        font-size: 28px;
+        margin-bottom: 37px;
+    }
+    .game-hero-area .hero-content span {
+        letter-spacing: 0;
+    }
+    .game-hero-area {
+        height: 385px;
+    }
+    .abt3-content h2 {
+        font-size: 21px;
+    }
+    .gm-title h2 {
+        font-size: 27px;
+    }
+    .video-area{
+        height: 300px;
+    }
+    .google-map-fullwidth#google_map {
+        height: 300px;
+    }
+
+    /* Blog */
+    .crumbs-area {
+        padding: 56px 0px 76px;
+    }
+    .crumbs-content h2 {
+        font-size: 29px;
+        line-height: 33px;
+        margin-bottom: 10px;
+    }
+
+    /* Blog Details */
+    .post-content h2 a {
+        font-size: 18px
+    }
+    .sidebar{
+        margin-top: 60px;
+    }
+    
+
+
+
+
+
+}

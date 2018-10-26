@@ -1,0 +1,18 @@
+<div class="bs-sidebar hidden-print affix-top" role="complementary">
+  <ul class="nav bs-sidenav ">
+<?php
+	if(!isset($show_menu)){ $show_menu = $current_controller;}
+	if(!isset($show_childs)){ $show_childs = $current_action;}
+	foreach($admin_menus as $key =>$row){ ?>
+	  <li <?php if($show_menu == $key):?> class="active" <?php endif;?> >
+	  <a href="<?php echo $row['href']?>"><i class="<?php echo $row['style']?>"></i> <?php echo $row['title'];?></a>
+	 <?php if(!empty($row['childs'])){ ?>
+		<ul class="nav">
+			<?php foreach ($row['childs'] as $action => $child_row){ ?>
+				<li <?php if($show_childs == $action):?>class="active" <?php endif;?> ><a href="<?php echo $child_row['href']?>"> <i class="<?php echo $child_row['style']?>"></i> <?php echo $child_row['title']?></a></li>
+			<?php } ?>
+		</ul>
+	 <?php } ?></li>
+<?php } ?>
+  </ul>
+</div>
