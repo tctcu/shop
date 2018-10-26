@@ -85,6 +85,10 @@ class AuthController extends ApiController
                 '分类',
                 '我的'
             ],
+            'wechat' => [
+                'url' => 'http://img.wzzsl.com/11121647195bd3427ea1d840.19166580.jpg',
+                'name' => 'quangoushengqian'
+            ]
         );
 
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
