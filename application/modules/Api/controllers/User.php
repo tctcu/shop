@@ -12,7 +12,9 @@ class UserController extends ApiController
     function loginAction(){
         $mobile = intval($_REQUEST['mobile']);
         $password = addslashes(htmlspecialchars(trim($_REQUEST['password'])));
-
+        if (strlen($password)<>32) {
+            $this->responseJson('10006', '密码不正确');
+        }
         if($mobile && $password) {
             $user_model = new UserModel();
             $user_info = $user_model->getDataByMobile($mobile);
@@ -21,7 +23,7 @@ class UserController extends ApiController
                 $this->responseJson('10006', '用户不存在');
             }
 
-            if (md5(md5($password) . $user_info['salt']) <> $user_info['password']) {
+            if (md5($password . $user_info['salt']) <> $user_info['password']) {
                 $this->responseJson('10006', '密码错误');
             }
             $data = array(
@@ -39,7 +41,9 @@ class UserController extends ApiController
         $password = isset($_REQUEST['password']) ? addslashes(htmlspecialchars(trim($_REQUEST['password']))) : '';
         $device_type = intval($_REQUEST['device_type']);
         $device = trim($_REQUEST['device']);
-
+        if (strlen($password)<>32) {
+            $this->responseJson('10006', '密码不正确');
+        }
         if($mobile && $password && $device_type && $device) {
             $user_model = new UserModel();
             $user_info = $user_model->getDataByMobile($mobile);
@@ -53,7 +57,7 @@ class UserController extends ApiController
                 'device' => $device,
                 'device_type' => $device_type,
                 'salt' => $salt,
-                'password' => md5(md5($password) . $salt),
+                'password' => md5($password . $salt),
             );
 
             $user_model->addData($insert);
