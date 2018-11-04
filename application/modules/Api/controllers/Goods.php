@@ -167,6 +167,68 @@ class GoodsController extends ApiController
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
+
+    #快抢
+    function fastBuyAction(){
+        $hour_type = intval($_REQUEST['hour_type']) ? intval($_REQUEST['hour_type']) : 7;
+        $min_id = intval($_REQUEST['min_id']) ? intval($_REQUEST['min_id']) : 1;
+        $url = "http://v2.api.haodanku.com/fastbuy/apikey/allfree/hour_type/".$hour_type."/min_id/".$min_id;
+        $json = file_get_contents($url);
+        $ret_data = json_decode($json,true);
+        $data['list'] = $ret_data['data'];
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+
+
+        $ret_data = json_decode($json,true);
+echo '<pre>';
+        print_r($ret_data);die;
+        $data = array();
+        foreach($ret_data['data'] as $val){
+            $data['list'][] = array(
+                'itemid' => $val['itemid'],
+                'itemshorttitle' => $val['itemshorttitle'],
+                'itemdesc' => $val['itemdesc'],
+                'itemprice' => $val['itemprice'],
+                'itemsale' => $val['itemsale'],
+                'itempic' => $val['itempic'],
+                'itemendprice' => $val['itemendprice'],
+                'url' => 'http://uland.taobao.com/coupon/edetail?activityId='.$val['activityid'].'&itemId='.$val['itemid'].'&src=qmmf_sqrb&mt=1&pid=mm_116356778_18618211_65740777',
+                'couponmoney' => $val['couponmoney'],
+                'couponexplain' => $val['couponexplain'],
+                'couponstarttime' => $val['couponstarttime'],
+                'couponendtime' => $val['couponendtime'],
+                'shoptype' => $val['shoptype'],
+//                'taobao_image' => explode(',' ,$val['taobao_image']),
+            );
+        }
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+    }
+
+    #专题
+    function subjectAction(){
+
+        $url = "http://v2.api.haodanku.com/get_subject/apikey/allfree";
+        $json = file_get_contents($url);
+        $ret_data = json_decode($json,true);
+        echo '<pre>';
+        print_r($ret_data['data']);die;
+        $data['list'] = $ret_data['data'];
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+
+    }
+
+    #专题关联单品
+    function subjectItemAction(){
+        $id = intval($_REQUEST['id']) ? intval($_REQUEST['id']) : 7;
+        $url = "http://v2.api.haodanku.com/get_subject_item/apikey/allfree/id/".$id;
+        $json = file_get_contents($url);
+        $ret_data = json_decode($json,true);
+        
+        $data['list'] = $ret_data['data'];
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+
+    }
+
     function testAction(){
         $contract_course_data['total_used_course_hour'] = 34.58;
         $strategy['actual_period'] = '34.58';
