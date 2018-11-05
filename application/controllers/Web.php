@@ -8,5 +8,10 @@ class WebController extends Yaf_Controller_Abstract
     #协议
     function protocolAction(){}
 
+    #拼多多回调
+    function pddAction(){
+        echo  'success';die;
+    }
+
 
 }
