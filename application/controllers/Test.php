@@ -412,6 +412,15 @@ class TestController extends Yaf_Controller_Abstract
     }
 
 
+    function sendAction(){
+        $mail = new SendMail();
+        echo 111;die;
+        var_dump($mail);die;
+        $res = $mail->send(['xm0563@qq.com'],'测试','内容');
+        var_dump($res);die;
+    }
+
+
     private function log($content='') {
         $fp = fopen('/tmp/test_book.log','a');
         if(!$fp){
