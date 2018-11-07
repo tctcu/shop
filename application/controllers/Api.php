@@ -13,9 +13,39 @@ abstract class ApiController extends BaseController
 
     function init(){
         parent::init();
-        header('content-type:text/html;charset=utf-8');
         //解密
-        //$this->decryptRequest();
+       if(1==2) {
+           $data = !empty($_REQUEST['data']) ? addslashes(htmlspecialchars(trim(urldecode($_REQUEST['data'])))) : "";
+
+           $params = !empty($_REQUEST['params']) ? addslashes(htmlspecialchars(trim(urldecode($_REQUEST['params'])))) : "";
+
+           #rsa解密
+           $rsa_model = new Rsa();
+           $key_time = $rsa_model->decrypt($params);   //得到随机字符串和10位时间戳
+
+           if (empty($key_time)) {  //rsa解码错误
+               $code = 10025;
+               $msg = $this->_error_codes->system_errors[$code];
+               $this->responseJson($code, $msg);
+               exit;
+           }
+
+           $key = substr($key_time, 0, 16);  //截取前16位随机参数
+           $time = substr($key_time, -10, 10);  //截取后10位时间戳
+
+//				if(time() - $time > 60*2){  //加密时间戳两分钟内有效
+//					$code = 10021;
+//					$msg = $this->_error_codes->system_errors[$code];
+//					$this->echo_message($msg,$code);
+//					exit;
+//				}
+
+           #进行ase解密，128位，测ecb模式
+           $data = $this->initParams($data, $key);  //通过随机参数aes解密出来真正的参数
+           $_REQUEST = $data;
+       }
+        header('content-type:text/html;charset=utf-8');
+
         $this->check_access_token();
     }
 

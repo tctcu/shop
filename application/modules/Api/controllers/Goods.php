@@ -175,7 +175,6 @@ class GoodsController extends ApiController
         $url = "http://v2.api.haodanku.com/fastbuy/apikey/allfree/hour_type/".$hour_type."/min_id/".$min_id;
         $json = file_get_contents($url);
         $ret_data = json_decode($json,true);
-
         $data = array();
         foreach($ret_data['data'] as $val){
             $data['list'][] = array(
@@ -192,6 +191,9 @@ class GoodsController extends ApiController
                 'couponstarttime' => '',
                 'couponendtime' => '',
                 'shoptype' => $val['shoptype'],
+                'grab_type' => $val['grab_type'],
+                'start_time' => $val['start_time'],
+                'short_itemdesc' => $val['short_itemdesc'],
 //                'taobao_image' => explode(',' ,$val['taobao_image']),
             );
         }
