@@ -111,10 +111,13 @@ class GoodsController extends ApiController
     function searchAction(){
         $cid = intval($_REQUEST['cid']);
         $keyword = trim($_REQUEST['keyword']);
-        $url = "http://v2.api.haodanku.com/get_keyword_items/apikey/allfree/keyword/".urlencode(urlencode($keyword))."/back/50/sort/0/cid/".$cid;
+        $min_id = intval($_REQUEST['min_id']);
+        $url = "http://v2.api.haodanku.com/get_keyword_items/apikey/allfree/keyword/".urlencode(urlencode($keyword))."/back/20/sort/0/cid/".$cid."/min_id/".$min_id;
         $json = file_get_contents($url);
         $ret_data = json_decode($json,true);
-        $data = array();
+        $data = array(
+            'min_id' => $ret_data['min_id'].''
+        );
         foreach($ret_data['data'] as $val){
             $data['list'][] = array(
                 'itemid' => $val['itemid'],
