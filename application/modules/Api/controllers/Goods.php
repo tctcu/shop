@@ -1,4 +1,5 @@
 <?php
+
 #商品
 class GoodsController extends ApiController
 {
@@ -15,11 +16,11 @@ class GoodsController extends ApiController
         $cid = intval($_REQUEST['cid']) ? intval($_REQUEST['cid']) : 0;
         $min_id = intval($_REQUEST['min_id']) ? intval($_REQUEST['min_id']) : 1;
         $pageSize = intval($_REQUEST['pageSize']) ? intval($_REQUEST['pageSize']) : 20;
-        $url = "http://v2.api.haodanku.com/itemlist/apikey/allfree/nav/3/cid/".$cid."/back/".$pageSize."/min_id/".$min_id."/sort/".$sort;
+        $url = "http://v2.api.haodanku.com/itemlist/apikey/allfree/nav/3/cid/" . $cid . "/back/" . $pageSize . "/min_id/" . $min_id . "/sort/" . $sort;
         $json = file_get_contents($url);
-        $ret_data = json_decode($json,true);
+        $ret_data = json_decode($json, true);
         $data = array(
-            'min_id' => $ret_data['min_id']
+            'min_id' => $ret_data['min_id'] . ''
         );
         $data['list'] = $this->make($ret_data['data']);
 
@@ -30,9 +31,9 @@ class GoodsController extends ApiController
     function detailAction()
     {
         $itemid = intval($_REQUEST['itemid']);
-        $url = "http://v2.api.haodanku.com/item_detail/apikey/allfree/itemid/".$itemid;
+        $url = "http://v2.api.haodanku.com/item_detail/apikey/allfree/itemid/" . $itemid;
         $json = file_get_contents($url);
-        $val = json_decode($json,true)['data'];
+        $val = json_decode($json, true)['data'];
 
         $data = array(
             'itemid' => $val['itemid'],
@@ -40,9 +41,9 @@ class GoodsController extends ApiController
             'itemdesc' => $val['itemdesc'],
             'itemprice' => $val['itemprice'],
             'itemsale' => $val['itemsale'],
-            'itempic' => $val['itempic'].'_310x310.jpg',
+            'itempic' => $val['itempic'] . '_310x310.jpg',
             'itemendprice' => $val['itemendprice'],
-            'url' => 'http://uland.taobao.com/coupon/edetail?activityId='.$val['activityid'].'&itemId='.$val['itemid'].'&src=qmmf_sqrb&mt=1&pid=mm_116356778_18618211_65740777',
+            'url' => 'http://uland.taobao.com/coupon/edetail?activityId=' . $val['activityid'] . '&itemId=' . $val['itemid'] . '&src=qmmf_sqrb&mt=1&pid=mm_116356778_18618211_65740777',
             'couponnum' => $val['couponnum'],
             'couponreceive2' => $val['couponreceive2'],
             'couponmoney' => $val['couponmoney'],
@@ -50,17 +51,17 @@ class GoodsController extends ApiController
             'couponstarttime' => $val['couponstarttime'],
             'couponendtime' => $val['couponendtime'],
             'shoptype' => $val['shoptype'],
-            'taobao_image' => explode(',' ,$val['taobao_image']),
-            'itempic_copy' => 'http://img.haodanku.com/'.$val['itempic_copy'].'-600',
+            'taobao_image' => explode(',', $val['taobao_image']),
+            'itempic_copy' => 'http://img.haodanku.com/' . $val['itempic_copy'] . '-600',
             'fqcat' => $val['fqcat'],
             'sellernick' => $val['sellernick'],
             'discount' => $val['discount'],
             'activity_type' => $val['activity_type'],
-            'video_url' => $val['videoid']? 'http://cloud.video.taobao.com/play/u/1/p/1/e/6/t/1/'.$val['videoid'].'mp4' : '',
+            'video_url' => $val['videoid'] ? 'http://cloud.video.taobao.com/play/u/1/p/1/e/6/t/1/' . $val['videoid'] . 'mp4' : '',
             'share' => array(
-                'share_title' => $val['itemshorttitle'].'  领券后￥'.$val['itemprice'],
-                'share_pic' =>  'http://img.haodanku.com/'.$val['itempic_copy'].'-100',
-                'share_url' => 'http://uland.taobao.com/coupon/edetail?activityId='.$val['activityid'].'&itemId='.$val['itemid'].'&src=qmmf_sqrb&mt=1&pid=mm_116356778_18618211_65740777'
+                'share_title' => $val['itemshorttitle'] . '  领券后￥' . $val['itemprice'],
+                'share_pic' => 'http://img.haodanku.com/' . $val['itempic_copy'] . '-100',
+                'share_url' => 'http://uland.taobao.com/coupon/edetail?activityId=' . $val['activityid'] . '&itemId=' . $val['itemid'] . '&src=qmmf_sqrb&mt=1&pid=mm_116356778_18618211_65740777'
             ),
 
         );
@@ -69,20 +70,22 @@ class GoodsController extends ApiController
     }
 
     #分类
-    function categoryAction(){
+    function categoryAction()
+    {
         $url = "http://v2.api.haodanku.com/super_classify/apikey/allfree";
         $json = file_get_contents($url);
-        $ret_data = json_decode($json,true)['general_classify'];
+        $ret_data = json_decode($json, true)['general_classify'];
 
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $ret_data);
     }
 
     #热搜词
-    function keywordAction(){
+    function keywordAction()
+    {
         $url = "http://v2.api.haodanku.com/hot_key/apikey/allfree";
         $json = file_get_contents($url);
-        $ret_data = array_slice( json_decode($json,true)['data'],0,20);
-        foreach($ret_data as &$val){
+        $ret_data = array_slice(json_decode($json, true)['data'], 0, 20);
+        foreach ($ret_data as &$val) {
             $val['emoji'] = '';
             $val['color'] = '#212121';
         }
@@ -92,15 +95,16 @@ class GoodsController extends ApiController
     }
 
     #关键词搜索
-    function searchAction(){
+    function searchAction()
+    {
         $cid = intval($_REQUEST['cid']);
         $keyword = trim($_REQUEST['keyword']);
         $min_id = intval($_REQUEST['min_id']);
-        $url = "http://v2.api.haodanku.com/get_keyword_items/apikey/allfree/keyword/".urlencode(urlencode($keyword))."/back/20/sort/0/cid/".$cid."/min_id/".$min_id;
+        $url = "http://v2.api.haodanku.com/get_keyword_items/apikey/allfree/keyword/" . urlencode(urlencode($keyword)) . "/back/20/sort/0/cid/" . $cid . "/min_id/" . $min_id;
         $json = file_get_contents($url);
-        $ret_data = json_decode($json,true);
+        $ret_data = json_decode($json, true);
         $data = array(
-            'min_id' => $ret_data['min_id'].''
+            'min_id' => $ret_data['min_id'] . ''
         );
         $data['list'] = $this->make($ret_data['data']);
 
@@ -108,13 +112,13 @@ class GoodsController extends ApiController
     }
 
 
-
     #单品关联推荐
-    function recommendAction(){
+    function recommendAction()
+    {
         $itemid = intval($_REQUEST['itemid']);
-        $url = "http://v2.api.haodanku.com/get_similar_info/apikey/allfree/itemid/".$itemid;
+        $url = "http://v2.api.haodanku.com/get_similar_info/apikey/allfree/itemid/" . $itemid;
         $json = file_get_contents($url);
-        $ret_data = json_decode($json,true);
+        $ret_data = json_decode($json, true);
 
         $data = array();
         $data['list'] = $this->make($ret_data['data']);
@@ -124,28 +128,29 @@ class GoodsController extends ApiController
 
 
     #快抢
-    function fastBuyAction(){
+    function fastBuyAction()
+    {
         $hour_type = intval($_REQUEST['hour_type']) ? intval($_REQUEST['hour_type']) : 7;
         $min_id = intval($_REQUEST['min_id']) ? intval($_REQUEST['min_id']) : 1;
-        $url = "http://v2.api.haodanku.com/fastbuy/apikey/allfree/hour_type/".$hour_type."/min_id/".$min_id;
+        $url = "http://v2.api.haodanku.com/fastbuy/apikey/allfree/hour_type/" . $hour_type . "/min_id/" . $min_id;
         $json = file_get_contents($url);
-        $ret_data = json_decode($json,true);
+        $ret_data = json_decode($json, true);
 
         $data = array();
-        foreach($ret_data['data'] as $val){
+        foreach ($ret_data['data'] as $val) {
             #券链接 获取 券ID
-            $arr = explode('&',parse_url($val['couponurl'])['query']);
+            $arr = explode('&', parse_url($val['couponurl'])['query']);
             $params = array();
             foreach ($arr as $param) {
                 $item = explode('=', $param);
                 $params[$item[0]] = $item[1];
             }
             #处理详情
-            $content = json_decode($val['material_info']['seckill_content'],true);
+            $content = json_decode($val['material_info']['seckill_content'], true);
             $content_info = [];
-            foreach($content as $v){
-                $content_info[] =[
-                    'img' => 'http://img.haodanku.com/'.$v['img'].'-600',
+            foreach ($content as $v) {
+                $content_info[] = [
+                    'img' => 'http://img.haodanku.com/' . $v['img'] . '-600',
                     'text' => $v['text']
                 ];
             }
@@ -158,7 +163,7 @@ class GoodsController extends ApiController
                 'itemsale' => $val['itemsale'],
                 'itempic' => $val['itempic'],
                 'itemendprice' => $val['itemendprice'],
-                'url' => 'http://uland.taobao.com/coupon/edetail?activityId='.$params['activityId'].'&itemId='.$val['itemid'].'&src=qmmf_sqrb&mt=1&pid=mm_116356778_18618211_65740777',
+                'url' => 'http://uland.taobao.com/coupon/edetail?activityId=' . $params['activityId'] . '&itemId=' . $val['itemid'] . '&src=qmmf_sqrb&mt=1&pid=mm_116356778_18618211_65740777',
                 'couponmoney' => $val['couponmoney'],
                 'couponexplain' => '',
                 'couponstarttime' => '',
@@ -180,16 +185,17 @@ class GoodsController extends ApiController
     }
 
     #专题
-    function subjectAction(){
+    function subjectAction()
+    {
         $url = "http://v2.api.haodanku.com/get_subject/apikey/allfree";
         $json = file_get_contents($url);
-        $ret_data = json_decode($json,true);
+        $ret_data = json_decode($json, true);
         $data = array();
-        foreach($ret_data['data'] as $val){
+        foreach ($ret_data['data'] as $val) {
             $data['list'][] = array(
                 'id' => $val['id'],
                 'name' => $val['name'],
-                'app_image' => 'http://img.haodanku.com/'.$val['app_image'].'-600',
+                'app_image' => 'http://img.haodanku.com/' . $val['app_image'] . '-600',
                 'content' => $val['content'],
                 'activity_start_time' => $val['activity_start_time'],
                 'activity_end_time' => $val['activity_end_time']
@@ -200,11 +206,12 @@ class GoodsController extends ApiController
     }
 
     #专题关联单品
-    function subjectItemAction(){
+    function subjectItemAction()
+    {
         $id = intval($_REQUEST['id']) ? intval($_REQUEST['id']) : 1966;
-        $url = "http://v2.api.haodanku.com/get_subject_item/apikey/allfree/id/".$id;
+        $url = "http://v2.api.haodanku.com/get_subject_item/apikey/allfree/id/" . $id;
         $json = file_get_contents($url);
-        $ret_data = json_decode($json,true);
+        $ret_data = json_decode($json, true);
         $data = array();
         $data['list'] = $this->make($ret_data['data']);
 
@@ -213,9 +220,10 @@ class GoodsController extends ApiController
 
 
     #格式化列表数据
-    private function make($data){
+    private function make($data)
+    {
         $list = [];
-        foreach($data as $val){
+        foreach ($data as $val) {
             $list[] = array(
                 'itemid' => $val['itemid'],
                 'itemshorttitle' => $val['itemshorttitle'],
@@ -224,7 +232,7 @@ class GoodsController extends ApiController
                 'itemsale' => $val['itemsale'],
                 'itempic' => $val['itempic'],
                 'itemendprice' => $val['itemendprice'],
-                'url' => 'http://uland.taobao.com/coupon/edetail?activityId='.$val['activityid'].'&itemId='.$val['itemid'].'&src=qmmf_sqrb&mt=1&pid=mm_116356778_18618211_65740777',
+                'url' => 'http://uland.taobao.com/coupon/edetail?activityId=' . $val['activityid'] . '&itemId=' . $val['itemid'] . '&src=qmmf_sqrb&mt=1&pid=mm_116356778_18618211_65740777',
                 'couponmoney' => $val['couponmoney'],
                 'couponexplain' => '',
                 'couponstarttime' => $val['couponstarttime'],
