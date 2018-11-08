@@ -17,29 +17,12 @@ class GoodsController extends ApiController
         $pageSize = intval($_REQUEST['pageSize']) ? intval($_REQUEST['pageSize']) : 20;
         $url = "http://v2.api.haodanku.com/itemlist/apikey/allfree/nav/3/cid/".$cid."/back/".$pageSize."/min_id/".$min_id."/sort/".$sort;
         $json = file_get_contents($url);
-        //var_dump($json);die;
         $ret_data = json_decode($json,true);
         $data = array(
             'min_id' => $ret_data['min_id']
         );
-        foreach($ret_data['data'] as $val){
-            $data['list'][] = array(
-                'itemid' => $val['itemid'],
-                'itemshorttitle' => $val['itemshorttitle'],
-                'itemdesc' => $val['itemdesc'],
-                'itemprice' => $val['itemprice'],
-                'itemsale' => $val['itemsale'],
-                'itempic' => $val['itempic'],
-                'itemendprice' => $val['itemendprice'],
-                'url' => 'http://uland.taobao.com/coupon/edetail?activityId='.$val['activityid'].'&itemId='.$val['itemid'].'&src=qmmf_sqrb&mt=1&pid=mm_116356778_18618211_65740777',
-                'couponmoney' => $val['couponmoney'],
-                'couponexplain' => $val['couponexplain'],
-                'couponstarttime' => $val['couponstarttime'],
-                'couponendtime' => $val['couponendtime'],
-                'shoptype' => $val['shoptype'],
-//                'taobao_image' => explode(',' ,$val['taobao_image']),
-            );
-        }
+        $data['list'] = $this->make($ret_data['data']);
+
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
@@ -81,6 +64,7 @@ class GoodsController extends ApiController
             ),
 
         );
+
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
@@ -88,8 +72,8 @@ class GoodsController extends ApiController
     function categoryAction(){
         $url = "http://v2.api.haodanku.com/super_classify/apikey/allfree";
         $json = file_get_contents($url);
-        //print_r($json);die;
         $ret_data = json_decode($json,true)['general_classify'];
+
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $ret_data);
     }
 
@@ -118,24 +102,8 @@ class GoodsController extends ApiController
         $data = array(
             'min_id' => $ret_data['min_id'].''
         );
-        foreach($ret_data['data'] as $val){
-            $data['list'][] = array(
-                'itemid' => $val['itemid'],
-                'itemshorttitle' => $val['itemshorttitle'],
-                'itemdesc' => $val['itemdesc'],
-                'itemprice' => $val['itemprice'],
-                'itemsale' => $val['itemsale'],
-                'itempic' => $val['itempic'],
-                'itemendprice' => $val['itemendprice'],
-                'url' => 'http://uland.taobao.com/coupon/edetail?activityId='.$val['activityid'].'&itemId='.$val['itemid'].'&src=qmmf_sqrb&mt=1&pid=mm_116356778_18618211_65740777',
-                'couponmoney' => $val['couponmoney'],
-                'couponexplain' => $val['couponexplain'],
-                'couponstarttime' => $val['couponstarttime'],
-                'couponendtime' => $val['couponendtime'],
-                'shoptype' => $val['shoptype'],
-//                'taobao_image' => explode(',' ,$val['taobao_image']),
-            );
-        }
+        $data['list'] = $this->make($ret_data['data']);
+
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
@@ -149,24 +117,8 @@ class GoodsController extends ApiController
         $ret_data = json_decode($json,true);
 
         $data = array();
-        foreach($ret_data['data'] as $val){
-            $data['list'][] = array(
-                'itemid' => $val['itemid'],
-                'itemshorttitle' => $val['itemshorttitle'],
-                'itemdesc' => $val['itemdesc'],
-                'itemprice' => $val['itemprice'],
-                'itemsale' => $val['itemsale'],
-                'itempic' => $val['itempic'],
-                'itemendprice' => $val['itemendprice'],
-                'url' => 'http://uland.taobao.com/coupon/edetail?activityId='.$val['activityid'].'&itemId='.$val['itemid'].'&src=qmmf_sqrb&mt=1&pid=mm_116356778_18618211_65740777',
-                'couponmoney' => $val['couponmoney'],
-                'couponexplain' => $val['couponexplain'],
-                'couponstarttime' => $val['couponstarttime'],
-                'couponendtime' => $val['couponendtime'],
-                'shoptype' => $val['shoptype'],
-//                'taobao_image' => explode(',' ,$val['taobao_image']),
-            );
-        }
+        $data['list'] = $this->make($ret_data['data']);
+
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
@@ -178,8 +130,26 @@ class GoodsController extends ApiController
         $url = "http://v2.api.haodanku.com/fastbuy/apikey/allfree/hour_type/".$hour_type."/min_id/".$min_id;
         $json = file_get_contents($url);
         $ret_data = json_decode($json,true);
+
         $data = array();
         foreach($ret_data['data'] as $val){
+            #券链接 获取 券ID
+            $arr = explode('&',parse_url($val['couponurl'])['query']);
+            $params = array();
+            foreach ($arr as $param) {
+                $item = explode('=', $param);
+                $params[$item[0]] = $item[1];
+            }
+            #处理详情
+            $content = json_decode($val['material_info']['seckill_content'],true);
+            $content_info = [];
+            foreach($content as $v){
+                $content_info[] =[
+                    'img' => 'http://img.haodanku.com/'.$v['img'].'-600',
+                    'text' => $v['text']
+                ];
+            }
+
             $data['list'][] = array(
                 'itemid' => $val['itemid'],
                 'itemshorttitle' => $val['itemshorttitle'],
@@ -188,7 +158,7 @@ class GoodsController extends ApiController
                 'itemsale' => $val['itemsale'],
                 'itempic' => $val['itempic'],
                 'itemendprice' => $val['itemendprice'],
-                'url' => 'http://uland.taobao.com/coupon/edetail?activityId='.$val['activityid'].'&itemId='.$val['itemid'].'&src=qmmf_sqrb&mt=1&pid=mm_116356778_18618211_65740777',
+                'url' => 'http://uland.taobao.com/coupon/edetail?activityId='.$params['activityId'].'&itemId='.$val['itemid'].'&src=qmmf_sqrb&mt=1&pid=mm_116356778_18618211_65740777',
                 'couponmoney' => $val['couponmoney'],
                 'couponexplain' => '',
                 'couponstarttime' => '',
@@ -197,12 +167,15 @@ class GoodsController extends ApiController
                 'grab_type' => $val['grab_type'],
                 'start_time' => $val['start_time'],
                 'short_itemdesc' => $val['short_itemdesc'],
-//                'taobao_image' => explode(',' ,$val['taobao_image']),
+                'material_info' => [
+                    'seckill_content' => $content_info,
+                    'main_video_url' => $val['material_info']['main_video_url'],
+                    'detail_video_url' => $val['material_info']['detail_video_url']
+                ],
+
             );
         }
-        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
 
-        $data['list'] = $ret_data['data'];
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
@@ -233,8 +206,17 @@ class GoodsController extends ApiController
         $json = file_get_contents($url);
         $ret_data = json_decode($json,true);
         $data = array();
-        foreach($ret_data['data'] as $val){
-            $data['list'][] = array(
+        $data['list'] = $this->make($ret_data['data']);
+
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+    }
+
+
+    #格式化列表数据
+    private function make($data){
+        $list = [];
+        foreach($data as $val){
+            $list[] = array(
                 'itemid' => $val['itemid'],
                 'itemshorttitle' => $val['itemshorttitle'],
                 'itemdesc' => $val['itemdesc'],
@@ -248,21 +230,9 @@ class GoodsController extends ApiController
                 'couponstarttime' => $val['couponstarttime'],
                 'couponendtime' => $val['couponendtime'],
                 'shoptype' => $val['shoptype'],
-//                'taobao_image' => explode(',' ,$val['taobao_image']),
+                //'taobao_image' => explode(',' ,$val['taobao_image']),
             );
         }
-
-        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
-    }
-
-    function testAction(){
-        $contract_course_data['total_used_course_hour'] = 34.58;
-        $strategy['actual_period'] = '34.58';
-        var_dump($contract_course_data['total_used_course_hour'] * 100);//die;
-        var_dump($strategy['actual_period'] * 100);die;
-        if($contract_course_data['total_used_course_hour'] * 100 <> $strategy['actual_period'] * 100){
-            echo '1';die;
-        }
-        echo '2';die;
+        return $list;
     }
 }
