@@ -12,7 +12,7 @@ class GoodsController extends ApiController
     #列表
     function listAction()
     {
-        $sort = intval($_REQUEST['sort']) ? intval($_REQUEST['sort']) : 0;
+        $sort = intval($_REQUEST['sort']) ? intval($_REQUEST['sort']) : 9;
         $cid = intval($_REQUEST['cid']) ? intval($_REQUEST['cid']) : 0;
         $min_id = intval($_REQUEST['min_id']) ? intval($_REQUEST['min_id']) : 1;
         $pageSize = intval($_REQUEST['pageSize']) ? intval($_REQUEST['pageSize']) : 20;
@@ -100,7 +100,10 @@ class GoodsController extends ApiController
         $cid = intval($_REQUEST['cid']);
         $keyword = trim($_REQUEST['keyword']);
         $min_id = intval($_REQUEST['min_id']);
-        $url = "http://v2.api.haodanku.com/get_keyword_items/apikey/allfree/keyword/" . urlencode(urlencode($keyword)) . "/back/20/sort/0/cid/" . $cid . "/min_id/" . $min_id;
+        $url = "http://v2.api.haodanku.com/get_keyword_items/apikey/allfree/keyword/" . urlencode(urlencode($keyword)) . "/back/20/sort/0/cid/" . $cid ;
+        if($min_id){
+            $url .= "/min_id/" . $min_id;
+        }
         $json = file_get_contents($url);
         $ret_data = json_decode($json, true);
         $data = array(
