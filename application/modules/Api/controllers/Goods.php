@@ -3,6 +3,7 @@
 #商品
 class GoodsController extends ApiController
 {
+    private $pid = 'mm_234440039_166200410_57891600477';//'mm_116356778_18618211_65740777';
 
     function init()
     {
@@ -43,7 +44,7 @@ class GoodsController extends ApiController
             'itemsale' => $val['itemsale'],
             'itempic' => $val['itempic'] . '_310x310.jpg',
             'itemendprice' => $val['itemendprice'],
-            'url' => 'http://uland.taobao.com/coupon/edetail?activityId=' . $val['activityid'] . '&itemId=' . $val['itemid'] . '&src=qmmf_sqrb&mt=1&pid=mm_116356778_18618211_65740777',
+            'url' => 'http://uland.taobao.com/coupon/edetail?activityId=' . $val['activityid'] . '&itemId=' . $val['itemid'] . '&src=qmmf_sqrb&mt=1&pid=' . $this->pid,
             'couponnum' => $val['couponnum'],
             'couponreceive2' => $val['couponreceive2'],
             'couponmoney' => $val['couponmoney'],
@@ -61,7 +62,7 @@ class GoodsController extends ApiController
             'share' => array(
                 'share_title' => $val['itemshorttitle'] . '  领券后￥' . $val['itemprice'],
                 'share_pic' => 'http://img.haodanku.com/' . $val['itempic_copy'] . '-100',
-                'share_url' => 'http://uland.taobao.com/coupon/edetail?activityId=' . $val['activityid'] . '&itemId=' . $val['itemid'] . '&src=qmmf_sqrb&mt=1&pid=mm_116356778_18618211_65740777'
+                'share_url' => 'http://uland.taobao.com/coupon/edetail?activityId=' . $val['activityid'] . '&itemId=' . $val['itemid'] . '&src=qmmf_sqrb&mt=1&pid=' . $this->pid
             ),
 
         );
@@ -100,8 +101,8 @@ class GoodsController extends ApiController
         $cid = intval($_REQUEST['cid']);
         $keyword = trim($_REQUEST['keyword']);
         $min_id = intval($_REQUEST['min_id']);
-        $url = "http://v2.api.haodanku.com/get_keyword_items/apikey/allfree/keyword/" . urlencode(urlencode($keyword)) . "/back/20/sort/0/cid/" . $cid ;
-        if($min_id){
+        $url = "http://v2.api.haodanku.com/get_keyword_items/apikey/allfree/keyword/" . urlencode(urlencode($keyword)) . "/back/20/sort/0/cid/" . $cid;
+        if ($min_id) {
             $url .= "/min_id/" . $min_id;
         }
         $json = file_get_contents($url);
@@ -166,7 +167,7 @@ class GoodsController extends ApiController
                 'itemsale' => $val['itemsale'],
                 'itempic' => $val['itempic'],
                 'itemendprice' => $val['itemendprice'],
-                'url' => 'http://uland.taobao.com/coupon/edetail?activityId=' . $params['activityId'] . '&itemId=' . $val['itemid'] . '&src=qmmf_sqrb&mt=1&pid=mm_116356778_18618211_65740777',
+                'url' => 'http://uland.taobao.com/coupon/edetail?activityId=' . $params['activityId'] . '&itemId=' . $val['itemid'] . '&src=qmmf_sqrb&mt=1&pid=' . $this->pid,
                 'couponmoney' => $val['couponmoney'],
                 'couponexplain' => '',
                 'couponstarttime' => '',
@@ -235,7 +236,7 @@ class GoodsController extends ApiController
                 'itemsale' => $val['itemsale'],
                 'itempic' => $val['itempic'],
                 'itemendprice' => $val['itemendprice'],
-                'url' => 'http://uland.taobao.com/coupon/edetail?activityId=' . $val['activityid'] . '&itemId=' . $val['itemid'] . '&src=qmmf_sqrb&mt=1&pid=mm_116356778_18618211_65740777',
+                'url' => 'http://uland.taobao.com/coupon/edetail?activityId=' . $val['activityid'] . '&itemId=' . $val['itemid'] . '&src=qmmf_sqrb&mt=1&pid=' . $this->pid,
                 'couponmoney' => $val['couponmoney'],
                 'couponexplain' => '',
                 'couponstarttime' => $val['couponstarttime'],
