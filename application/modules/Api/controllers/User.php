@@ -71,4 +71,23 @@ class UserController extends ApiController
         $this->responseJson('10006');
     }
 
+    #授权
+    function accreditAction(){
+        $redirect_uri = "http://" . $_SERVER['HTTP_HOST'] . "/Alipay/callback";
+        $model = new AlipayModel();
+        $url = $model->oauth2code($redirect_uri);
+        $data = [
+            [
+                'name' => '支付宝',
+                'url' => $url
+            ],
+            [
+                'name' => '微信',
+                'url' => 'wechat://'
+            ],
+        ];
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+    }
+
+
 }
