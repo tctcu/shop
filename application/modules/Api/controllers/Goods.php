@@ -231,19 +231,20 @@ class GoodsController extends ApiController
 
         $taobao_model = new TaobaoModel();
         $yuque_model = new YuQueModel();
-        if($item_id = $this->quid($content)){//链接
-
-        } else if(preg_match ('#\x{ffe5}([a-zA-Z0-9]{11})\x{ffe5}#isu', $content, $m)!==false ){//淘口令
-            $condition = [
-                'password_content' => $m[0]
-            ];
-            $item_id = $yuque_model->tpwdConvert($condition);
-        } else {//标题
-            $condition = [
-                'keyword' => $content
-            ];
-            $item_info = $taobao_model->TbkItemGetRequest($condition);
-            $item_id = $item_info['num_iid'];
+        $item_id = $this->quid($content);//链接
+        if(empty($item_id)) {
+            if (preg_match('#\x{ffe5}([a-zA-Z0-9]{11})\x{ffe5}#isu', $content, $m)) {//淘口令
+                $condition = [
+                    'password_content' => $m[0]
+                ];
+                $item_id = $yuque_model->tpwdConvert($condition);
+            } else {//标题
+                $condition = [
+                    'keyword' => $content
+                ];
+                $item_info = $taobao_model->TbkItemGetRequest($condition);
+                $item_id = $item_info['num_iid'];
+            }
         }
 
         $data = [];
@@ -264,11 +265,11 @@ class GoodsController extends ApiController
 
     #链接获取淘宝ID
     private function quid($strurl) {
+        $NO = 0;
         $strurl = strtolower ( $strurl );
         if (strpos ( $strurl, 'id' ) !== false) {
             $arr = explode ( '?', $strurl );
             $arr = explode ( '&', $arr [1] );
-            $NO = 0;
             foreach ( $arr as $k => $v ) {
                 if (is_string ( $v )) {
                     //判断是否含有id
@@ -278,7 +279,7 @@ class GoodsController extends ApiController
                             $i = strrpos ( $v, '=' );
                             $str = substr ( $v, $i + 1 );
                             if (is_numeric ( $str )) {
-                                return $NO = $str;
+                                $NO = $str;
                             }
                         } else {
                             $i = strrpos ( $v, '=' );
@@ -295,29 +296,44 @@ class GoodsController extends ApiController
                     }
                 }
             }
-            return $NO;
+
         }
+        return $NO;
     }
 
     #格式化淘宝数据
     private function makeTb($item_info,$url_info)
     {
-        return [
+        $data = [
             'itemid' => $item_info['num_iid'].'',
             'itemshorttitle' => $item_info['title'],
             'itemdesc' => $item_info['title'],
             'itemprice' => $item_info['zk_final_price'].'',
             'itemsale' => $item_info['volume'].'',
             'itempic' => $item_info['pict_url'],
-            'itemendprice' => ($item_info['zk_final_price']-$url_info['max_commission_rate']).'',
-            'url' => $url_info['coupon_click_url'],
-            'couponmoney' => $url_info['max_commission_rate'].'',
-            'couponexplain' => $url_info['coupon_info'],
-            'couponstarttime' => strtotime($url_info['coupon_start_time']).'',
-            'couponendtime' => strtotime($url_info['coupon_end_time']).'',
+            'itemendprice' => $item_info['zk_final_price'],
+            'url' => $url_info['item_url'],
+            'couponmoney' => '',
+            'couponexplain' => '',
+            'couponstarttime' => '',
+            'couponendtime' => '',
             'shoptype' => $item_info['user_type'] == 1 ? 'B': 'C',
             'taobao_image' => $item_info['small_images']['string']
         ];
+        if($url_info['coupon_type']){ //有券
+            $couponmoney = 0;
+            #获取券价格
+            if(preg_match ('#减([\d]+)元#is', $url_info['coupon_info'], $m) !== false ){//券价
+                $couponmoney = $m[1];
+            }
+            $data['itemendprice'] = ($data['itemendprice']-$couponmoney).'';
+            $data['url'] = $url_info['coupon_click_url'];
+            $data['couponmoney'] = $couponmoney.'';
+            $data['couponexplain'] = $url_info['coupon_info'];
+            $data['couponstarttime'] = strtotime($url_info['coupon_start_time']).'';
+            $data['couponendtime'] = strtotime($url_info['coupon_end_time']).'';
+        }
+        return $data;
     }
 
 
