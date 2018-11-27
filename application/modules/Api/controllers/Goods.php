@@ -231,11 +231,11 @@ class GoodsController extends ApiController
 
         $taobao_model = new TaobaoModel();
         $yuque_model = new YuQueModel();
-        if($content ==1){//链接
-            $item_id = $content;
-        } else if($content ==2){//淘口令
+        if($item_id = $this->quid($content)){//链接
+
+        } else if(preg_match ('#\x{ffe5}([a-zA-Z0-9]{11})\x{ffe5}#isu', $content, $m)!==false ){//淘口令
             $condition = [
-                'password_content' => $content
+                'password_content' => $m[0]
             ];
             $item_id = $yuque_model->tpwdConvert($condition);
         } else {//标题
@@ -252,41 +252,72 @@ class GoodsController extends ApiController
                 $item_id
             ];
             $item_info = $taobao_model->TbkItemInfoGetRequest($condition);
-
             $condition = [
                 'item_id' => $item_id
             ];
             $url_info = $yuque_model->privilegeGet($condition);
-            print_r($item_info);
-            print_r($url_info);
-            die;
-
+            $data = $this->makeTb($item_info,$url_info);
         }
+
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+    }
+
+    #链接获取淘宝ID
+    private function quid($strurl) {
+        $strurl = strtolower ( $strurl );
+        if (strpos ( $strurl, 'id' ) !== false) {
+            $arr = explode ( '?', $strurl );
+            $arr = explode ( '&', $arr [1] );
+            $NO = 0;
+            foreach ( $arr as $k => $v ) {
+                if (is_string ( $v )) {
+                    //判断是否含有id
+                    if (strpos ( $v, 'id' ) !== false) {
+                        //处理含有item或者num项 返还id数
+                        if (strpos ( $v, 'item' ) !== false || strpos ( $v, 'num' ) !== false) {
+                            $i = strrpos ( $v, '=' );
+                            $str = substr ( $v, $i + 1 );
+                            if (is_numeric ( $str )) {
+                                return $NO = $str;
+                            }
+                        } else {
+                            $i = strrpos ( $v, '=' );
+                            $str = substr ( $v, $i + 1 );
+                            $x = strlen ( $str );
+                            if (is_numeric ( $str )) {
+                                if ($x ==11) {
+                                    $NO = $str;
+                                } else if ($NO == 0 || ($x > 9 && $x < 11)) {
+                                    $NO = $str;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return $NO;
+        }
     }
 
     #格式化淘宝数据
     private function makeTb($item_info,$url_info)
     {
-
-        $list = [
-            'itemid' => $item_info['num_iid'],
+        return [
+            'itemid' => $item_info['num_iid'].'',
             'itemshorttitle' => $item_info['title'],
             'itemdesc' => $item_info['title'],
-            'itemprice' => $item_info['zk_final_price'],
-            'itemsale' => $item_info['volume'],
+            'itemprice' => $item_info['zk_final_price'].'',
+            'itemsale' => $item_info['volume'].'',
             'itempic' => $item_info['pict_url'],
-            'itemendprice' => $item_info['zk_final_price'],
+            'itemendprice' => ($item_info['zk_final_price']-$url_info['max_commission_rate']).'',
             'url' => $url_info['coupon_click_url'],
-            'couponmoney' => $url_info['max_commission_rate'],
-            'couponexplain' => '',
-            'couponstarttime' => strtotime($url_info['coupon_start_time']),
-            'couponendtime' => strtotime($url_info['coupon_end_time']),
-            'shoptype' => $item_info['user_type'],
-            //'taobao_image' => explode(',' ,$val['taobao_image']),
+            'couponmoney' => $url_info['max_commission_rate'].'',
+            'couponexplain' => $url_info['coupon_info'],
+            'couponstarttime' => strtotime($url_info['coupon_start_time']).'',
+            'couponendtime' => strtotime($url_info['coupon_end_time']).'',
+            'shoptype' => $item_info['user_type'] == 1 ? 'B': 'C',
+            'taobao_image' => $item_info['small_images']['string']
         ];
-
-        return $list;
     }
 
 
