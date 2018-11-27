@@ -30,27 +30,14 @@ class AlipayController extends Yaf_Controller_Abstract
         }
         $model = new AlipayModel();
         $token = $model->AlipaySystemOauthTokenRequest('authorization_code', $auth_code);
-        //将用户token 存储
-        $user_info = (array)$model->AlipayUserInfoShareRequest($token['access_token']);
+        $user_info = $model->AlipayUserInfoShareRequest($token['access_token']);
         echo '<pre>';
         print_r($user_info);
 
-        echo "<a style='font-size:50px' href='taobao://'>点击返回app</a>";
+        echo "<a style='font-size:50px' href='ecommerce://'>点击返回app</a>";
         die;
         echo '<pre>';
         var_dump($token);
-        return false;
-    }
-
-    #获取用户资料
-    function userInfoAction()
-    {
-        $access_token = $_REQUEST['access_token'];
-        $model = new AlipayModel();
-        //将用户token 存储
-        $user_info = $model->AlipayUserInfoShareRequest($access_token);
-        echo '<pre>';
-        var_dump($user_info);
         return false;
     }
 

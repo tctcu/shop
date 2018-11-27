@@ -52,6 +52,19 @@ class UserModel extends MysqlModel {
         return false;
     }
 
+    #查找单条信息
+    function getDataByZUserId($z_user_id = 0){
+        if(empty($z_user_id)){
+            return false;
+        }
+        $where = $this->_db->quoteInto('z_user_id = ?',$z_user_id);
+        $data = $this->fetchRow($where);
+        if(!empty($data)){
+            return $data->toArray();
+        }
+        return false;
+    }
+
     function getListData($page = 1,$page_size =  20,$condition = array()){
         $sql = " select * from {$this->_name} where 1 ";
         if(!empty($condition['uid'])){

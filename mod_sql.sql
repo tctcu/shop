@@ -87,3 +87,14 @@ CREATE TABLE `user` (
   PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表';
 
+ALTER TABLE user add `z_user_id` varchar(16) NOT NULL DEFAULT '' COMMENT '支付宝id' after `status`,
+add `z_avatar` varchar(400) NOT NULL DEFAULT '' COMMENT '支付宝头像' after `status`,
+add `z_province` varchar(20) NOT NULL DEFAULT '' COMMENT '支付宝省' after `status`,
+add `z_city` varchar(20) NOT NULL DEFAULT '' COMMENT '支付宝城市' after `status`,
+add `z_nick_name` varchar(50) NOT NULL DEFAULT '' COMMENT '支付宝昵称' after `status`,
+add `z_is_student_certified` varchar(2) NOT NULL DEFAULT '' COMMENT '支付宝是否学生 T-是' after `status`,
+add `z_user_type` varchar(2) NOT NULL DEFAULT '' COMMENT '支付宝是否公司 1-是 2-个人' after `status`,
+add `z_user_status` varchar(2) NOT NULL DEFAULT '' COMMENT '支付宝用户状态 Q-快速注册 T-已认证 B-冻结 W-未激活' after `status`,
+add `z_is_certified` varchar(2) NOT NULL DEFAULT '' COMMENT '支付宝是否实名认证 T-是' after `status`,
+add `z_gender` varchar(10) NOT NULL DEFAULT '' COMMENT '支付宝性别 F-女 M-男' after `status`;
+

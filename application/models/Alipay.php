@@ -309,7 +309,7 @@ class AlipayModel
                 'refresh_token' => $result->$responseNode->refresh_token,
             ];
         } else {
-            echo "失败";
+            return "失败";
         }
     }
 
@@ -324,9 +324,9 @@ class AlipayModel
         $responseNode = str_replace(".", "_", $request->getApiMethodName()) . "_response";
         $resultCode = $result->$responseNode->code;
         if (!empty($resultCode) && $resultCode == 10000) {
-            return $result;
+            return (array)$result->$responseNode;
         } else {
-            echo "失败";
+            return "失败";
         }
     }
 
