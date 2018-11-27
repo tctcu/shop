@@ -438,6 +438,24 @@ function jg(){
         print_r($res);die;
     }
 
+    #淘宝详情页
+    function tbAction(){
+        $item_id = 581477586372;
+        $taobao_model = new TaobaoModel();
+        $condition = [
+            'num_iid' => $item_id
+        ];
+        //$item_info = $taobao_model->TaeItemsListRequest($condition);
+        $condition = [
+            't_iid' => 'AAFwnBCNACaoGAiO6GP4RlkR'
+        ];
+        $item_info = $taobao_model->TaeItemDetailGetRequest($condition);
+        print_r($item_info);
+        die;
+
+        die;
+    }
+
 
     function sendAction(){
         $mail = new SendMail();

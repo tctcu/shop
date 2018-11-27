@@ -71,7 +71,7 @@ class UserController extends ApiController
         $this->responseJson('10006');
     }
 
-    #获取授权签名
+    #获取授权签名 (废弃)
     function accreditSignAction(){
         $redirect_uri = "http://" . $_SERVER['HTTP_HOST'] . "/Alipay/callback";
         $model = new AlipayModel();
@@ -89,7 +89,7 @@ class UserController extends ApiController
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
-    #授权回调
+    #授权回调 (废弃)
     function callbackAction(){
         $auth_code = addslashes(htmlspecialchars(trim($_REQUEST['auth_code'])));
         if (empty($auth_code)) {

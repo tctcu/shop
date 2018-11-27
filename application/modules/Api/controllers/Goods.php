@@ -222,6 +222,74 @@ class GoodsController extends ApiController
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
+    #识别淘口令
+    function convertAction(){
+        $content = addslashes(htmlspecialchars(trim($_REQUEST['content'])));
+        if(empty($content)){
+            $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
+        }
+
+        $taobao_model = new TaobaoModel();
+        $yuque_model = new YuQueModel();
+        if($content ==1){//链接
+            $item_id = $content;
+        } else if($content ==2){//淘口令
+            $condition = [
+                'password_content' => $content
+            ];
+            $item_id = $yuque_model->tpwdConvert($condition);
+        } else {//标题
+            $condition = [
+                'keyword' => $content
+            ];
+            $item_info = $taobao_model->TbkItemGetRequest($condition);
+            $item_id = $item_info['num_iid'];
+        }
+
+        $data = [];
+        if($item_id) {
+            $condition = [
+                $item_id
+            ];
+            $item_info = $taobao_model->TbkItemInfoGetRequest($condition);
+
+            $condition = [
+                'item_id' => $item_id
+            ];
+            $url_info = $yuque_model->privilegeGet($condition);
+            print_r($item_info);
+            print_r($url_info);
+            die;
+
+        }
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+    }
+
+    #格式化淘宝数据
+    private function makeTb($item_info,$url_info)
+    {
+
+        $list = [
+            'itemid' => $item_info['num_iid'],
+            'itemshorttitle' => $item_info['title'],
+            'itemdesc' => $item_info['title'],
+            'itemprice' => $item_info['zk_final_price'],
+            'itemsale' => $item_info['volume'],
+            'itempic' => $item_info['pict_url'],
+            'itemendprice' => $item_info['zk_final_price'],
+            'url' => $url_info['coupon_click_url'],
+            'couponmoney' => $url_info['max_commission_rate'],
+            'couponexplain' => '',
+            'couponstarttime' => strtotime($url_info['coupon_start_time']),
+            'couponendtime' => strtotime($url_info['coupon_end_time']),
+            'shoptype' => $item_info['user_type'],
+            //'taobao_image' => explode(',' ,$val['taobao_image']),
+        ];
+
+        return $list;
+    }
+
+
 
     #格式化列表数据
     private function make($data)

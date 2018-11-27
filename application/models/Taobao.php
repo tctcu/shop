@@ -29,12 +29,12 @@ class TaobaoModel{
 
     public function __construct(){
         $this->apiClient = new TopClient;
-//        $this->apiClient->appkey = '23390742';
-//        $this->apiClient->secretKey = '0843c0bebd1bbc0aaa3b3812eeb1035b';
+        $this->apiClient->appkey = '23390742';
+        $this->apiClient->secretKey = '0843c0bebd1bbc0aaa3b3812eeb1035b';
 //        $this->apiClient->appkey = '24844090';
 //        $this->apiClient->secretKey = 'bc0248ba377330b7d4afab9d3d19c421';
-        $this->apiClient->appkey = '23399350';
-        $this->apiClient->secretKey = '58e224733d0fcbd0e98a86437cc84eed';
+//        $this->apiClient->appkey = '23399350';
+//        $this->apiClient->secretKey = '58e224733d0fcbd0e98a86437cc84eed';
         $this->apiClient->format = 'json';
 
     }
@@ -56,6 +56,7 @@ class TaobaoModel{
         }
 
         $resp = $this->apiClient->execute($req);
+        var_dump($resp);die;
         $resp = json_decode(json_encode($resp),true);
         if(isset($resp['items']['x_item'][0]) && !empty($resp['items']['x_item'][0])){
             $retData = $resp['items']['x_item'][0];
@@ -139,6 +140,7 @@ class TaobaoModel{
         $req->setOpenIid("$t_iid");
         $req->setId("$t_iid");
         $resp = $this->apiClient->execute($req);
+        $resp = json_decode(json_encode($resp),true);
 
         if(isset($resp['data']) && !empty($resp['data'])){
             $retData = $resp['data'];
@@ -185,14 +187,24 @@ class TaobaoModel{
 
 
     #商品详情(简版)
-    function TbkItemInfoGetRequest(){
+    function TbkItemInfoGetRequest($num_iids = array()){
+        if(empty($num_iids) && !is_array($num_iids)){
+            return [];
+        }
         $req = new TbkItemInfoGetRequest;
         $req->setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url");
-        $req->setPlatform("1");
-        $req->setNumIids("565173589700");
+        $req->setPlatform("2");
+        $req->setNumIids("".implode(',',$num_iids)."");
         $resp = $this->apiClient->execute($req);
-        echo '<pre>';
-        print_r($resp);die;
+        $resp = json_decode(json_encode($resp),true);
+
+        if(isset($resp['results']['n_tbk_item'][0]) && !empty($resp['results']['n_tbk_item'][0])){
+            $retData = $resp['results']['n_tbk_item'][0];
+        } else {
+            $retData = [];
+        }
+
+        return $retData;
     }
 
     #获取淘宝券
@@ -203,6 +215,40 @@ class TaobaoModel{
         $req->setActivityId("e7bd44bc163f4641913251f3faa94408");
         $resp = $this->apiClient->execute($req);
         return $resp;
+    }
+
+    #关键词搜索
+    function TbkItemGetRequest($condition = array()){
+        $keyword = isset($condition['keyword']) ? trim($condition['keyword']) : '';//关键词
+        if(empty($keyword)){
+            return array();
+        }
+
+        $req = new TbkItemGetRequest;
+        $req->setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url,seller_id,volume,nick");
+        $req->setQ("$keyword");
+//        $req->setCat("16,18");
+//        $req->setItemloc("杭州");
+//        $req->setSort("tk_rate_des");
+//        $req->setIsTmall("false");
+//        $req->setIsOverseas("false");
+//        $req->setStartPrice("10");
+//        $req->setEndPrice("10");
+//        $req->setStartTkRate("123");
+//        $req->setEndTkRate("123");
+//        $req->setPlatform("1");
+//        $req->setPageNo("123");
+//        $req->setPageSize("20");
+        $resp = $this->apiClient->execute($req);
+        $resp = json_decode(json_encode($resp),true);
+
+        if(isset($resp['results']['n_tbk_item'][0]) && !empty($resp['results']['n_tbk_item'][0])){
+            $retData = $resp['results']['n_tbk_item'][0];
+        } else {
+            $retData = array();
+        }
+
+        return $retData;
     }
 
 
