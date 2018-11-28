@@ -238,7 +238,7 @@ class GoodsController extends ApiController
                     'password_content' => $m[0]
                 ];
                 $item_id = $yuque_model->tpwdConvert($condition);
-            } else {//标题
+            } else if(mb_strlen($content)>10){//标题
                 $condition = [
                     'keyword' => $content
                 ];
