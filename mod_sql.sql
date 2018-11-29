@@ -98,3 +98,12 @@ add `z_user_status` varchar(2) NOT NULL DEFAULT '' COMMENT '支付宝用户状�
 add `z_is_certified` varchar(2) NOT NULL DEFAULT '' COMMENT '支付宝是否实名认证 T-是' after `status`,
 add `z_gender` varchar(10) NOT NULL DEFAULT '' COMMENT '支付宝性别 F-女 M-男' after `status`;
 
+ALTER TABLE user
+add `w_sex` varchar(10) NOT NULL DEFAULT '' COMMENT '微信性别 0-女 1-男' after `status`,
+add `w_country` varchar(20) NOT NULL DEFAULT '' COMMENT '微信国家' after `status`,
+add `w_province` varchar(20) NOT NULL DEFAULT '' COMMENT '微信省' after `status`,
+add `w_city` varchar(20) NOT NULL DEFAULT '' COMMENT '微信城市' after `status`,
+add `w_headimgurl` varchar(400) NOT NULL DEFAULT '' COMMENT '微信头像' after `status`,
+add `w_nickname` varchar(200) NOT NULL DEFAULT '' COMMENT '微信昵称' after `status`,
+add `w_unionid` varchar(40) NOT NULL DEFAULT '' COMMENT '微信unionid' after `status`,
+add `w_openid` varchar(40) NOT NULL DEFAULT '' COMMENT '微信openid' after `status`;

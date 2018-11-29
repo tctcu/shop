@@ -90,7 +90,7 @@ class UserController extends ApiController
     }
 
     #授权回调 (废弃)
-    function callbackAction(){
+    function zfbCallbackAction(){
         $auth_code = addslashes(htmlspecialchars(trim($_REQUEST['auth_code'])));
         if (empty($auth_code)) {
             $this->responseJson('10006');
@@ -101,30 +101,61 @@ class UserController extends ApiController
         if($token == '失败'){
             $this->responseJson('10007','授权失败');
         }
-        $user_info = $model->AlipayUserInfoShareRequest($token['access_token']);
-        if(empty($user_info['user_id'])){
+        $user_data = $model->AlipayUserInfoShareRequest($token['access_token']);
+        if(empty($user_data['user_id'])){
             $this->responseJson('10007','授权失败');
         }
         #用户信息入表
         $info = [
-            'z_gender' => $user_info['gender'],
-            'z_is_certified' => $user_info['is_certified'],
-            'z_user_status' => $user_info['user_status'],
-            'z_user_type' => $user_info['user_type'],
-            'z_is_student_certified' => $user_info['is_student_certified'],
-            'z_nick_name' => $user_info['nick_name'],
-            'z_city' => $user_info['city'],
-            'z_province' => $user_info['province'],
-            'z_avatar' => $user_info['avatar'],
-            'z_user_id' => $user_info['user_id']
+            'z_gender' => $user_data['gender'],
+            'z_is_certified' => $user_data['is_certified'],
+            'z_user_status' => $user_data['user_status'],
+            'z_user_type' => $user_data['user_type'],
+            'z_is_student_certified' => $user_data['is_student_certified'],
+            'z_nick_name' => $user_data['nick_name'],
+            'z_city' => $user_data['city'],
+            'z_province' => $user_data['province'],
+            'z_avatar' => $user_data['avatar'],
+            'z_user_id' => $user_data['user_id']
         ];
-        $user_model = new UserModel();
-        $user_data = $user_model->getDataByZUserId($user_info['user_id']);
-        if($user_data){
-
-        }
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
     }
 
 
+    #微信授权回调登录
+    function wxCallbackAction(){
+        $auth_code = addslashes(htmlspecialchars(trim($_REQUEST['auth_code'])));
+        if(empty($auth_code)){
+            $this->responseJson('10007','授权失败');
+        }
+        $model = new WechatOpenModel();
+        $token_info = $model->getAccessToken($auth_code);
+        $user_data = $model->getUserInfo($token_info['access_token'],$token_info['openid']);
+        $user_model = new UserModel();
+        $user_info = $user_model->getDataByUnionid($user_data["unionid"]);
+        if(empty($user_info)){ //注册
+            $insert = [
+                "w_openid" => $user_data["oOzFM08dsTrUSVkVvEErUYxVahX0"],
+                "w_nickname" => $user_data["nickname"],
+                "w_sex" => $user_data["sex"],
+                "w_city" => $user_data["city"],
+                "w_province" => $user_data["province"],
+                "w_country" => $user_data["country"],
+                "w_headimgurl" => $user_data["headimgurl"],
+                "w_unionid" => $user_data["unionid"]
+            ];
+            $user_model->addData($insert);
+            $data = [
+                'token' => $user_data['unionid'],
+                'bind_mobile' => '1',
+            ];
+        } else { //登录
+            $data = [
+                'token' => $user_info['w_unionid'],
+                'bind_mobile' => $user_info['mobile'] ? '2' : '1',
+            ];
+        }
+
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+    }
 }

@@ -52,12 +52,12 @@ class UserModel extends MysqlModel {
         return false;
     }
 
-    #查找单条信息
-    function getDataByZUserId($z_user_id = 0){
-        if(empty($z_user_id)){
+    #微信unionId查找单条信息
+    function getDataByUnionId($unionId = ''){
+        if(empty($unionId)){
             return false;
         }
-        $where = $this->_db->quoteInto('z_user_id = ?',$z_user_id);
+        $where = $this->_db->quoteInto('w_unionid = ?',$unionId);
         $data = $this->fetchRow($where);
         if(!empty($data)){
             return $data->toArray();
