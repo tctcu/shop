@@ -313,6 +313,7 @@ class GoodsController extends ApiController
             'itempic' => $item_info['pict_url'],
             'itemendprice' => $item_info['zk_final_price'],
             'url' => $url_info['item_url'],
+            'coupon_type' => '0',//券状态
             'couponmoney' => '',
             'couponexplain' => '',
             'couponstarttime' => '',
@@ -326,6 +327,7 @@ class GoodsController extends ApiController
             if(preg_match ('#减([\d]+)元#is', $url_info['coupon_info'], $m) !== false ){//券价
                 $couponmoney = $m[1];
             }
+            $data['coupon_type'] = $url_info['coupon_type'].'';
             $data['itemendprice'] = ($data['itemendprice']-$couponmoney).'';
             $data['url'] = $url_info['coupon_click_url'];
             $data['couponmoney'] = $couponmoney.'';
