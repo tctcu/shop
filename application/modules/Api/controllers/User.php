@@ -27,8 +27,11 @@ class UserController extends ApiController
                 $this->responseJson('10006', '密码错误');
             }
             $data = array(
+                'mobile' => '',
                 'bind_mobile' => '2',
                 'token' => $user_info['w_unionid'],
+                'headimgurl' => $user_info['w_headimgurl'],
+                'nickname' => $user_info['w_nickname'],
             );
             $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
         }
@@ -142,7 +145,7 @@ class UserController extends ApiController
         $user_info = $user_model->getDataByUnionid($user_data["unionid"]);
         if(empty($user_info)){ //注册
             $insert = [
-                "w_openid" => $user_data["oOzFM08dsTrUSVkVvEErUYxVahX0"],
+                "w_openid" => $user_data["openid"],
                 "w_nickname" => $user_data["nickname"],
                 "w_sex" => $user_data["sex"],
                 "w_city" => $user_data["city"],
@@ -155,13 +158,29 @@ class UserController extends ApiController
             ];
             $user_model->addData($insert);
             $data = [
-                'token' => $user_data['unionid'],
+                'mobile' => '',
                 'bind_mobile' => '1',
+                'token' => $insert['w_unionid'],
+                'headimgurl' => $insert['w_headimgurl'],
+                'nickname' => $insert['w_nickname'],
             ];
         } else { //登录
+            //更新信息
+            $update = [
+                "w_nickname" => $user_data["nickname"],
+                "w_sex" => $user_data["sex"],
+                "w_city" => $user_data["city"],
+                "w_province" => $user_data["province"],
+                "w_country" => $user_data["country"],
+                "w_headimgurl" => $user_data["headimgurl"],
+            ];
+            $user_model->updateData($update,$user_info['uid']);
             $data = [
-                'token' => $user_info['w_unionid'],
+                'mobile' => '',
                 'bind_mobile' => $user_info['mobile'] ? '2' : '1',
+                'token' => $user_info['w_unionid'],
+                'headimgurl' => $update['w_headimgurl'],
+                'nickname' => $update['w_nickname']
             ];
         }
 
