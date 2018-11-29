@@ -27,16 +27,17 @@ class UserController extends ApiController
                 $this->responseJson('10006', '密码错误');
             }
             $data = array(
-                'mobile' => $user_info['mobile'],
-                'token' => $user_info['password'],
+                'bind_mobile' => '2',
+                'token' => $user_info['w_unionid'],
             );
             $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
         }
         $this->responseJson('10006');
     }
 
-    #注册
+    #注册 关闭入口
     function registerAction(){
+        $this->responseJson('10006', '请升级软件后注册');
         $mobile = isset($_REQUEST['mobile']) ? intval($_REQUEST['mobile']) : 0;
         $password = isset($_REQUEST['password']) ? addslashes(htmlspecialchars(trim($_REQUEST['password']))) : '';
         $device_type = intval($_REQUEST['device_type']);
@@ -63,13 +64,16 @@ class UserController extends ApiController
             $user_model->addData($insert);
             $data = array(
                 'mobile' => $insert['mobile'].'',
-                'token' => $insert['password'],
+                'token' => $insert['w_unionid'],
             );
             $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
         }
 
         $this->responseJson('10006');
     }
+
+
+
 
     #获取授权签名 (废弃)
     function accreditSignAction(){
@@ -125,6 +129,9 @@ class UserController extends ApiController
     #微信授权回调登录
     function wxCallbackAction(){
         $auth_code = addslashes(htmlspecialchars(trim($_REQUEST['auth_code'])));
+        $device_type = intval($_REQUEST['device_type']);
+        $device = trim($_REQUEST['device']);
+
         if(empty($auth_code)){
             $this->responseJson('10007','授权失败');
         }
@@ -142,7 +149,9 @@ class UserController extends ApiController
                 "w_province" => $user_data["province"],
                 "w_country" => $user_data["country"],
                 "w_headimgurl" => $user_data["headimgurl"],
-                "w_unionid" => $user_data["unionid"]
+                "w_unionid" => $user_data["unionid"],
+                "device_type" => $device_type,
+                "device" => $device
             ];
             $user_model->addData($insert);
             $data = [
