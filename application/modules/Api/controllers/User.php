@@ -19,7 +19,7 @@ class UserController extends ApiController
             $user_model = new UserModel();
             $user_info = $user_model->getDataByMobile($mobile);
 
-            if (empty($user_info)) {
+            if (empty($user_info['w_unionid'])) {
                 $this->responseJson('10006', '用户不存在');
             }
 
@@ -27,7 +27,7 @@ class UserController extends ApiController
                 $this->responseJson('10006', '密码错误');
             }
             $data = array(
-                'mobile' => '',
+                'mobile' => substr_replace($user_info['mobile'], '****', 3, 4),
                 'bind_mobile' => '2',
                 'token' => $user_info['w_unionid'],
                 'headimgurl' => $user_info['w_headimgurl'],
@@ -176,7 +176,7 @@ class UserController extends ApiController
             ];
             $user_model->updateData($update,$user_info['uid']);
             $data = [
-                'mobile' => '',
+                'mobile' => $user_info['mobile'] ? substr_replace($user_info['mobile'], '****', 3, 4) : '',
                 'bind_mobile' => $user_info['mobile'] ? '2' : '1',
                 'token' => $user_info['w_unionid'],
                 'headimgurl' => $update['w_headimgurl'],
