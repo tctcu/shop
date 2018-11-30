@@ -21,6 +21,7 @@
                             <td><?php echo date('Y-m-d H:i',$row['updated_at']);?></td>
                             <td>
                                 <a class="btn btn-success btn-xs" href="/admin/shop/createbanner?id=<?php echo $row['id']?>"><i class="glyphicon glyphicon-edit"> </i> 编辑</a>
+                                <a class="btn btn-danger btn-xs" onclick="delAlert('/admin/shop/delbanner?id=<?php echo $row['id']?>')"> 删除</a>
                             </td>
                         </tr>
                     <?php } ?>

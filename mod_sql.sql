@@ -43,6 +43,7 @@ values ('1', '张顺灵', '43e708ad2d43852f8c496f83b05a2f13', '15305634799', '12
 insert into admin_access (id, title, m, c, a) values (1001, '商品列表', 'admin', 'shop', 'index');
 insert into admin_access (id, title, m, c, a) values (1002, '广告列表', 'admin', 'shop', 'banner');
 insert into admin_access (id, title, m, c, a) values (1003, '增加/编辑广告', 'admin', 'shop', 'createbanner');
+insert into admin_access (id, title, m, c, a) values (1004, '删除广告', 'admin', 'shop', 'delbanner');
 
 insert into admin_access (id, title, m, c, a) values (2001, '用户列表', 'admin', 'user', 'index');
 

@@ -17,6 +17,14 @@ class BannerModel extends MysqlModel {
         return $this->insert($data);
     }
 
+    #删除
+    function deleteData($id){
+        if(empty($id)){
+            return false;
+        }
+        return $this->delete("id = {$id}");
+    }
+
     #更新
     function updateData($data, $id){
         if(empty($data) || empty($id)){
