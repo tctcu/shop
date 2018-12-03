@@ -54,36 +54,25 @@ abstract class ApiController extends BaseController
         $params = $this->get_params();
         $controller_name = strtolower($this->getRequest()->controller);
 
-        #是否需要登录，即用access_token换取uid
-        $request_api_is_require_logined = 0;
-
+        #是否需要登录
+        $require_login = false;
         if ($controller_name == 'my') {
-            $request_api_is_require_logined = 1;
+            $require_login = true;
         }
-        if($request_api_is_require_logined == 1  ){
-            if(!isset($params['access_token']) && empty($params['access_token'])){
-                $code = 10022;
-                $msg = $this->error_codes->system_errors[$code];
-                $this->responseJson($code, $msg);
-                exit;
+
+        if($require_login ){
+            if(!isset($params['token']) && empty($params['token'])){
+                $this->responseJson('10008');
             }
 
-            $access_token = trim($params['access_token']);
-            $access_token_obj = new AccessTokenModel();
-
-            try{
-                $uid = (int)$access_token_obj->getUidbyAccessToken($access_token);
-            }catch(Exception $ex){
-                exit($ex->getMessage());
+            $token = trim($params['token']);
+            $user_model = new UserModel();
+            $user_info = $user_model->getDataByUnionId($token);
+            if(empty($user_info['uid'])){
+                $this->responseJson('10008');
             }
 
-            #用户的accesstoken是否失效
-            if($uid == 0){
-                $code = 10023;
-                $this->responseJson($code);
-            }
-
-            $this->uid = $uid;
+            $this->uid = $user_info['uid'];
         }
     }
 
