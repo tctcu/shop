@@ -34,7 +34,14 @@ class MyController extends ApiController
         }
 
         $user_model->updateData($update,$user_info['uid']);
-        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
+        $data = [
+            'mobile' => $mobile ? substr_replace($mobile, '****', 3, 4) : '',
+            'bind_mobile' => '2',
+            'token' => $user_info['w_unionid'],
+            'headimgurl' => $update['w_headimgurl'],
+            'nickname' => $update['w_nickname']
+        ];
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
     #找回密码
@@ -63,7 +70,14 @@ class MyController extends ApiController
             );
 
             $user_model->updateData($update,$user_info['uid']);
-            $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
+            $data = [
+                'mobile' => $user_info['mobile'] ? substr_replace($user_info['mobile'], '****', 3, 4) : '',
+                'bind_mobile' => '2',
+                'token' => $user_info['w_unionid'],
+                'headimgurl' => $update['w_headimgurl'],
+                'nickname' => $update['w_nickname']
+            ];
+            $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
         }
 
         $this->responseJson('10006');
