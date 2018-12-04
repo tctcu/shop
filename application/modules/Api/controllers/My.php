@@ -38,8 +38,8 @@ class MyController extends ApiController
             'mobile' => $mobile ? substr_replace($mobile, '****', 3, 4) : '',
             'bind_mobile' => '2',
             'token' => $user_info['w_unionid'],
-            'headimgurl' => $update['w_headimgurl'],
-            'nickname' => $update['w_nickname']
+            'headimgurl' => $user_info['w_headimgurl'],
+            'nickname' => $user_info['w_nickname']
         ];
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
@@ -74,8 +74,8 @@ class MyController extends ApiController
                 'mobile' => $user_info['mobile'] ? substr_replace($user_info['mobile'], '****', 3, 4) : '',
                 'bind_mobile' => '2',
                 'token' => $user_info['w_unionid'],
-                'headimgurl' => $update['w_headimgurl'],
-                'nickname' => $update['w_nickname']
+                'headimgurl' => $user_info['w_headimgurl'],
+                'nickname' => $user_info['w_nickname']
             ];
             $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
         }
