@@ -423,6 +423,10 @@ class TestController extends Yaf_Controller_Abstract
         die;
     }
 
+    function masterAction(){
+        echo  'master';die;
+    }
+
 
     function sendAction(){
         $mail = new SendMail();
