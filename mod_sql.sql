@@ -108,3 +108,68 @@ add `w_headimgurl` varchar(400) NOT NULL DEFAULT '' COMMENT '微信头像' after
 add `w_nickname` varchar(200) NOT NULL DEFAULT '' COMMENT '微信昵称' after `status`,
 add `w_unionid` varchar(40) NOT NULL DEFAULT '' COMMENT '微信unionid' after `status`,
 add `w_openid` varchar(40) NOT NULL DEFAULT '' COMMENT '微信openid' after `status`;
+
+'itemid' => $val['itemid'],
+            'itemshorttitle' => $val['itemshorttitle'],
+            'itemdesc' => $val['itemdesc'],
+            'itemprice' => $val['itemprice'],
+            'itemsale' => $val['itemsale'],
+            'itempic' => $val['itempic'] . '_310x310.jpg',
+            'itemendprice' => $val['itemendprice'],
+            'url' => 'http://uland.taobao.com/coupon/edetail?activityId=' . $val['activityid'] . '&itemId=' . $val['itemid'] . '&src=qmmf_sqrb&mt=1&pid=' . $this->pid,
+            'couponnum' => $val['couponnum'],
+            'couponreceive2' => $val['couponreceive2'],
+            'couponmoney' => $val['couponmoney'],
+            'couponexplain' => $val['couponexplain'],
+            'couponstarttime' => $val['couponstarttime'],
+            'couponendtime' => $val['couponendtime'],
+            'shoptype' => $val['shoptype'],
+            'taobao_image' => explode(',', $val['taobao_image']),
+            'itempic_copy' => 'http://img.haodanku.com/' . $val['itempic_copy'] . '-600',
+            'fqcat' => $val['fqcat'],
+            'sellernick' => $val['sellernick'],
+            'discount' => $val['discount'],
+            'activity_type' => $val['activity_type'],
+            'video_url' => $val['videoid'] ? 'http://cloud.video.taobao.com/play/u/1/p/1/e/6/t/1/' . $val['videoid'] . 'mp4' : '',
+            'share' => array(
+                'share_title' => $val['itemshorttitle'] . '  领券后￥' . $val['itemprice'],
+                'share_pic' => 'http://img.haodanku.com/' . $val['itempic_copy'] . '-100',
+                'share_url' => 'http://uland.taobao.com/coupon/edetail?activityId=' . $val['activityid'] . '&itemId=' . $val['itemid'] . '&src=qmmf_sqrb&mt=1&pid=' . $this->pid
+            ),
+
+CREATE TABLE `tb` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `min_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '好单库id',
+  `itemid` bigint(20) NOT NULL DEFAULT 0 COMMENT '淘宝id',
+  `activityid` varchar(100) NOT NULL DEFAULT '' COMMENT '券id',
+  `sellerid` bigint(20) NOT NULL DEFAULT 0 COMMENT '商家id userid',
+  `itemshorttitle` varchar(100) NOT NULL DEFAULT '' COMMENT '短标题',
+  `itemdesc` varchar(300) NOT NULL DEFAULT '' COMMENT '长标题',
+  `itemprice` DECIMAL(8,2) NOT NULL DEFAULT '0.00' COMMENT '原价',
+  `itemendprice` DECIMAL(8,2) NOT NULL DEFAULT '0.00' COMMENT '券后价',
+  `itemsale` int(11) NOT NULL DEFAULT 0 COMMENT '销量',
+  `couponnum` int(11) NOT NULL DEFAULT 0 COMMENT '券量',
+  `couponreceive` int(11) NOT NULL DEFAULT 0 COMMENT '领取量',
+  `couponmoney` int(11) NOT NULL DEFAULT 0 COMMENT '券价',
+  `couponexplain` varchar(100) NOT NULL DEFAULT '' COMMENT '券使用条件',
+  `couponstarttime` bigint(20) NOT NULL DEFAULT 0  COMMENT '券开始时间',
+  `couponendtime` bigint(20) NOT NULL DEFAULT 0  COMMENT '券结束时间',
+  `shoptype` varchar(2) NOT NULL DEFAULT ''  COMMENT '店铺类型 B C',
+  `taobao_image` varchar(2000) NOT NULL DEFAULT '' COMMENT '淘宝图片 ,分割',
+  `video_url`  varchar(300) NOT NULL DEFAULT '' COMMENT '视频连接',
+  `itempic_copy` varchar(200) NOT NULL DEFAULT ''  COMMENT '分享图',
+  `fqcat` int(11) NOT NULL DEFAULT 0  COMMENT '分类id',
+  `sellernick` varchar(100) NOT NULL DEFAULT '' COMMENT '店铺名称',
+  `tktype` varchar(20) NOT NULL DEFAULT '' COMMENT '淘客计划',
+  `activity_type` varchar(100) NOT NULL DEFAULT '' COMMENT '活动类型',
+  `created_at` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT '创建时间戳',
+  `updated_at` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT '更新时间戳',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `itemid`(`itemid`),
+  UNIQUE KEY `min_id`(`min_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='淘宝商品表';
+
+
+
+
+

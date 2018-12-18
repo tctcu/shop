@@ -4,9 +4,9 @@
  */
 
 class YuQueModel{
-    private $session = '7000010131435629898d8a972818730df3c862d12d82fd1afe061d2bc30b73a7a2d902f418362049';
-    private $adzone_id = '65740777';
-    private $site_id = '18618211';
+    private $session = '7000010160727581a2c1e50fe898d5c9c72b8b737464099d80ee0882bcc6436296fa6004227738592';
+    private $adzone_id = '57891600477';
+    private $site_id = '166200410';
 
     public function __construct(){
 
@@ -63,10 +63,10 @@ class YuQueModel{
             return array();
         }
 
-        $resp = [
-            'session' => $this->session,
-            'adzone_id' => $this->adzone_id,
-            'site_id' => $this->site_id,
+        $resp = [//目前账号没有高佣 用个人账号转高佣
+            'session' => '70000100836678567a0707ae64f7f4d87a2516cd0a81ecb812c2719e1b337709ef3a96b418362049',//$this->session,
+            'adzone_id' => '65740777',//$this->adzone_id,
+            'site_id' => '18618211',//$this->site_id,
             'item_id' => $item_id
         ];
 

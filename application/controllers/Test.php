@@ -359,39 +359,6 @@ class TestController extends Yaf_Controller_Abstract
 
 
 
-function jg(){
-    $bu =  [
-        '1' => 'name',
-        '2' => 'name',
-        '3' => 'name',
-        '4' => 'name',
-    ];
-    $group =  [
-        '5' => 'name',
-        '6' => 'name',
-        '7' => 'name',
-        '8' => 'name',
-    ];
-    $jg = [
-        '1' => [
-            '3',
-            '4',
-            '5',
-        ],
-        '2' => [
-            '3',
-            '5',
-            '45',
-            '35',
-        ]
-
-    ];
-}
-
-
-
-
-
 
     function tAction(){
         $plan_start = '2018-07-09 16:00:01';
