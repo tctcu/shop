@@ -11,8 +11,18 @@
 
             <div class="panel-body">
                 <table class="table table-bordered table-striped">
-                    <tr><td>ID</td><td>管理</td></tr>
+                    <tr><td>UID</td><td>微信昵称</td><td>微信头像</td><td>手机号</td><td>注册时间</td></tr>
+                    <?php foreach ($show_list as $row){ ?>
+                        <tr>
+                            <td><?php echo $row['uid'];?></td>
+                            <td><?php echo $row['w_nickname']?></td>
+                            <td><img src="<?php echo $row['w_headimgurl']?>" width="150" height="150"> </td>
+                            <td><?php echo $row['mobile']?></td>
+                            <td><?php echo date('Y-m-d H:i',$row['created_at']);?></td>
+                        </tr>
+                    <?php } ?>
                 </table>
+                <?php $pager->render();?>
             </div>
         </div>
     </div>
