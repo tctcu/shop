@@ -165,8 +165,7 @@ CREATE TABLE `tb` (
   `created_at` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT '创建时间戳',
   `updated_at` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT '更新时间戳',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `itemid`(`itemid`),
-  UNIQUE KEY `min_id`(`min_id`)
+  UNIQUE KEY `itemid`(`itemid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='淘宝商品表';
 
 
