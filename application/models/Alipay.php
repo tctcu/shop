@@ -6,20 +6,21 @@ include_once(dirname(dirname(__FILE__)) . '/library/Alipay/AopClient.php'); // �
  */
 class AlipayModel
 {
-    #应用公钥
-    const PARTNER_PUBLIC_KEY = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzi5qbD4LpslEnVu1VJDXqHP9DJAKlw/RfyPgor0ZP10PWrZ/Qwg7AfhRqwJ6uMnLvGwM+/GpuZk7ui6QjyVSwcFBEgYFpSpmw4XOnhzuCe1U2NvGoOTHBX+tFGeecZ5s1WLCu8yCk8Ekjjo/eI7et5QAchpVaX2aGqH2fJ9CFf9WwwpMIYBoS9sNx+XXeIiIHiNHUgSwQ2QBc/2RVMKaW3hZM5kf7zU2DT51O8+kerEINTHxdwTX7fX7hobLGx5UkYxDbHpa6j3Iz3yICY6Et65O+ajPZO9+PPR42YQF/VaMcG0+F6hLGExLn+Qas5yplvQ32Cm9OlcycKgIjyWZYQIDAQAB';
-    const APP_ID = '2018111562167530';//app id
     protected $aop = null;
+    protected $appId = '';
 
     public function __construct()
     {
+        $alipay_config = Yaf_Registry::get("config")->get('alipay');
+        $this->appId = $alipay_config->appId;
+
         $this->aop = new AopClient ();
-        $this->aop->gatewayUrl = 'https://openapi.alipay.com/gateway.do';//网关地址
-        $this->aop->appId = self::APP_ID;
+        $this->aop->gatewayUrl = $alipay_config->gatewayUrl;//网关地址
+        $this->aop->appId = $this->appId;
         #应用私钥
-        $this->aop->rsaPrivateKey = 'MIIEpAIBAAKCAQEAzi5qbD4LpslEnVu1VJDXqHP9DJAKlw/RfyPgor0ZP10PWrZ/Qwg7AfhRqwJ6uMnLvGwM+/GpuZk7ui6QjyVSwcFBEgYFpSpmw4XOnhzuCe1U2NvGoOTHBX+tFGeecZ5s1WLCu8yCk8Ekjjo/eI7et5QAchpVaX2aGqH2fJ9CFf9WwwpMIYBoS9sNx+XXeIiIHiNHUgSwQ2QBc/2RVMKaW3hZM5kf7zU2DT51O8+kerEINTHxdwTX7fX7hobLGx5UkYxDbHpa6j3Iz3yICY6Et65O+ajPZO9+PPR42YQF/VaMcG0+F6hLGExLn+Qas5yplvQ32Cm9OlcycKgIjyWZYQIDAQABAoIBAHQKkaEMJpifTHvYAq1uu8G2TiSE6UDuCTWqZqKRFSWhZaPjdKqwdi18qdI6mgFoqb8JfSFLeP/Za1E1Je06z2H3N31CYGj9/UpsA8bfd2Wk6o0G3LrvJ8hDfJEwZG+D/7L1W65AwvkPylg2FkTu/BCMPtf5VDsEEviMUWMAazxfL4t52pCAMyYsWxMaMCrjeasCASQNFjpBoakcdz/EVqlB+zU7lefkQ1mSwElkE8GcHfry409AOds75KnfevgnONB8wo5O1JQBGOST9GBdw+vVIG1Ks4853EFtyEPdSRbArbcQqS/pbWtG2chyO2QIK7vlVdgns6pggZ5TfNA4elUCgYEA7305eVLtncDqNfW3eh8Kt1WstHgr96dp5RDxti6Rhpeuvyz4dw3JO2HdmrxL3IbALKBVD5eynyPxHRPb+w+m1OTD2S2pi2aKXTyggVbM/xDn0d5DbkcwNdgcprocWUuGPT2SeoHjx9QOB58+1iY0YbXMyTP8zRJ5FZTJRGx61CcCgYEA3GVWL0lYasoE+AA6vNffk1CRh4tliOlvEM/bw0zPu93Eq7Hkfr3UbMk/346GR1OzHjPrQRhMhBjis5zin0wduwvAp76dfIj8HZl5jgdWtn6W7j98VST0mKbYy2nmf52nN+pC54FJ9lP9RHx92NA0pu+eFrAhVbjqbqA+YmM38zcCgYB0ShsxZWpKUtWnlAQewZoDgg+VplC7Nci+2SZ1r1EsyNSqshyIOuJ++juQGmS/1ZLVWJlVM/UhP2OiGfWUiHobIGZVO837CbSgJ4NMqqhqJnxatRGLJ/gp/SGUeASx+3FYpWBOKmo/qyGQ4+uwMub2lz+0Z5EWxySSrSe6GO7fuwKBgQCeShXNHnNnNzK8X4XQLYcAycPLwt0oqOdA/tiKevdTqWJgIgLG2FXhz+SVDkr4nW+uyIE1HluOIEVp1MqauFM+DKHQmEGJuOTB6YF49WJc7aw+7s/AYytdG6/m4GdQzozTxudIV/4j8YycDIFiH59BKiWzi8pVQ9rzmxlTFomPnwKBgQCee3w57ILjXglHIfUjNraGFkBBx1Oz+lCt+ksFwNyeBkbWyMLZaWuw3HcqWUCyeD1JWkd2NWjDDFD/5oFrhJV/i7aoU5/S+INSeivMXwm1o9LewM0pOtyQS65Px93k8sVM7Agsq6PyhxZtq3HAKo0hcoz3s6fsfwKrrbIieKWYIw==';
+        $this->aop->rsaPrivateKey = $alipay_config->rsaPrivateKey;
         #支付宝公钥
-        $this->aop->alipayrsaPublicKey = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmVsJUJeNHenamDSYiGIMT5racrsAyEU+nBqcupzK5vwPFfFpM5pVKRTVloFGcrJN+e856XzmZm4LpPPQ2CHlYKFDWSAzwK9qJzqE8buUxlCWZA36svLsu7WnXnclorRAtXMchW8S9lu9HQs7Cjhc3D2NNFcjf7rGtWNfRwX/6S/LaZNBQo9QQDDIq7opZFhTXeN7prj+YvMBZ7TqC3mfxlEj39KXzPxc1lyaCNYPIsCm2pLg6e5oslHY4KwSD0CNlIMtHV3ipTus9WRY3KUjyeMoQYdvGN5DLSbqNNo/bqVg4Hlnn98XwcnVuTRNpfwbTOrlzt7oVTBNfxNparaG8QIDAQAB';
+        $this->aop->alipayrsaPublicKey = $alipay_config->alipayrsaPublicKey;
         $this->aop->apiVersion = '1.0';
         $this->aop->signType = 'RSA2';
         $this->aop->postCharset = 'UTF-8';
@@ -280,7 +281,7 @@ class AlipayModel
     public function oauth2code($redirect_uri)
     {
         $redirect_uri = urlencode($redirect_uri);
-        $request_url = "https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=" . self::APP_ID . "&scope=auth_user,auth_base,auth_ecard&redirect_uri=" . $redirect_uri;
+        $request_url = "https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?$this->appId=" . self::$this->appId . "&scope=auth_user,auth_base,auth_ecard&redirect_uri=" . $redirect_uri;
         //手机端支付宝app外换起支付宝
         $request_url = "alipays://platformapi/startapp?appId=20000067&url=" . urlencode($request_url);
         return $request_url;

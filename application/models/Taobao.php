@@ -28,13 +28,11 @@ class TaobaoModel{
     );
 
     public function __construct(){
+        $taobao_config = Yaf_Registry::get("config")->get('taobao');
         $this->apiClient = new TopClient;
-//        $this->apiClient->appkey = '23390742';
-//        $this->apiClient->secretKey = '0843c0bebd1bbc0aaa3b3812eeb1035b';
-//        $this->apiClient->appkey = '24844090';
-//        $this->apiClient->secretKey = 'bc0248ba377330b7d4afab9d3d19c421';
-        $this->apiClient->appkey = '23399350';
-        $this->apiClient->secretKey = '58e224733d0fcbd0e98a86437cc84eed';
+
+        $this->apiClient->appkey = $taobao_config->appkey;
+        $this->apiClient->secretKey = $taobao_config->secretKey;
         $this->apiClient->format = 'json';
 
     }

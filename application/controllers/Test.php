@@ -424,7 +424,9 @@ class TestController extends Yaf_Controller_Abstract
     }
 
     function masterAction(){
-        echo  'master';die;
+        $aa = Yaf_Registry::get("config")->get('mail')->host;
+
+        var_dump($aa);die;
     }
 
 

@@ -1,57 +1,79 @@
 <?php
 /**
- * 返利单发放
+ * 商品抓取
  *
  */
 include('Common_func.php');
+include('function.php');
 
-$aid = '12';//活动ID
-$money = '10';//返利金额
-if($aid && $money) {
-    $sql = "select t2.uid,t1.id from activity_record t1 LEFT JOIN user t2 ON t1.uid=t2.uid where t1.aid={$aid} and t1.type=1";
+$select_sql = 'select min(min_id) as min_id from tb';
+$tb_info = $dbh->query($select_sql)->fetch(PDO::FETCH_ASSOC);
+$min_id = $tb_info['min_id'] ? $tb_info['min_id'] : 1;
 
-    $resGetItemList = $dbh->prepare($sql);
-    $resGetItemList->execute();
-    $time = time();
-    while ($row = $resGetItemList->fetch(PDO::FETCH_ASSOC)) {
-        $select_sql = "select money from user where uid={$row['uid']}";
-        $user_info = $dbh->query($select_sql)->fetch(PDO::FETCH_ASSOC);
+while(true) {
 
-        if ($user_info) {
-            $remain = $user_info['money'] + $money;
+    $list_api = "http://v2.api.haodanku.com/itemlist/apikey/allfree/nav/3/cid/0/back/1000/min_id/" . $min_id;
 
-            #关闭自动提交
-            $dbh->setAttribute(PDO::ATTR_AUTOCOMMIT, false);
-            try{
-                $dbh->beginTransaction();//开启事务处理
-
-                #插入返利发放记录
-                $insert_sql = "insert into user_exchange(uid,type,tid,money,remain,remark,created_at) VALUES({$row['uid']},1,{$row['id']},{$money},{$remain},'活动".$aid."返现".$money."元',{$time})";
-                $affected_rows = $dbh->exec($insert_sql);
-                if(!$affected_rows){
-                    throw new PDOException("插入返利发放记录失败");
-                }
-                #操作返利金账户
-                $update_user = "update user set money={$remain} where uid={$row['uid']}";
-                $affected_rows = $dbh->exec($update_user);
-                if(!$affected_rows) {
-                    throw new PDOException("更新用户金额失败");
-                }
-                #更新订单状态
-                $update_record = "update activity_record set type=3 where id={$row['id']}";
-                $affected_rows = $dbh->exec($update_record);
-                if(!$affected_rows){
-                    throw new PDOException("活动记录状态更改失败");
-                }
-                $dbh->commit();//提交
-               echo  "活动".$aid."返现".$money."元\n";
-            }catch(PDOException $e){
-               echo $e->getMessage().',活动记录ID'.$row['id']."\n";
-                $dbh->rollback();//回滚
+    $list = get_curl($list_api);
+    if (empty($list['data'])) {
+        echo 'empty';
+        exit;
+    }
+    $min_id = $list['min_id'];
+    $insert_sql = '';
+    foreach ($list['data'] as $val) {
+        $insert = [
+            'min_id' => $val['product_id'],
+            'itemid' => $val['itemid'],
+            'activityid' => $val['activityid'],
+            'sellerid' => $val['userid'],
+            'itemshorttitle' => $val['itemshorttitle'],
+            'itemdesc' => $val['itemdesc'],
+            'itemprice' => $val['itemprice'],
+            'itemendprice' => $val['itemendprice'],
+            'itemsale' => $val['itemsale'],
+            'itempic' => $val['itempic'],
+            'couponnum' => $val['couponnum'],
+            'couponreceive' => $val['couponreceive'],
+            'couponmoney' => $val['couponmoney'],
+            'couponexplain' => $val['couponexplain'],
+            'couponstarttime' => $val['couponstarttime'],
+            'couponendtime' => $val['couponendtime'],
+            'shoptype' => $val['shoptype'],
+            'taobao_image' => implode(',', explode(',', $val['taobao_image'])),
+            'itempic_copy' => $val['itempic_copy'],
+            'fqcat' => $val['fqcat'],
+            'shopname' => $val['shopname'],
+            'tkrates' => $val['tkrates'],
+            'tktype' => $val['tktype'],
+            'activity_type' => $val['activity_type'],
+            'videoid' => $val['videoid'],
+            'status' => 1,//有效
+            'created_at' => time(),
+            'updated_at' => time()
+        ];
+        if (empty($insert_sql)) {
+            $insert_sql = "insert into tb(";
+            foreach ($insert as $k => $v) {
+                $insert_sql .= '`' . $k . '`,';
             }
-            #开启自动提交
-            $dbh->setAttribute(PDO::ATTR_AUTOCOMMIT, true);
+            $insert_sql = rtrim($insert_sql, ",");
+            $insert_sql .= ') values';
         }
 
+        $insert_sql .= '(';
+        foreach ($insert as $v) {
+            $insert_sql .= "'" . $v . "',";
+        }
+        $insert_sql = rtrim($insert_sql, ",");
+        $insert_sql .= "),";
+
+        //单条
+        $insert_sql = rtrim($insert_sql, ",");
+        $dbh->exec($insert_sql);
+        $insert_sql = '';
     }
+    $i++;
+    echo $i."\n";
+
 }

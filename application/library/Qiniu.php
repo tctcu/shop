@@ -5,9 +5,16 @@ use Qiniu\Storage\UploadManager;
 use Qiniu\Storage\BucketManager;
 
 class Qiniu{
-	private $accessKey = 'WLyAeA6MKwNv1N_28solEkUkSwLEdvjO9Td3PBrn';
-	private $secretKey = 'af8HSU7uFE_cAYrtCa24KEd9mQtxi6cFJDTce6bo';
-	private $bucket = 'tctcv';
+	private $accessKey = '';
+	private $secretKey = '';
+	private $bucket = '';
+
+	function __construct()
+	{
+		$this->accessKey =  Yaf_Registry::get("config")->get('qiniu.accessKey');
+		$this->secretKey =  Yaf_Registry::get("config")->get('qiniu.secretKey');
+		$this->bucket =  Yaf_Registry::get("config")->get('qiniu.bucket');
+	}
 
 	#鉴权
 	private function auth(){
