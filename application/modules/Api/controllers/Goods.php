@@ -230,7 +230,7 @@ class GoodsController extends ApiController
         }
 
         $taobao_model = new TaobaoModel();
-        $yuque_model = new YuQueModel();
+        $yuque_model = new YuQueModel(2);//使用个人账户
         $item_id = $this->quid($content);//链接
         if(empty($item_id)) {
             if (preg_match('#\x{ffe5}([a-zA-Z0-9]{11})\x{ffe5}#isu', $content, $m)) {//淘口令

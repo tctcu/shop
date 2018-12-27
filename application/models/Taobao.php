@@ -27,8 +27,8 @@ class TaobaoModel{
         51=>'taobao_tae_BaichuanTradeRefundSuccess',//退款成功
     );
 
-    public function __construct(){
-        $taobao_config = Yaf_Registry::get("config")->get('taobao');
+    public function __construct($type = 1){
+        $taobao_config = Yaf_Registry::get("config")->get('taobao.sdk.'.$type);
         $this->apiClient = new TopClient;
 
         $this->apiClient->appkey = $taobao_config->appkey;

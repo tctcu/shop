@@ -4,12 +4,17 @@
  */
 
 class YuQueModel{
-    private $session = '7000010160727581a2c1e50fe898d5c9c72b8b737464099d80ee0882bcc6436296fa6004227738592';
-    private $adzone_id = '57891600477';
-    private $site_id = '166200410';
+    private $session = '';
+    private $site_id = '';
+    private $adzone_id = '';
 
-    public function __construct(){
 
+    public function __construct($type = 1){
+        $yuque_config = Yaf_Registry::get("config")->get('taobao.account.'.$type);
+
+        $this->session = $yuque_config->session;
+        $this->site_id = $yuque_config->site_id;
+        $this->adzone_id = $yuque_config->adzone_id;
     }
 
     private function curl($url,$data){
@@ -64,9 +69,9 @@ class YuQueModel{
         }
 
         $resp = [//目前账号没有高佣 用个人账号转高佣
-            'session' => '70000100836678567a0707ae64f7f4d87a2516cd0a81ecb812c2719e1b337709ef3a96b418362049',//$this->session,
-            'adzone_id' => '65740777',//$this->adzone_id,
-            'site_id' => '18618211',//$this->site_id,
+            'session' => $this->session,
+            'adzone_id' => $this->adzone_id,
+            'site_id' => $this->site_id,
             'item_id' => $item_id
         ];
 

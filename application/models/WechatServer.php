@@ -6,18 +6,15 @@
 
 class WechatServerModel extends WechatModel
 {
+    private $wechat_config = null;
 
     public function __construct($type=1){
+        $this->wechat_config =  Yaf_Registry::get("config")->get('wechat.server.'.$type);
 
-        #1-皮兔皮
-        switch($type){
-            case 1:
-                $this->token = 'allfreep2pserver';
-                $this->appid = 'wx3a09c92112169321';
-                $this->secret = '61425a1bcfdfb347ad9beba5b2e91f3d';
-                $this->enckey = 'tzmfc0q8wHwLd7x8GDcoZpQd9vGWe7RJnCrENSwovIe';
-                break;
-        }
+        $this->token = $this->wechat_config->token;
+        $this->appid = $this->wechat_config->appid;
+        $this->secret = $this->wechat_config->secret;
+        $this->enckey = $this->wechat_config->enckey;
     }
 
 
@@ -91,11 +88,9 @@ class WechatServerModel extends WechatModel
 
 
     #微信企业付款
-    private static $wechat_appid = 'wx3a09c92112169321';
-    private static $wechat_merchantid = '1430062202';
-    private static $trans_appkey = 'f39ff2c80103f02b7815a4f4db8a9b60';		// 商户平台中设置的交易密钥
-    private static $wechat_apiurl = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers';
     function transfers($req_param){
+        $url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers';
+
         #支付必须参数
         $param = array(
             'nonce_str',//自定义字符串
@@ -110,8 +105,8 @@ class WechatServerModel extends WechatModel
         }
 
         #补充请求参数
-        $req_param['mch_appid'] = self::$wechat_appid;
-        $req_param['mchid'] = self::$wechat_merchantid;
+        $req_param['mch_appid'] = $this->appid;
+        $req_param['mchid'] = $this->wechat_config->mchid;
         $req_param['spbill_create_ip'] = $_SERVER['SERVER_ADDR'];
         $req_param['desc'] = '支付';
         $req_param['check_name'] = 'FORCE_CHECK';
@@ -122,14 +117,15 @@ class WechatServerModel extends WechatModel
         foreach ($req_param as $key => $value){
             $sign_str .= $key . '=' . $value . '&';
         }
-        $sign_str .= 'key=' . self::$trans_appkey;
+        $sign_str .= 'key=' . $this->wechat_config->transkey;
         $req_param['sign'] = strtoupper(md5($sign_str));
 
         $req_xml = $this->array2Xml($req_param);
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_TIMEOUT, 15);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_URL, self::$wechat_apiurl);
+        curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_SSLCERTTYPE, 'PEM');
@@ -168,8 +164,8 @@ class WechatServerModel extends WechatModel
         }
 
         #补充请求参数
-        $req_param['wxappid'] = self::$wechat_appid;
-        $req_param['mch_id'] = self::$wechat_merchantid;
+        $req_param['mch_appid'] = $this->appid;
+        $req_param['mchid'] = $this->wechat_config->mchid;
         $req_param['client_ip'] = $_SERVER['SERVER_ADDR'];
         $req_param['send_name'] = '全民免费';
 
@@ -179,7 +175,7 @@ class WechatServerModel extends WechatModel
         foreach ($req_param as $key => $value){
             $sign_str .= $key . '=' . $value . '&';
         }
-        $sign_str .= 'key=' . self::$trans_appkey;
+        $sign_str .= 'key=' . $this->wechat_config->transkey;
         $req_param['sign'] = strtoupper(md5($sign_str));
 
         $req_xml = $this->array2Xml($req_param);

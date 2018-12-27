@@ -8,22 +8,12 @@ class WechatReadModel extends WechatModel
 {
 
     public function __construct($type=1){
+        $wechat_config = Yaf_Registry::get("config")->get('wechat.read.'.$type);
 
-        #1-小鱼轻松赚 2-赚的容易
-        switch($type){
-            case 1:
-                $this->token = 'allfree';
-                $this->appid = 'wx11ef5598d6dbec05';
-                $this->secret = '9fdc2190aa2f0403698d64554a054e96';
-                $this->enckey = 'u0z9SbnpUxKF7pvQNk5LyKs6YFckTthXxBUjxx2PRLb';
-                break;
-            case 2:
-                $this->token = 'allfreep2p';
-                $this->appid = 'wx87a3bff239c2b4c6';
-                $this->secret = 'b9060cf1335fd5db9ffc0e12bc1cec2e';
-                $this->enckey = 'T35FaqLlB31jTfXAHS7MOUlMtq9qsQIvamsTdiiK9uv';
-                break;
-        }
+        $this->token = $wechat_config->token;
+        $this->appid = $wechat_config->appid;
+        $this->secret = $wechat_config->secret;
+        $this->enckey = $wechat_config->enckey;
     }
 
 

@@ -384,31 +384,46 @@ class TestController extends Yaf_Controller_Abstract
         echo date("Y-m-d H:i:s",$e_time);die;
     }
 
-    function aAction(){
+    function gaoyongAction(){
         $request_url = 'http://v2.api.haodanku.com/ratesurl';
         //$request_url = 'http://v2.api.haodanku.com/super_classify/apikey/allfree';
         $request_data = array();
         $request_data['apikey'] = 'allfree';
-        $request_data['itemid'] = '548696006912';
+        $request_data['itemid'] = '535615570326';
         $request_data['pid'] = 'mm_116356778_18618211_65740777';
-        $request_data['activityid'] = 'efd9a2f69fef49949fd34b3c24b27972';
+        $request_data['activityid'] = '7a08d992d2d545ff9bacc0bb4fc4ed54';
 
-        $ch = curl_init();
-        curl_setopt($ch,CURLOPT_URL,$request_url);
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($ch, CURLOPT_TIMEOUT,10);
-        curl_setopt($ch,CURLOPT_POST,1);
-        curl_setopt($ch,CURLOPT_POSTFIELDS,$request_data);
-        $res = curl_exec($ch);
-        curl_close($ch);
+        $res = $this->post_curl($request_url,$request_data);
         echo '<pre>';
         print_r($res);die;
+    }
+
+
+    function post_curl($url,$data){
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $result_json = curl_exec($ch);
+        curl_close($ch);
+        return  json_decode($result_json, true);
+    }
+
+    function get_curl($url){
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $result_json = curl_exec($ch);
+        curl_close($ch);
+        return  json_decode($result_json, true);
     }
 
     #淘宝详情页
     function tbAction(){
         $item_id = 581477586372;
-        $taobao_model = new TaobaoModel();
+        $taobao_model = new TaobaoModel(2);
         $condition = [
             'num_iid' => $item_id
         ];
@@ -423,8 +438,19 @@ class TestController extends Yaf_Controller_Abstract
         die;
     }
 
-    function masterAction(){
-        $aa = Yaf_Registry::get("config")->get('mail')->host;
+    #详情
+    function xqyAction(){
+        $val['itemid'] = 535615570326;
+
+        //$detail_api = 'https://h5api.m.taobao.com/h5/mtop.taobao.detail.getdesc/6.0/?data={"id":"'.$val['itemid'].'"}';
+        $detail_api = 'https://acs.m.taobao.com/h5/mtop.taobao.detail.getdetail/6.0/?data=%7B%22itemNumId%22%3A%22'.$val['itemid'].'%22%7D&qq-pf-to=pcqq.group';
+
+        $order = 'https://pub.alimama.com/report/getTbkPaymentDetails.json?startTime=2017-05-22&endTime=2017-08-19&payStatus=&queryType=1&toPage=1&perPageSize=20&total=&t=1503223605295&pvid=&_tb_token_=pTK7Mfldfvq&_input_charset=utf-8';
+
+        $pic = 'https://hws.m.taobao.com/cache/mtop.wdetail.getItemDescx/4.1/?data=%7Bitem_num_id%3A"535615570326"%7D&type=jsonp&dataType=jsonp';
+        //echo $detail_api;die;
+        $detail = file_get_contents($detail_api);
+        print_r($detail);die;
 
         var_dump($aa);die;
     }

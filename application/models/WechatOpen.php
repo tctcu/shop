@@ -8,14 +8,9 @@ class WechatOpenModel extends WechatModel
 {
 
     public function __construct($type=1){
-
-        #1-券购
-        switch($type){
-            case 1:
-                $this->appid = 'wx0ed9dfdd72031db1';
-                $this->secret = 'a539abd5566d89f09f04d8fc054e1161';
-                break;
-        }
+        $wechat_config = Yaf_Registry::get("config")->get('wechat.open.'.$type);
+        $this->appid = $wechat_config->appid;
+        $this->secret = $wechat_config->secret;
     }
 
 
