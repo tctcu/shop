@@ -8,7 +8,7 @@ include('function.php');
 
 $min_id = 1;
 $hour = date('G');
-
+$dbh = dsn();
 while(true) {
     $list_api = "http://v2.api.haodanku.com/timing_items/apikey/allfree/start/{$hour}/end/{$hour}/back/1000/min_id/" . $min_id;
 

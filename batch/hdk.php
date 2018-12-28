@@ -5,7 +5,7 @@
  */
 include('Common_func.php');
 include('function.php');
-
+$dbh = dsn();
 $select_sql = 'select min(min_id) as min_id from tb';
 $tb_info = $dbh->query($select_sql)->fetch(PDO::FETCH_ASSOC);
 $min_id = $tb_info['min_id'] ? $tb_info['min_id'] : 1;

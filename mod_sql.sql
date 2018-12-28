@@ -173,8 +173,25 @@ add `w_openid` varchar(40) NOT NULL DEFAULT '' COMMENT '微信openid' after `sta
    UNIQUE KEY `itemid` (`itemid`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='淘宝商品表';
 
-
-
-
+ CREATE TABLE `tb_order` (
+   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+   `trade_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '订单id',
+   `tk_status` int(11) NOT NULL DEFAULT '0' COMMENT '订单状态',
+   `trade_parent_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '父订单id',
+   `num_iid` bigint(20) NOT NULL DEFAULT '0' COMMENT '淘宝id',
+   `item_title` varchar(300) NOT NULL DEFAULT '' COMMENT '标题',
+   `item_num` int(11) NOT NULL DEFAULT '0' COMMENT '数量',
+   `site_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '媒体id',
+   `adzone_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '广告位id',
+   `alipay_total_price` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '付款金额',
+   `income_rate` decimal(8,4) NOT NULL DEFAULT '0.0000' COMMENT '收入比率',
+   `pub_share_pre_fee` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '效果预估',
+   `create_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '下单时间',
+   `terminal_type` int(11) NOT NULL DEFAULT '0' COMMENT '成交平台 1-PC 2-无线',
+   `created_at` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间戳',
+   `updated_at` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间戳',
+   PRIMARY KEY (`id`),
+   UNIQUE KEY `trade_id` (`trade_id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='淘宝订单表';
 
 

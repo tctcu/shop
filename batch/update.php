@@ -5,7 +5,7 @@
  */
 include('Common_func.php');
 include('function.php');
-
+$dbh = dsn();
 for($min_id=1;$min_id<31;$min_id++) {//取 30*1000 数据更新
 
     $list_api = "http://v2.api.haodanku.com/update_item/apikey/allfree/sort/1/back/1000/min_id/" . $min_id;
