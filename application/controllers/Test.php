@@ -422,34 +422,71 @@ class TestController extends Yaf_Controller_Abstract
 
     #淘宝详情页
     function tbAction(){
-        $item_id = 581477586372;
+        $item_id = 571503809371;
         $taobao_model = new TaobaoModel(2);
         $condition = [
             'num_iid' => $item_id
         ];
-        //$item_info = $taobao_model->TaeItemsListRequest($condition);
+        $item_info = $taobao_model->TaeItemsListRequest($condition);
+        echo '<pre>';
+        print_r($item_info);die;
+        echo '<pre>';
+//        print_r($item_info);die;
         $condition = [
-            't_iid' => 'AAFwnBCNACaoGAiO6GP4RlkR'
+            't_iid' => $item_info['open_iid']
         ];
         $item_info = $taobao_model->TaeItemDetailGetRequest($condition);
-        print_r($item_info);
+        print_r($item_info['mobile_desc_info']['desc_list']['desc_fragment']);
         die;
 
         die;
     }
-
+//通过md5加密生成签名的函数
+    function getSignature($appkey,$appsecret,$date,$tid){
+        $string = $appkey.$appsecret.$date.$tid;
+        $md5 = md5($string);
+        return $md5;
+    }
     #详情
     function xqyAction(){
+        $val['itemid'] = 569279621940;
         $val['itemid'] = 535615570326;
 
+
+        $appkey = 'tbweau7kx';
+        $appsecret = 'vm9M6IvBizDITNLS';
+        $tid = 569279621940;
+
+        $date = date('Y-m-d'); //生成日期
+        $signature = $this->getSignature($appkey,$appsecret,$date,$tid); //生成签名
+        $data = json_encode(array('tid'=>$tid,'appkey'=>$appkey,'sign'=>$signature)); //输出json字符串到客户端
+        $url = 'https://taoapi.ndxiu.com/service/get_detail_full.php?sign=b9d9d8ead9fc10ce03fb9ecc332dfeec&appkey=tbweau7kx&tid=569279621940'.$data;
+echo $url;die;
+        $detail = $this->get_curl($url);
+        echo '<pre>';
+        print_r($detail);die;
+
+        $url = 'https://hws.m.taobao.com/d/modulet/v5/WItemMouldDesc.do?id=535615570326&f=TB17qTGyAvoK1RjSZFN8qwxMVXa';
         //$detail_api = 'https://h5api.m.taobao.com/h5/mtop.taobao.detail.getdesc/6.0/?data={"id":"'.$val['itemid'].'"}';
-        $detail_api = 'https://acs.m.taobao.com/h5/mtop.taobao.detail.getdetail/6.0/?data=%7B%22itemNumId%22%3A%22'.$val['itemid'].'%22%7D&qq-pf-to=pcqq.group';
+        $detail_api = 'https://acs.m.taobao.com/h5/mtop.taobao.detail.getdetail/6.0/?data=%7B%22itemNumId%22%3A%22'.$val['itemid'].'%22%7D';
 
-        $order = 'https://pub.alimama.com/report/getTbkPaymentDetails.json?startTime=2017-05-22&endTime=2017-08-19&payStatus=&queryType=1&toPage=1&perPageSize=20&total=&t=1503223605295&pvid=&_tb_token_=pTK7Mfldfvq&_input_charset=utf-8';
+        $detail = $this->get_curl($detail_api);
+        echo '<pre>';
+     print_r($detail);die;
+        if($detail['data']['item']['images'] && $detail['data']['item']['moduleDescUrl']){
 
-        $pic = 'https://hws.m.taobao.com/cache/mtop.wdetail.getItemDescx/4.1/?data=%7Bitem_num_id%3A"535615570326"%7D&type=jsonp&dataType=jsonp';
-        //echo $detail_api;die;
-        $detail = file_get_contents($detail_api);
+            $taobao_img = 'https:'.implode(',https:',$detail['data']['item']['images']);
+            print_r($taobao_img);die;
+            $pic_url = 'https:'.$detail['data']['item']['moduleDescUrl'];
+            $pic = $this->get_curl($pic_url);
+            if($pic['data']['children'] ){
+                foreach($pic['data']['children'] as $val){
+                    if($val['key'] == 'detail_container_style7'){
+                        echo $val['params']['picUrl'].'<br>';
+                    }
+                }
+            }
+        }die;
         print_r($detail);die;
 
         var_dump($aa);die;

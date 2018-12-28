@@ -54,7 +54,7 @@ class TaobaoModel{
         }
 
         $resp = $this->apiClient->execute($req);
-        var_dump($resp);die;
+
         $resp = json_decode(json_encode($resp),true);
         if(isset($resp['items']['x_item'][0]) && !empty($resp['items']['x_item'][0])){
             $retData = $resp['items']['x_item'][0];

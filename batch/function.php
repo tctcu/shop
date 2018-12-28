@@ -39,3 +39,12 @@ function get_curl($url){
     curl_close($ch);
     return  json_decode($result_json, true);
 }
+
+
+function hdk_log($word='') {
+    $fp = fopen("/home/wwwlogs/hdk.txt","a");
+    flock($fp, LOCK_EX) ;
+    fwrite($fp,"\n".$word."\n");
+    flock($fp, LOCK_UN);
+    fclose($fp);
+}
