@@ -32,7 +32,7 @@ for($min_id=1;$min_id<31;$min_id++) {//取 30*1000 数据更新
             'updated_at' => time()
         ];
 
-        $update_sql = 'update tb set';
+        $update_sql = 'update tb set ';
         foreach ($update as $k=>$v) {
             $update_sql .=  $k . "='" . $v . "',";
         }
