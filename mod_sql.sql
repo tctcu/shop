@@ -184,7 +184,7 @@ add `w_openid` varchar(40) NOT NULL DEFAULT '' COMMENT '微信openid' after `sta
    `site_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '媒体id',
    `adzone_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '广告位id',
    `alipay_total_price` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '付款金额',
-   `income_rate` decimal(8,4) NOT NULL DEFAULT '0.0000' COMMENT '收入比率',
+   `income_rate` decimal(8,2) NOT NULL DEFAULT '0.0000' COMMENT '收入比率(%)',
    `pub_share_pre_fee` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '效果预估',
    `create_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '下单时间',
    `terminal_type` int(11) NOT NULL DEFAULT '0' COMMENT '成交平台 1-PC 2-无线',

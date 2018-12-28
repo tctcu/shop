@@ -30,7 +30,7 @@ if(isset($resp['tbk_sc_order_get_response']['results']['n_tbk_order']) && !empty
             'site_id' => $val['site_id'],
             'alipay_total_price' => $val['alipay_total_price'],
             'create_time' => $val['create_time'],
-            'income_rate' => $val['income_rate'],
+            'income_rate' => $val['income_rate']*100,//单位%
             'item_num' => $val['item_num'],
             'item_title' => $val['item_title'],
             'num_iid' => $val['num_iid'],
