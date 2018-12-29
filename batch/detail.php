@@ -11,7 +11,7 @@ $apiClient->format = 'json';
 
 
 $dbh = dsn();
-$select_sql = "select itemid from tb where taobao_detail='' and status=1 order by id asc limit 50";//批量最多50
+$select_sql = "select itemid from tb where taobao_detail='' and status=1 order by id desc limit 20";//批量最多50
 $itemids = $dbh->query($select_sql)->fetchAll(PDO::FETCH_ASSOC);
 $all_itemid = array_column($itemids,'itemid');
 $n_iid = [];
@@ -65,6 +65,8 @@ if (isset($resp['items']['x_item']) && !empty($resp['items']['x_item'])) {
                     $n_iid[] = $val['open_id'];
                 }
             }
+        } else {
+            return 'api error';exit;
         }
     }
 }
