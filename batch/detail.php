@@ -66,13 +66,13 @@ if (isset($resp['items']['x_item']) && !empty($resp['items']['x_item'])) {
                 }
             }
         } else {
-            return 'api error';exit;
+            echo 'api error';exit;
         }
     }
 }
 
 $down_iid = array_diff($all_itemid,$n_iid);
-
+print_r($down_iid);die;
 if($down_iid){//下架没有详情页的数据 标记55
     $update_sql = "update tb set status = 55 where itemid in (".implode(',',$down_iid).")";
     $dbh->exec($update_sql);

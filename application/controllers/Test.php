@@ -450,9 +450,28 @@ class TestController extends Yaf_Controller_Abstract
     #详情
     function xqyAction(){
         $val['itemid'] = 569279621940;
-        $val['itemid'] = 535615570326;
+       // $val['itemid'] = 535615570326;
 
 
+        //淘宝详细页
+        $detail_info = 'https://acs.m.taobao.com/h5/mtop.taobao.detail.getdetail/6.0/?data=%7B%22itemNumId%22%3A%22'.$val['itemid'].'%22%7D';
+        //淘宝图片
+        $detail_pic = 'https://h5api.m.taobao.com/h5/mtop.taobao.detail.getdesc/6.0/?data={"id":"'.$val['itemid'].'"}';
+        //淘宝图片  加密参数
+        $url = 'https://hws.m.taobao.com/d/modulet/v5/WItemMouldDesc.do?id=535615570326&f=TB17qTGyAvoK1RjSZFN8qwxMVXa';
+
+        //瞄有券
+        $api = 'http://open.jxb001.cn/tbkopen/detail/tb/api';
+        $appkey = '1530477080482482';
+        $appsecret = '568176ec67c2d16e69158b2329a5bf29';
+        $tbName = '川律网络';
+        $api = $api. '?appkey='.$appkey.'&appsecret='.$appsecret.'&tbName='.$tbName.'&itemId='.$val['itemid'];
+        //echo $api;die;
+        $detail = file_get_contents($api);
+        echo '<pre>';
+        var_dump($detail);die;
+
+        //api
         $appkey = 'tbweau7kx';
         $appsecret = 'vm9M6IvBizDITNLS';
         $tid = 569279621940;
@@ -466,13 +485,12 @@ echo $url;die;
         echo '<pre>';
         print_r($detail);die;
 
-        $url = 'https://hws.m.taobao.com/d/modulet/v5/WItemMouldDesc.do?id=535615570326&f=TB17qTGyAvoK1RjSZFN8qwxMVXa';
-        //$detail_api = 'https://h5api.m.taobao.com/h5/mtop.taobao.detail.getdesc/6.0/?data={"id":"'.$val['itemid'].'"}';
-        $detail_api = 'https://acs.m.taobao.com/h5/mtop.taobao.detail.getdetail/6.0/?data=%7B%22itemNumId%22%3A%22'.$val['itemid'].'%22%7D';
+
+
 
         $detail = $this->get_curl($detail_api);
         echo '<pre>';
-     print_r($detail);die;
+        print_r($detail);die;
         if($detail['data']['item']['images'] && $detail['data']['item']['moduleDescUrl']){
 
             $taobao_img = 'https:'.implode(',https:',$detail['data']['item']['images']);

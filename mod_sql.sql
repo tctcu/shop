@@ -197,7 +197,7 @@ add `w_openid` varchar(40) NOT NULL DEFAULT '' COMMENT '微信openid' after `sta
 
  CREATE TABLE `user_pid` (
    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-   `account_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '账号id',
+   `memberid_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '账号id',
    `site_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '媒体id',
    `adzone_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '广告位id',
    `uid` int(11) NOT NULL DEFAULT '0' COMMENT '用户uid',

@@ -250,4 +250,9 @@ class TaobaoModel{
     }
 
 
+    function aa(){
+        $req = new TbkScPublisherInfoSaveRequest;
+    }
+
+
 }
