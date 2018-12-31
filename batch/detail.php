@@ -11,7 +11,7 @@ $apiClient->format = 'json';
 
 
 $dbh = dsn();
-$select_sql = "select itemid from tb where taobao_detail='' and status=1 order by id desc limit 20";//批量最多50
+$select_sql = "select itemid from tb where taobao_detail='' and status=1 order by id desc limit 50";//批量最多50
 $itemids = $dbh->query($select_sql)->fetchAll(PDO::FETCH_ASSOC);
 $all_itemid = array_column($itemids,'itemid');
 $n_iid = [];
@@ -65,6 +65,7 @@ if (isset($resp['items']['x_item']) && !empty($resp['items']['x_item'])) {
                     $n_iid[] = $val['open_id'];
                 }
             }
+            sleep(1);
         } else {
             echo 'api error';exit;
         }
@@ -72,7 +73,6 @@ if (isset($resp['items']['x_item']) && !empty($resp['items']['x_item'])) {
 }
 
 $down_iid = array_diff($all_itemid,$n_iid);
-print_r($down_iid);die;
 if($down_iid){//下架没有详情页的数据 标记55
     $update_sql = "update tb set status = 55 where itemid in (".implode(',',$down_iid).")";
     $dbh->exec($update_sql);
