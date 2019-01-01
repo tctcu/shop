@@ -37,12 +37,12 @@ if (isset($resp['items']['x_item']) && !empty($resp['items']['x_item'])) {
         if (isset($resp['data']) && !empty($resp['data'])) {
             $taobao_image = '';
             foreach($resp['data']['item_info']['pics']['string'] as $pic){
-                $taobao_image .= $pic.',' ;
+                $taobao_image .= 'https:'.ltrim(ltrim($pic,'http:'),'https:').',' ;
             }
             $taobao_detail = '';
             foreach($resp['data']['mobile_desc_info']['desc_list']['desc_fragment'] as $pic){
                 if($pic['label'] == 'img'){
-                    $taobao_detail .= $pic['content'].',' ;
+                    $taobao_detail .= 'https:'.ltrim(ltrim($pic['content'],'http:'),'https:').',' ;
                 }
             }
             $update_sql = "update tb set ";
