@@ -16,7 +16,9 @@ $itemids = $dbh->query($select_sql)->fetchAll(PDO::FETCH_ASSOC);
 $all_itemid = array_column($itemids,'itemid');
 $n_iid = [];
 $num_iids  = implode(',', $all_itemid);
-
+if(empty($num_iids)){
+    return false;
+}
 $req = new TaeItemsListRequest;
 $req->setFields("promoted_service");
 $req->setNumIids("$num_iids");//批量

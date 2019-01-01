@@ -68,7 +68,16 @@ while(true) {
         $insert_sql .= "),";
         //单条
         $insert_sql = rtrim($insert_sql, ",");
-        $dbh->exec($insert_sql);
+        $result = $dbh->exec($insert_sql);
+        if(empty($result)){//出现过的淘宝ID 更新
+            unset($insert['created_at']);
+            $update_sql = 'update tb set ';
+            foreach ($insert as $k=>$v) {
+                $update_sql .=  $k . "='" . $v . "',";
+            }
+            $update_sql = rtrim($update_sql, ",") . " where itemid =".$insert['itemid'];
+            $dbh->exec($update_sql);
+        }
         $insert_sql = '';
     }
 
