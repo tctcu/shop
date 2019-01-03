@@ -118,4 +118,20 @@ class AuthController extends ApiController
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
+    #安卓更新
+    function androidUpdateAction(){
+
+        //小米渠道，审核中：返回空给客户端（因为审核中时不能有提示）
+
+        $data = [
+            'versionName' => '1.1.0',
+            'versionCode' => '2',
+            'forceUpdate' => 'n',//强制更新(y-是 n-否)
+            'applicationId' => '',//包名
+            'url' => CommonModel::IMAGE_URL.'package_5271_1517565084.apk',
+        ];
+
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+    }
+
 }

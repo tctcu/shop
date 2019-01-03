@@ -255,4 +255,43 @@ class TaobaoModel{
     }
 
 
+
+    #格式化淘宝数据
+    function makeTb($item_info,$url_info)
+    {
+        $data = [
+            'itemid' => $item_info['num_iid'].'',
+            'itemshorttitle' => $item_info['title'],
+            'itemdesc' => $item_info['title'],
+            'itemprice' => $item_info['zk_final_price'].'',
+            'itemsale' => $item_info['volume'].'',
+            'itempic' => $item_info['pict_url'],
+            'itemendprice' => $item_info['zk_final_price'],
+            'url' => $url_info['item_url'],
+            'coupon_type' => '0',//券状态
+            'couponmoney' => '',
+            'couponexplain' => '',
+            'couponstarttime' => '',
+            'couponendtime' => '',
+            'shoptype' => $item_info['user_type'] == 1 ? 'B': 'C',
+            'taobao_image' => $item_info['small_images']['string']
+        ];
+        if($url_info['coupon_type']){ //有券
+            $couponmoney = 0;
+            #获取券价格
+            if(preg_match ('#减([\d]+)元#is', $url_info['coupon_info'], $m) !== false ){//券价
+                $couponmoney = $m[1];
+            }
+            $data['coupon_type'] = $url_info['coupon_type'].'';
+            $data['itemendprice'] = ($data['itemendprice']-$couponmoney).'';
+            $data['url'] = $url_info['coupon_click_url'];
+            $data['couponmoney'] = $couponmoney.'';
+            $data['couponexplain'] = $url_info['coupon_info'];
+            $data['couponstarttime'] = strtotime($url_info['coupon_start_time']).'';
+            $data['couponendtime'] = strtotime($url_info['coupon_end_time']).'';
+        }
+        return $data;
+    }
+
+
 }

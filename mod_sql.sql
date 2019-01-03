@@ -194,6 +194,16 @@ add `w_openid` varchar(40) NOT NULL DEFAULT '' COMMENT '微信openid' after `sta
    UNIQUE KEY `trade_id` (`trade_id`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='淘宝订单表';
 
+ CREATE TABLE `tb_detail` (
+   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+   `itemid` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '淘宝id',
+   `taobao_detail` text NOT NULL COMMENT '淘宝详情页',
+   `created_at` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间戳',
+   `updated_at` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间戳',
+   PRIMARY KEY (`id`),
+   UNIQUE KEY `itemid` (`itemid`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='淘宝详情表';
+
 
  CREATE TABLE `user_pid` (
    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
