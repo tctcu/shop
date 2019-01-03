@@ -47,36 +47,28 @@ if (isset($resp['items']['x_item']) && !empty($resp['items']['x_item'])) {
                     $taobao_detail .= 'https:'.ltrim(ltrim($pic['content'],'http:'),'https:').',' ;
                 }
             }
-            $update_sql = "update tb set ";
-            $set = '';
+
             if($taobao_image){
                 $taobao_image = rtrim($taobao_image,',');
-                $set = " taobao_image='{$taobao_image}',";
+                $update_sql = "update tb set taobao_image='{$taobao_image}',taobao_detail=55 where itemid={$val['open_id']}";
+                $dbh->exec($update_sql);
             }
             if($taobao_detail){
                 $taobao_detail = rtrim($taobao_detail,',');
-                $set .= " taobao_detail='{$taobao_detail}',";
-
-
+                $insert_sql = "insert into tb_detail(itemid,taobao_detail,created_at) VALUES({$val['open_id']},'".$taobao_detail."','".time()."')";
+                $dbh->exec($insert_sql);
+                //$n_iid[] = $val['open_id'];
             }
-            if($set){
-                $set = rtrim($set,',');
-                $update_sql = $update_sql . $set . " where itemid={$val['open_id']}";
-                $res = $dbh->exec($update_sql);
-                if($res) {
-                    $n_iid[] = $val['open_id'];
-                }
-            }
-            sleep(1);
+            sleep(5);
         } else {
             echo 'api error';exit;
         }
     }
 }
 
-$down_iid = array_diff($all_itemid,$n_iid);
-if($down_iid){//下架没有详情页的数据 标记55
-    $update_sql = "update tb set status = 55 where itemid in (".implode(',',$down_iid).")";
-    $dbh->exec($update_sql);
-}
+//$down_iid = array_diff($all_itemid,$n_iid);
+//if($down_iid){//下架没有详情页的数据 标记55
+//    $update_sql = "update tb set status = 55 where itemid in (".implode(',',$down_iid).")";
+//    $dbh->exec($update_sql);
+//}
 
