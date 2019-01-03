@@ -124,11 +124,15 @@ class AuthController extends ApiController
         //小米渠道，审核中：返回空给客户端（因为审核中时不能有提示）
 
         $data = [
-            'versionName' => '1.1.0',
-            'versionCode' => '2',
-            'forceUpdate' => 'n',//强制更新(y-是 n-否)
-            'applicationId' => '',//包名
-            'url' => CommonModel::IMAGE_URL.'package_5271_1517565084.apk',
+            "UpdateStatus" => '1',// 1:普通下载 2: 强制更新
+            "VersionCode" => '3',  // VersionCode
+            "VersionName" => "1.0.0", // VersionName
+            "UploadTime" => "2019-01-04 17:28:41", // 更新时间
+            "ModifyContent" => "这是一个很有意义的更新", // 更新描述
+            "DownloadUrl" => CommonModel::IMAGE_URL.'package_5271_1517565084.apk', // 下载链接
+            "ApkSize" => '204823',  // 应用大小
+            "ApkMd5" => "bsud274be05y19365do0562he"   // apkMd5值
+
         ];
 
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
