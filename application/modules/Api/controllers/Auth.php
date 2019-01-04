@@ -125,14 +125,13 @@ class AuthController extends ApiController
 
         $data = [
             "UpdateStatus" => '1',// 1:普通下载 2: 强制更新
-            "VersionCode" => '3',  // VersionCode
+            "VersionCode" => '1',  // VersionCode
             "VersionName" => "1.0.0", // VersionName
             "UploadTime" => "2019-01-04 17:28:41", // 更新时间
             "ModifyContent" => "这是一个很有意义的更新", // 更新描述
             "DownloadUrl" => CommonModel::IMAGE_URL.'package_5271_1517565084.apk', // 下载链接
             "ApkSize" => '204823',  // 应用大小
             "ApkMd5" => "bsud274be05y19365do0562he"   // apkMd5值
-
         ];
 
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
