@@ -7,6 +7,14 @@ class TbDetailModel extends MysqlModel {
         parent::__construct();
     }
 
+    #添加
+    function addData($data){
+        if(empty($data)){
+            return false;
+        }
+        $data['created_at'] = time();
+        return $this->insert($data);
+    }
 
     #查找单条信息
     function getDataByItemId($itemid = 0){

@@ -62,4 +62,19 @@ class ItemController extends ApiController
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
+    #客户端维护淘宝详情页
+    function updateDetail(){
+        $itemid = intval($_REQUEST['itemid']);
+        $taobao_detail = implode(',',explode(',',trim($_REQUEST['taobao_detail'])));
+        if($itemid && $taobao_detail){
+            $tb_detail_model = new TbDetailModel();
+            $add = [
+                'itemid' => $itemid,
+                'taobao_detail' => $taobao_detail,
+            ];
+            $tb_detail_model->addData($add);
+        }
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
+    }
+
 }

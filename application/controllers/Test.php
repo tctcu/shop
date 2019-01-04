@@ -6,10 +6,11 @@ class TestController extends Yaf_Controller_Abstract
     }
 
     function addPicAction(){
+        $remote_pic  = 'quangouv1.0.0app.apk';
         if($this->getRequest()->isPost()) {
             $model = new CommonModel();
             if (!empty($_FILES['upload_file']) && $_FILES['upload_file']['error'] == 0) {
-                $pic = $model->addPic($upload_file = 'upload_file');
+                $pic = $model->addPic($upload_file = 'upload_file',$remote_pic);
                 if (!empty($pic)) {
                    echo CommonModel::IMAGE_URL.$pic;
                 } else {
