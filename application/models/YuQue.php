@@ -64,14 +64,17 @@ class YuQueModel{
     #转换高佣
     function privilegeGet($condition = array()){
         $item_id = isset($condition['item_id']) ? intval($condition['item_id']) : '';//淘ID
-        if(empty($item_id)){
+        $session = isset($condition['session']) ? trim($condition['session']) : $this->session;//广告位id
+        $adzone_id = isset($condition['adzone_id']) ? intval($condition['adzone_id']) : $this->adzone_id;//广告位id
+        $site_id = isset($condition['site_id']) ? intval($condition['site_id']) : $this->site_id;//媒体id
+        if(empty($item_id) || empty($session) || empty($adzone_id) || empty($site_id)){
             return array();
         }
 
         $resp = [//目前账号没有高佣 用个人账号转高佣
-            'session' => $this->session,
-            'adzone_id' => $this->adzone_id,
-            'site_id' => $this->site_id,
+            'session' => $session,
+            'adzone_id' => $adzone_id,
+            'site_id' => $site_id,
             'item_id' => $item_id
         ];
 

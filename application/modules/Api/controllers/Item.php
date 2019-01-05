@@ -53,6 +53,11 @@ class ItemController extends ApiController
             $yuque_model = new YuQueModel();
             $url_info = $yuque_model->privilegeGet($condition);
             $tb_info = $taobao_model->makeTb($item_info,$url_info);
+            $tb_info['taobao_image'] = implode(',',$item_info['small_images']['string']);
+            $tb_info['tkrates'] = $url_info['max_commission_rate'];
+            $tb_info['shopname'] = $item_info['nick'];
+        } else {//好单库的商品都有优惠券
+            $tb_info['coupon_type'] = '1';//优惠券状态 0-没有券
         }
         $tb_detail_model = new TbDetailModel();
         $tb_detail_info = $tb_detail_model->getDataByItemId($itemid);
@@ -62,8 +67,55 @@ class ItemController extends ApiController
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
+    #跟单获取连接
+    function getUserUrlAction(){
+        $itemid = intval($_REQUEST['itemid']);
+
+        $uid = $this->uid;
+$uid = 2;
+        $error = true;
+        if($uid){
+            $user_model = new UserModel();
+            $user_info = $user_model->getDataByUid($uid);
+            if($user_info){
+                $error = false;
+            }
+        }
+        if($error){
+            $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
+        }
+        $user_pid_model = new UserPidModel();
+        $pid_info = $user_pid_model->getDataByUid($uid);
+
+        if(empty($pid_info['site_id']) || empty($pid_info['adzone_id'])){
+            //关联上一个pid
+            $user_pid_model->bindUser($uid);
+            $pid_info = $user_pid_model->getDataByUid($uid);
+        }
+        $type = TbModel::MEMBER[$pid_info['memberid_id']];
+
+        $condition = [
+            'item_id' => $itemid,
+            'session' => Yaf_Registry::get("config")->get('taobao.account.'.$type)->session,
+            'site_id' => $pid_info['site_id'],
+            'adzone_id' => $pid_info['adzone_id']
+        ];
+        $yuque_model = new YuQueModel($type);
+        $url_info = $yuque_model->privilegeGet($condition);
+        $data = [];
+        if($url_info['coupon_click_url']) {
+            $data = [
+                'item_id' => $itemid,
+                'url' => $url_info['coupon_click_url']
+            ];
+        }
+
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+    }
+
+
     #客户端维护淘宝详情页
-    function updateDetail(){
+    function updateDetailAction(){
         $itemid = intval($_REQUEST['itemid']);
         $taobao_detail = implode(',',explode(',',trim($_REQUEST['taobao_detail'])));
         if($itemid && $taobao_detail){

@@ -4,6 +4,10 @@ class TbModel extends MysqlModel {
     protected $_name = 'tb';
     private $pid = 'mm_234440039_166200410_57891600477';//'mm_116356778_18618211_65740777';
     const REBATE = '0.005';//返利比例
+    const MEMBER = [//对应config
+        '234440039' => 1,
+        '116356778' => 2,
+    ];
 
     function __construct(){
         parent::__construct();

@@ -512,6 +512,36 @@ echo $url;die;
     }
 
 
+    function pidAction(){
+        $pid = $_REQUEST['pid'];
+        $arr = explode(',',$pid);
+        $insert_sql = 'insert into user_pid(memberid_id,site_id,adzone_id,created_at) values';
+
+        foreach($arr as $val){
+            $arr = explode('_',$val);
+
+            $insert_sql .= '('.$arr[1].','.$arr[2].','.$arr[3].','.time().'),';
+        }
+
+        $insert_sql = rtrim($insert_sql,',');
+        echo $insert_sql;die;
+
+
+
+        #处理pid
+        $json = '';
+        $json = str_replace(' ','',$json);
+        echo '<pre>';
+        $arr = array_column( json_decode($json,true),'adzoneid');
+        //print_r($arr);
+        foreach($arr as $val){
+            echo $val.',';
+        }
+
+        die;
+    }
+
+
     function sendAction(){
         $mail = new SendMail();
 
