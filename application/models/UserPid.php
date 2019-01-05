@@ -3,11 +3,6 @@
 class UserPidModel extends MysqlModel {
     protected $_name = 'user_pid';
 
-    public $_tbk = [
-        '116356778' => 1,
-        '234440039' => 2,
-    ];
-
     function __construct(){
         parent::__construct();
     }
