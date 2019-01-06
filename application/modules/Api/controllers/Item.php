@@ -92,24 +92,41 @@ $uid = 2;
             $user_pid_model->bindUser($uid);
             $pid_info = $user_pid_model->getDataByUid($uid);
         }
+
         $type = TbModel::MEMBER[$pid_info['memberid_id']];
 
-        $condition = [
-            'item_id' => $itemid,
-            'session' => Yaf_Registry::get("config")->get('taobao.account.'.$type)->session,
-            'site_id' => $pid_info['site_id'],
-            'adzone_id' => $pid_info['adzone_id']
-        ];
-        $yuque_model = new YuQueModel($type);
-        $url_info = $yuque_model->privilegeGet($condition);
+        #获取库信息
+        $tb_model = new TbModel();
+        $result = $tb_model->getDataByItemId($itemid);
+        $taobao_account = Yaf_Registry::get("config")->get('taobao.account.' . $type);
+
+        if($result['activityid']){//好单库转高佣
+            $url = "http://v2.api.haodanku.com/ratesurl";
+            $request_data['apikey'] = 'allfree';
+            $request_data['itemid'] = $itemid;
+            $request_data['pid'] = 'mm_'.$pid_info['memberid_id'].'_'.$pid_info['site_id'].'_'.$pid_info['adzone_id'];
+            $request_data['activityid'] = $result['activityid'];
+            $request_data['tb_name'] = $taobao_account->name;
+            $url_info = $this->post_curl($url,$request_data);
+
+        } else {//其他方式 语雀
+
+            $condition = [
+                'item_id' => $itemid,
+                'session' => $taobao_account->session,
+                'site_id' => $pid_info['site_id'],
+                'adzone_id' => $pid_info['adzone_id']
+            ];
+            $yuque_model = new YuQueModel($type);
+            $url_info = $yuque_model->privilegeGet($condition);
+        }
         $data = [];
-        if($url_info['coupon_click_url']) {
+        if ($url_info['coupon_click_url']) {
             $data = [
                 'item_id' => $itemid,
                 'url' => $url_info['coupon_click_url']
             ];
         }
-
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
