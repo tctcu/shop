@@ -48,6 +48,7 @@ class TbDetailModel extends MysqlModel {
             'taobao_image' => $info['taobao_image'] ? explode(',', $info['taobao_image']) : [],
             'taobao_detail' =>$info['taobao_detail'] ? explode(',', $info['taobao_detail']) : [],
             'shopname' => $info['shopname'],
+            'detail_json_url' => 'https://h5api.m.taobao.com/h5/mtop.taobao.detail.getdesc/6.0/?data={%22id%22:%22'.$info['itemid'].'%22}',
         ];
     }
 }
