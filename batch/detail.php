@@ -11,7 +11,7 @@ $apiClient->format = 'json';
 
 
 $dbh = dsn();
-$select_sql = "select itemid from tb where taobao_detail='' and status=1 order by id desc limit 50";//批量最多50
+$select_sql = "select t.itemid from tb t LEFT JOIN tb_detail td on t.itemid = td.itemid where isnull(td.id) and t.taobao_detail='' and t.status=1  order by t.id desc limit 50";//批量最多50
 $itemids = $dbh->query($select_sql)->fetchAll(PDO::FETCH_ASSOC);
 $all_itemid = array_column($itemids,'itemid');
 $n_iid = [];

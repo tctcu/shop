@@ -141,7 +141,11 @@ $uid = 2;
                 'itemid' => $itemid,
                 'taobao_detail' => $taobao_detail,
             ];
-            $tb_detail_model->addData($add);
+            try{
+                $tb_detail_model->addData($add);
+            }catch(Exception $ex){
+
+            }
         }
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
     }
