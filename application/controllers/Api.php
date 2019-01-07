@@ -68,11 +68,11 @@ abstract class ApiController extends BaseController
             $token = trim($params['token']);
             $user_model = new UserModel();
             $user_info = $user_model->getDataByUnionId($token);
-            if(empty($user_info['uid'])){
+            $this->uid = $user_info['uid'];
+
+            if(empty($this->uid)){
                 $this->responseJson('10008');
             }
-
-            $this->uid = $user_info['uid'];
         }
     }
 

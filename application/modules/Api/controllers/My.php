@@ -83,4 +83,85 @@ class MyController extends ApiController
         $this->responseJson('10006');
     }
 
+    #跟单获取连接
+    function getUserUrlAction(){
+        $itemid = intval($_REQUEST['itemid']);
+
+        $uid = $this->uid;
+
+        $error = true;
+        if($uid){
+            $user_model = new UserModel();
+            $user_info = $user_model->getDataByUid($uid);
+            if($user_info){
+                $error = false;
+            }
+        }
+        if($error){
+            $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
+        }
+        $user_pid_model = new UserPidModel();
+        $pid_info = $user_pid_model->getDataByUid($uid);
+
+        if(empty($pid_info['site_id']) || empty($pid_info['adzone_id'])){
+            //关联上一个pid
+            $user_pid_model->bindUser($uid);
+            $pid_info = $user_pid_model->getDataByUid($uid);
+        }
+
+        $type = TbModel::MEMBER[$pid_info['memberid_id']];
+
+        #获取库信息
+        $tb_model = new TbModel();
+        $tb_info = $tb_model->getDataByItemId($itemid);
+        $taobao_account = Yaf_Registry::get("config")->get('taobao.account.' . $type);
+        $taobao_model = new TaobaoModel($type);
+        if($tb_info['activityid']){//好单库转高佣
+            $url = "http://v2.api.haodanku.com/ratesurl";
+            $request_data['apikey'] = 'allfree';
+            $request_data['itemid'] = $itemid;
+            $request_data['pid'] = 'mm_'.$pid_info['memberid_id'].'_'.$pid_info['site_id'].'_'.$pid_info['adzone_id'];
+            $request_data['activityid'] = $tb_info['activityid'];
+            $request_data['tb_name'] = $taobao_account->name;
+            $url_info = $this->post_curl($url,$request_data);
+            $url_info = $url_info['data'];
+            $tpwd = [
+                'text' => $tb_info['itemshorttitle'],
+                'logo' => $tb_info['itempic']
+            ];
+
+        } else {//其他方式 语雀
+            $condition = [
+                'item_id' => $itemid,
+                'session' => $taobao_account->session,
+                'site_id' => $pid_info['site_id'],
+                'adzone_id' => $pid_info['adzone_id']
+            ];
+
+            $yuque_model = new YuQueModel($type);
+            $url_info = $yuque_model->privilegeGet($condition);
+
+            $condition = [
+                'item_id' => $itemid
+            ];
+            $item_info = $taobao_model->TbkItemInfoGetRequest($condition);
+            $tpwd = [
+                'text' => $item_info['title'],
+                'logo' => $item_info['pict_url']
+            ];
+        }
+
+        $data = [];
+        if ($url_info['coupon_click_url']) {
+            $tpwd['url'] = $url_info['coupon_click_url'];
+            $res = $taobao_model->TbkTpwdCreateRequest($tpwd);
+            $data = [
+                'item_id' => $itemid.'',
+                'url' => $url_info['coupon_click_url'],
+                'tpwd' => $res
+            ];
+        }
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+    }
+
 }

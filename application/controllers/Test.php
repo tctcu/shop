@@ -541,6 +541,18 @@ echo $url;die;
         die;
     }
 
+    function tklAction(){
+        $condition = [
+            'text' => '测试淘口令啊',
+            'logo' => 'https://img.alicdn.com/bao/uploaded/TB1w.rKLFXXXXamXVXXSutbFXXX.jpg_310x310.jpg',
+            'url' => 'https://uland.taobao.com/coupon/edetail?e=MT7NENE1XecGQASttHIRqcHreRS1NJG5s3dNgIAkl3MWHjruRgi2Rils9kpvhdqkK6Evp5rblLK9JkisPaY0bn%2F4Vru%2FikDru1%2FL0f5PsU1ekXVC85rMZRemP0hpIIPvjDppvlX%2Bob8NlNJBuapvQ2MDg9t1zp0R8pjV3C9qcwTW47dazMBIXCtZH2qXkQ9h&traceId=0b0837c215467825021641712e&union_lens=lensId:0b0838c1_0bd6_168236bed2c_a471&activityId=9a37d9c20e364ae0a301c326e81ea454&thispid=mm_116356778_18658274_81428000415&src=fklm_hltk&from=tool&sight=fklm',
+        ];
+
+        $taobao_model = new TaobaoModel(1);
+        $res = $taobao_model->TbkTpwdCreateRequest($condition);
+        print_r($res);die;
+    }
+
 
     function sendAction(){
         $mail = new SendMail();

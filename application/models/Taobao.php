@@ -250,8 +250,29 @@ class TaobaoModel{
     }
 
 
-    function aa(){
-        $req = new TbkScPublisherInfoSaveRequest;
+    function TbkTpwdCreateRequest($condition = array()){
+        $text = isset($condition['text']) ? trim($condition['text']) : '';//关键词
+        $url = isset($condition['url']) ? trim($condition['url']) : '';//链接
+        $logo = isset($condition['logo']) ? trim($condition['logo']) : '';//图片
+        if(empty($text) || empty($url) || empty($logo)){
+            return false;
+        }
+        $req = new TbkTpwdCreateRequest;
+        //$req->setUserId("123");
+        //$req->setExt("{}");
+        $req->setText("$text");
+        $req->setUrl("$url");
+        $req->setLogo("$logo");
+
+        $resp = $this->apiClient->execute($req);
+        $resp = json_decode(json_encode($resp),true);
+        if(isset($resp['data']['model']) && !empty($resp['data']['model'])){
+            $retData = $resp['data']['model'];
+        } else {
+            $retData = array();
+        }
+
+        return $retData;
     }
 
 
