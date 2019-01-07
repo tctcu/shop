@@ -134,20 +134,35 @@ $uid = 2;
     #客户端维护淘宝详情页
     function updateDetailAction(){
         $itemid = intval($_REQUEST['itemid']);
-        $taobao_detail = implode(',',explode(',',trim($_REQUEST['taobao_detail'])));
-        if($itemid && $taobao_detail){
-            $tb_detail_model = new TbDetailModel();
-            $add = [
-                'itemid' => $itemid,
-                'taobao_detail' => $taobao_detail,
-            ];
-            try{
-                $tb_detail_model->addData($add);
-            }catch(Exception $ex){
+        $detail_arr = json_decode(trim($_REQUEST['detail_json']),true);
 
+        $taobao_detail = [];
+        if($itemid && $detail_arr['data']['pcDescContent']){
+            $reg = '/<img[\s\S]*?src\s*=\s*[\"|\'](.*?)[\"|\'][\s\S]*?>/';
+            $matches = array();
+            preg_match_all($reg, $detail_arr['data']['pcDescContent'], $matches);
+
+            if($matches[1]) {
+                foreach($matches[1] as $val){
+                    $taobao_detail[] = 'https:'.$val;
+                }
+                $tb_detail_model = new TbDetailModel();
+                $add = [
+                    'itemid' => $itemid,
+                    'taobao_detail' => implode(',',$taobao_detail),
+                ];
+                try {
+                    $tb_detail_model->addData($add);
+                } catch (Exception $ex) {
+
+                }
             }
         }
-        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
+
+        $data = [
+            'taobao_detail' => $taobao_detail
+        ];
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
 }
