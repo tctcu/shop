@@ -32,6 +32,9 @@ class ItemController extends ApiController
     function detailAction()
     {
         $itemid = intval($_REQUEST['itemid']);
+        if(empty($itemid)){
+            $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
+        }
         $url = "http://v2.api.haodanku.com/item_detail/apikey/allfree/itemid/" . $itemid;
         $json = file_get_contents($url);
         $tb_info = json_decode($json, true)['data'];
