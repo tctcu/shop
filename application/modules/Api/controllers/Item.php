@@ -35,14 +35,28 @@ class ItemController extends ApiController
         $url = "http://v2.api.haodanku.com/item_detail/apikey/allfree/itemid/" . $itemid;
         $json = file_get_contents($url);
         $tb_info = json_decode($json, true)['data'];
+        $taobao_model = new TaobaoModel();
 
         if(empty($tb_info)){//查库
             $tb_model = new TbModel();
             $tb_info = $tb_model->getDataByItemId($itemid);
         }
+        if(empty($tb_info['taobao_image'])){//淘宝图片
+            $condition = [
+                'item_id' => $itemid
+            ];
+            $item_info = $taobao_model->TbkItemInfoGetRequest($condition);
+            $tb_info['taobao_image'] = implode(',', $item_info['small_images']['string']);
+
+            if($tb_model) {
+                $tb_update = [
+                    'taobao_image' => $tb_info['taobao_image']
+                ];
+                $tb_model->updateData($tb_update, $tb_info['id']);
+            }
+        }
 
         if(empty($tb_info)){//查淘宝
-            $taobao_model = new TaobaoModel();
             $condition = [
                 $itemid
             ];
