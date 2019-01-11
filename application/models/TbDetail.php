@@ -1,15 +1,19 @@
 <?php
+
 #商品详情表
-class TbDetailModel extends MysqlModel {
+class TbDetailModel extends MysqlModel
+{
     protected $_name = 'tb_detail';
 
-    function __construct(){
+    function __construct()
+    {
         parent::__construct();
     }
 
     #添加
-    function addData($data){
-        if(empty($data)){
+    function addData($data)
+    {
+        if (empty($data)) {
             return false;
         }
         $data['created_at'] = time();
@@ -17,21 +21,23 @@ class TbDetailModel extends MysqlModel {
     }
 
     #查找单条信息
-    function getDataByItemId($itemid = 0){
-        if(empty($itemid)){
+    function getDataByItemId($itemid = 0)
+    {
+        if (empty($itemid)) {
             return false;
         }
-        $where = $this->_db->quoteInto('itemid = ?',$itemid);
+        $where = $this->_db->quoteInto('itemid = ?', $itemid);
         $data = $this->fetchRow($where);
-        if(!empty($data)){
+        if (!empty($data)) {
             return $data->toArray();
         }
         return false;
     }
 
 
-    function makeDetail($info){
-        return[
+    function makeDetail($info)
+    {
+        return [
             'itemid' => $info['itemid'],
             'itemshorttitle' => $info['itemshorttitle'],
             'itemprice' => $info['itemprice'],
@@ -44,11 +50,17 @@ class TbDetailModel extends MysqlModel {
             'couponstarttime' => $info['couponstarttime'],
             'couponendtime' => $info['couponendtime'],
             'shoptype' => $info['shoptype'],
-            'rebate' => sprintf("%.2f",$info['tkrates'] * TbModel::REBATE * $info['itemendprice']),
+            'rebate' => sprintf("%.2f", $info['tkrates'] * TbModel::REBATE * $info['itemendprice']),
             'taobao_image' => $info['taobao_image'] ? explode(',', $info['taobao_image']) : [],
-            'taobao_detail' =>$info['taobao_detail'] ? explode(',', $info['taobao_detail']) : [],
+            'taobao_detail' => $info['taobao_detail'] ? explode(',', $info['taobao_detail']) : [],
             'shopname' => $info['shopname'],
-            'detail_json_url' => 'https://h5api.m.taobao.com/h5/mtop.taobao.detail.getdesc/6.0/?data={%22id%22:%22'.$info['itemid'].'%22}',
+            'detail_json_url' => 'https://h5api.m.taobao.com/h5/mtop.taobao.detail.getdesc/6.0/?data={%22id%22:%22' . $info['itemid'] . '%22}',
+            'share' => [
+                'share_title' => $info['itemshorttitle'] . '到手价￥' . $info['itemprice'],
+                'share_pic' => $info['itempic'] . '_80x80.jpg',
+                'share_url' => 'http://' . $_SERVER['HTTP_HOST'] . '/Web/shareDetail?itemid=' . $info['itemid'] . '&uid=',
+                'share_tpwd' => $info['itemshorttitle'] . '到手价￥' . $info['itemprice'] . '   【tpwd】復·制这段描述后咑閞淘♂寳♀'
+            ]
         ];
     }
 }
