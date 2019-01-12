@@ -134,6 +134,7 @@ class UserController extends ApiController
         $auth_code = addslashes(htmlspecialchars(trim($_REQUEST['auth_code'])));
         $device_type = intval($_REQUEST['device_type']);
         $device = trim($_REQUEST['device']);
+        $token = trim($_REQUEST['token']);
 
         if(empty($auth_code)){
             $this->responseJson('10007','授权失败');
@@ -141,6 +142,10 @@ class UserController extends ApiController
         $model = new WechatOpenModel();
         $token_info = $model->getAccessToken($auth_code);
         $user_data = $model->getUserInfo($token_info['access_token'],$token_info['openid']);
+        if($token && $user_data["unionid"] <> $token){
+            $this->responseJson('10007','请使用该账号绑定微信号授权');
+        }
+
         $user_model = new UserModel();
         $user_info = $user_model->getDataByUnionid($user_data["unionid"]);
         if(empty($user_info)){ //注册

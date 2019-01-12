@@ -57,9 +57,15 @@ class TbDetailModel extends MysqlModel
             'detail_json_url' => 'https://h5api.m.taobao.com/h5/mtop.taobao.detail.getdesc/6.0/?data={%22id%22:%22' . $info['itemid'] . '%22}',
             'share' => [
                 'share_title' => $info['itemshorttitle'] . '到手价￥' . $info['itemprice'],
-                'share_pic' => $info['itempic'] . '_80x80.jpg',
-                'share_url' => 'http://' . $_SERVER['HTTP_HOST'] . '/Web/shareDetail?itemid=' . $info['itemid'] . '&uid=',
-                'share_tpwd' => $info['itemshorttitle'] . '到手价￥' . $info['itemprice'] . '   【tpwd】復·制这段描述后咑閞淘♂寳♀'
+                'share_pic' => $info['itempic'] . '_150x150.jpg',
+                'share_url' => 'http://' . $_SERVER['HTTP_HOST'] . '/Web/shareDetail?itemid=' . $info['itemid'] . '&token=',
+                'share_tpwd' => $info['itemshorttitle'] . "\n
+                                  --------\n
+                                【在售价】". $info['itemprice'] ."元\n
+                                【到手价】". $info['itemendprice'] ."元\n
+                                  --------\n
+                                復·制这段描述【tpwd】,\n
+                                咑閞淘♂寳♀即可查看"
             ]
         ];
     }
