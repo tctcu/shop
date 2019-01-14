@@ -201,4 +201,33 @@ class MyController extends ApiController
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
+    #账户
+    function accountAction(){
+        $uid = $this->uid;
+        $error = true;
+        if($uid){
+            $user_model = new UserModel();
+            $user_info = $user_model->getDataByUid($uid);
+            if($user_info){
+                $error = false;
+            }
+        }
+        if($error){
+            $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
+        }
+
+        $tb_order_model = new TbOrderModel();
+        $count_order = $tb_order_model->getWaitByUid($uid);
+        $count_order = $tb_order_model->getTodayByUid($uid);
+
+        $data = [
+            'use' => '0.00',
+            'today' => '',
+            'wait' => '',
+            'total' => '0.00',
+        ];
+
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+    }
+
 }

@@ -99,6 +99,23 @@ Tip:
         return $num;
     }
 
+    function getWaitByUid($uid = 0){
+        if(empty($uid)){
+            return false;
+        }
+        $sql = "select sum(rebate) as wait from {$this->_name} where status in(12,14) and uid={$uid} ";
+    }
+
+    function getTodayByUid($uid = 0){
+        if(empty($uid)){
+            return false;
+        }
+        $start_today = date('Y-m-d 00:00:00');
+        $end_today = date('Y-m-d 23:59:59');
+        $sql = "select sum(rebate) as today from {$this->_name} where status in (12,14) and create_time>={$start_today} and create_time<={$end_today} and uid={$uid} ";
+    }
+
+
     function makeOrder($list){
         $data = [];
         foreach($list as $key=>$val){
