@@ -3,7 +3,8 @@
 class TbModel extends MysqlModel {
     protected $_name = 'tb';
     private $pid = 'mm_234440039_166200410_57891600477';//'mm_116356778_18618211_65740777';
-    const REBATE = '0.005';//返利比例
+    const RATE = '0.01';//换算佣金比例%
+    const REBATE = '0.5';//返利比例
     const MEMBER = [//对应config
         '234440039' => 1,
         '116356778' => 2,
@@ -117,7 +118,7 @@ class TbModel extends MysqlModel {
                 'couponstarttime' => $item['couponstarttime'],
                 'couponendtime' => $item['couponendtime'],
                 'shoptype' => $item['shoptype'],
-                'rebate' => sprintf("%.2f",$item['tkrates'] * TbModel::REBATE * $item['itemendprice'])
+                'rebate' => sprintf("%.2f",$item['tkrates'] * TbModel::RATE * $item['itemendprice'] * TbModel::REBATE)
             ];
         }
         return $data;

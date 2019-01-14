@@ -164,4 +164,41 @@ class MyController extends ApiController
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
+    #订单
+    function orderAction(){
+        $min_id = isset($_REQUEST['min_id']) ? intval($_REQUEST['token']) : '0';
+        $uid = $this->uid;
+
+        $error = true;
+        if($uid){
+            $user_model = new UserModel();
+            $user_info = $user_model->getDataByUid($uid);
+            if($user_info){
+                $error = false;
+            }
+        }
+        if($error){
+            $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
+        }
+
+        $user_pid_model = new UserPidModel();
+        $pid_info = $user_pid_model->getDataByUid($uid);
+        $pid_info['site_id'] = '166200410';
+        $pid_info['adzone_id'] = '57891600477';
+        $data = [];
+
+        if($pid_info['site_id'] && $pid_info['adzone_id']){
+            $condition = [
+                'min_id' => $min_id,
+                'site_id' => $pid_info['site_id'],
+                'adzone_id' => $pid_info['adzone_id']
+            ];
+            $tb_order_model = new TbOrderModel();
+            $order_info = $tb_order_model->getListData(20,$condition);
+            $data = $tb_order_model->makeOrder($order_info);
+        }
+
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+    }
+
 }

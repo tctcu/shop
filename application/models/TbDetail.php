@@ -50,7 +50,7 @@ class TbDetailModel extends MysqlModel
             'couponstarttime' => $info['couponstarttime'],
             'couponendtime' => $info['couponendtime'],
             'shoptype' => $info['shoptype'],
-            'rebate' => sprintf("%.2f", $info['tkrates'] * TbModel::REBATE * $info['itemendprice']),
+            'rebate' => sprintf("%.2f", $info['tkrates'] * TbModel::RATE * $info['itemendprice'] * TbModel::REBATE),
             'taobao_image' => $info['taobao_image'] ? explode(',', $info['taobao_image']) : [],
             'taobao_detail' => $info['taobao_detail'] ? explode(',', $info['taobao_detail']) : [],
             'shopname' => $info['shopname'],
