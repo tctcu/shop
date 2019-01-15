@@ -118,7 +118,7 @@ class TbModel extends MysqlModel {
                 'couponstarttime' => $item['couponstarttime'],
                 'couponendtime' => $item['couponendtime'],
                 'shoptype' => $item['shoptype'],
-                'rebate' => sprintf("%.2f",$item['tkrates'] * TbModel::RATE * $item['itemendprice'] * TbModel::REBATE)
+                'rebate' => sprintf("%.2f",$item['tkrates'] * ConfigModel::RATE * $item['itemendprice'] * ConfigModel::REBATE)
             ];
         }
         return $data;

@@ -128,7 +128,7 @@ Tip:
                 'itemshorttitle' => $val['item_title'],
                 'item_num' => $val['item_num'],
                 'alipay_total_price' => $val['alipay_total_price'],
-                'rebate' => sprintf("%.2f", TbModel::REBATE * $val['pub_share_pre_fee']),
+                'rebate' => sprintf("%.2f", ConfigModel::REBATE * $val['pub_share_pre_fee']),
                 'tk_status' => $val['tk_status'],
                 'status' => TbOrderModel::ORDER_STATUS[$val['tk_status']],
                 'create_time' => $val['create_time'],

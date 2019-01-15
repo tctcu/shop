@@ -296,7 +296,7 @@ class TaobaoModel{
             'couponendtime' => '',
             'shoptype' => $item_info['user_type'] == 1 ? 'B': 'C',
             'taobao_image' => $item_info['small_images']['string'],
-            'rebate' => sprintf("%.2f",$url_info['max_commission_rate'] * TbModel::RATE * $item_info['zk_final_price'] * TbModel::REBATE)
+            'rebate' => sprintf("%.2f",$url_info['max_commission_rate'] * ConfigModel::RATE * $item_info['zk_final_price'] * ConfigModel::REBATE)
         ];
         if($url_info['coupon_type']){ //有券
             $couponmoney = 0;

@@ -324,7 +324,7 @@ class GoodsController extends ApiController
                 'couponstarttime' => $val['couponstarttime'],
                 'couponendtime' => $val['couponendtime'],
                 'shoptype' => $val['shoptype'],
-                'rebate' => sprintf("%.2f", $val['tkrates'] * TbModel::RATE * $val['itemendprice'] * TbModel::REBATE),//返利专用
+                'rebate' => sprintf("%.2f", $val['tkrates'] * ConfigModel::RATE * $val['itemendprice'] * ConfigModel::REBATE),//返利专用
                 //'taobao_image' => explode(',' ,$val['taobao_image']),
             );
         }

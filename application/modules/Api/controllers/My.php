@@ -109,7 +109,7 @@ class MyController extends ApiController
             $pid_info = $user_pid_model->getDataByUid($uid);
         }
 
-        $type = TbModel::MEMBER[$pid_info['memberid_id']];
+        $type = ConfigModel::MEMBER[$pid_info['memberid_id']];
 
         #获取库信息
         $tb_model = new TbModel();
