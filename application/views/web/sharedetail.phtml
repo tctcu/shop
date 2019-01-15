@@ -1,0 +1,160 @@
+<!doctype html>
+<html >
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="劲享大额优惠" />
+    <meta content="max-age=0" http-equiv="Cache-Control">
+    <meta content="240" name="MobileOptimized">
+    <meta content="YES" name="apple-touch-fullscreen">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
+    <title><?php echo $tb_info['itemshorttitle']?>-券购</title>
+    <link rel="stylesheet" type="text/css" href="/img/sharedetail/style.css">
+    <script>
+        'use strict';
+        (function (doc, win) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (!clientWidth) return;
+                    docEl.style.fontSize = 25 * (clientWidth / 750) + 'px';
+                };
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            doc.addEventListener('DOMContentLoaded', recalc, false);
+        })(document, window);
+    </script>
+    <script src="http://cdn.bootcss.com/jquery/1.8.3/jquery.min.js"></script>
+    <script src="/js/jquery.lazyload.min.js"></script>
+    <style>
+        .productDetail h3 {
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 200%;
+        }
+        .productDetail a {
+            display: inline;
+            color: #5e97ef;
+            font-style: italic;
+            text-decoration: underline;
+        }
+
+        .productDetail a:link a:visited a:hover a:active {
+            color: #5e97ef;
+        }
+
+        .productDetail img{
+            max-width: 100%;
+            display: block;
+            margin: 0 auto;
+        }
+
+    </style>
+
+</head>
+<body>
+<section class="download_banner shengqianBanner">
+    <div class="closeXBtn">
+        <img src="/img/sharedetail/top-x.png" alt="logo">
+    </div>
+    <div class="logoBox">
+        <img src="/img/sharedetail/logo.png" alt="logo">
+    </div>
+    <div class="logoText">
+        <h4>券购</h4>
+        <p>劲享大额优惠！</p>
+    </div>
+    <a href="https://itunes.apple.com/cn/app/id1440226599?mt=8" class="btnSQ">免费下载</a>
+</section>
+<div class="fixTop"></div>
+<!-- P1 -->
+<section class="midSection">
+    <div class="midP_imgBox">
+        <img class="lazy" data-original="<?php echo $tb_info['itempic'];?>" width="100%">
+    </div>
+    <div class="productTitle">
+        <h3 class="midP_title"><?php echo $tb_info['itemshorttitle'];?></h3>
+        <p class="midP_top">
+            <span class="midP_website"><?php echo $tb_info['shopname']?></span>
+            <span class="sort"><?php echo $tb_info['couponexplain']?></span>
+            <span class="longString "></span>
+            <span class="midP_time"><?php echo date('H:i', $tb_info['couponstarttime'])?></span>
+        </p>
+        <p class="midP_Cost">
+            <span class="expoundTx">&yen;<?php echo $tb_info['itemendprice'];?>
+                <span class="oldPrice">&yen;<?php echo $tb_info['itemprice'];?></span>
+            </span>
+        </p>
+    </div>
+</section>
+
+<section class="midSection">
+    <?php foreach($tb_info['taobao_image'] as $val){ ?>
+        <div class="midP_imgBox">
+            <img class="lazy" data-original="<?php echo $val;?>" width="100%">
+        </div>
+    <?php } ?>
+</section>
+<section class="sectionP">
+    <article>
+        <p>欢迎大家来加入券购的微信公众号，有更多意想不到的福利哟～（微信公众号:券购）</p>
+        <p>更多白菜价商品，请关注省钱日报板块，更多一手资讯请加入“省钱日报”互动群：317889572获取第一手讯息！</p>
+    </article>
+</section>
+
+<footer id="midP_btnBox" class="shengqianBtn">
+    <a style="width: 100%;height: 100%" href="javascript:;" class="shenqianLink" id="goLink">前往链接</a>
+</footer>
+<div id="popUpBg">
+    <div class="openInBrower">
+        <img src="/img/sharedetail/ios.png" alt="请在浏览器中打开" class="iosPop" style="display: none;">
+        <img src="/img/sharedetail/android.png" alt="请在浏览器中打开" class="andPop"  style="display: none;">
+    </div>
+</div>
+</body>
+<script>
+    var link='<?php echo $tb_info['url'];?>';
+    $(function(){
+        //点击前往链接
+        $('#goLink').on('click',function(){
+            fadeinWechat(link);
+            e.preventDefault();
+            return  false;
+        });
+        $("img.lazy").lazyload({
+            placeholder : "/h5/img/placeholder.png"
+        });
+
+        $('.closeXBtn').on('click',function () {
+            $('.download_banner').remove();
+            $('.fixTop').remove();
+        })
+        //event Bind
+        $('#popUpBg').on("touchmove",function(e){
+            e.preventDefault();
+        });
+        $('#popUpBg').on("click",function(){
+            $(this).fadeOut();
+        });
+        function fadeinWechat(url){
+            var wechatInfo = navigator.userAgent.match(/MicroMessenger\/([\d\.]+)/i) ;
+            // 判断宿主是否是微信，若宿主是微信，则弹出遮罩，并禁止滑动
+            if(wechatInfo ) {
+                if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                    $('.iosPop').show();
+                    $('#popUpBg').fadeIn('fast');
+                }else{
+                    $('.andPop').show();
+                    $('#popUpBg').fadeIn('fast');
+                }
+
+            }else{
+                window.location.href = url;
+            }
+        }
+    })
+</script>
+</html>
