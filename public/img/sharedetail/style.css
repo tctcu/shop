@@ -1,0 +1,523 @@
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+    margin:0;
+    padding:0;
+    vertical-align:baseline;
+}
+blockquote, q { quotes:none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after { content:""; content:none;}
+
+ins { background-color:#ff9; color:#000; text-decoration:none;}
+
+mark { background-color:#ff9; color:#000; font-style:italic; font-weight:bold;}
+
+del { text-decoration:line-through; }
+
+abbr[title], dfn[title] { border-bottom:1px dotted; cursor:help;}
+
+table { border-collapse:collapse; border-spacing:0;}
+
+hr { display:block; height:1px; border:0; border-top:1px solid #ccc; margin:1em 0; padding:0;}
+
+input, select { vertical-align:middle; }
+
+@charset "utf-8";
+/* 禁用iPhone中Safari的字号自动调整 */
+html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+/* 去除iPhone中默认的input样式 */
+input[type="submit"],
+
+input[type="reset"],
+
+input[type="button"],
+
+input{-webkit-appearance:none; resize: none;}
+/* 取消链接高亮  */
+body,div,ul,li,ol,h1,h2,h3,h4,h5,h6,input,textarea,select,p,dl,dt,dd,a,img,button,form,table,th,tr,td,tbody,article,
+aside, details,figcaption,figure,footer,header,hgroup, menu,nav,section{ -webkit-tap-highlight-color:rgba(0, 0, 0, 0); }
+/* 设置HTML5元素为块 */
+article, aside, details,figcaption,figure,footer,header,hgroup, menu,nav,section {
+    display: block;
+}
+/* 图片自适应 */
+img {
+    max-width: 100%;
+    height: auto;
+    width:auto\9; /* ie8 */
+    -ms-interpolation-mode:bicubic;/*为了照顾ie图片缩放失真*/
+}
+/* 初始化 */
+body,div,ul,li,ol,h1,h2,h3,h4,h5,h6,input,textarea,select,p,dl,dt,dd,a,img,button,form,table,th,tr,td,tbody,article,
+aside, details,figcaption,figure,footer,header,hgroup, menu,nav,section{margin:0; padding:0;}
+body{font-family: Microsoft YaHei, "Helvetica Neue", Helvetica, Arial, sans-serif;}
+
+em,i{font-style:normal;}
+strong{}
+.clearfix:after{content:""; display:block; visibility:hidden; height:0; clear:both;}
+.clearfix{zoom:1;}
+a{ color: #0000ff; display: inline-block; font-weight:bold;}
+a:hover{text-decoration:none;}
+ul,ol{list-style:none;}
+*{box-sizing: border-box;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;}
+a, img, button {
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-appearance: none;
+    outline: 0;
+}
+/*初始化样式结束*/
+html{
+    background: #fff;
+}
+body{
+    background: #eee;
+}
+section{
+    background: #fff;
+    padding: 0 2rem;
+}
+.midSection{
+    padding: 0 3rem;
+    padding-bottom: 1.2rem;
+}
+.midP_imgBox{
+    width: 16rem;
+    height: 16rem;
+    overflow: hidden;
+    margin: 0 auto;
+}
+.midP_imgBox2{
+    width: 16rem;
+    height: 14rem;
+    overflow: hidden;
+    margin: 0 auto;
+    margin-top: 1rem
+}
+.sectionS{
+    padding-top: 1.6rem;
+    margin-top: 0.8rem;
+    padding-bottom: 5.4rem;
+}
+.couponBox{
+    height: 7.52rem;
+    width: 100%;
+    background: #f22f4a;
+    margin-bottom: 1.6rem;
+    padding: 0.8rem;
+}
+.leftBox{
+    width: 6rem;
+    height: 6rem;
+    overflow: hidden;
+    float: left;
+    margin-right: 0.8rem;
+}
+.rightBox{
+    color: #fff;
+    height: 6rem;
+    width: 100%;
+    position: relative;
+}
+.boxTitle{
+    font-size: 1.3rem;
+    line-height: 1.8;
+}
+.rightBox p{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.boxDe1{
+    font-size: 1rem;
+}
+.boxDe2{
+    font-size: 1rem;
+    line-height: 1.8;
+}
+.goApp{
+    width: 7em;
+    font-size: 1.12rem;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 2em;
+    line-height: 2em;
+    text-align: center;
+    background: #fff;
+    color: #f22f4a;
+    border-radius: 5px;
+}
+.midP_top{
+    font-size: 1rem;
+    color: #A29E98;
+    margin-top: 1.4rem;
+}
+.midP_top span{
+    line-height: 2em;
+}
+.expoundTx{
+    width:78%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+.midP_top2{
+    font-size: 1rem;
+    color: #A29E98;
+    margin-top: 1rem;
+    text-align: center;
+}
+.midP_website{
+    display: inline-block;
+    vertical-align: middle;
+    padding-right: 0.5rem;
+}
+.midP_website2{
+    display: inline-block;
+    vertical-align: middle;
+    padding-right: 0.8rem;
+}
+.midP_time{
+    vertical-align: middle;
+}
+.longString{
+    width: 1px;
+    display: inline-block;
+    border-right: 1px solid #A29E98;
+    margin-right: 0.5rem;
+    height: 0.8rem!important;
+    vertical-align: middle;
+}
+.midP_title{
+    margin-top: 0.8rem;
+    line-height: 2rem;
+    max-height: 4rem;
+    overflow: hidden;
+    font-size: 1.6rem;
+    color: #52524F;
+    font-weight: 500;
+}
+.midP_title2{
+    margin-top: 0.8rem;
+    line-height: 2rem;
+    overflow: hidden;
+    font-size: 1.44rem;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    color: #52524F;
+    font-weight: 500;
+    text-align: center;
+}
+.midP_Cost{
+    margin-top: 0.8rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #f2332f;
+    overflow: hidden;
+    vertical-align: middle;
+    display:block;
+}
+.midP_Cost span{
+    display: inline-block;
+}
+.midP_Cost2{
+    margin-top: 0.8rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #f2332f;
+    overflow: hidden;
+    vertical-align: middle;
+    text-align: center;
+    display:block;white-space:nowrap;text-overflow:ellipsis;
+}
+.midP_Cost2 span{
+    display: inline-block;
+}
+.oldPrice{
+    text-decoration:line-through;
+    vertical-align: middle;
+    font-size: 1.2rem;
+    color: #A29E98;
+    line-height: 2;
+    font-weight: 500;
+    margin: 0 0rem 0 1rem;
+    margin-bottom: 1%;
+}
+.cheapPrice{
+    vertical-align: middle;
+    font-size:1rem;
+    border: 1px solid #2abbb4;
+    color: #2abbb4;
+    width: 4em;
+    border-radius: 1em;
+    text-align:center;
+}
+.zhide{
+    vertical-align: middle;
+    font-size:1rem;
+    border: 1px solid #f2332f;
+    color: #f2332f;
+    width: 4em;
+    border-radius: 1em;
+    text-align:center;
+    vertical-align: text-top;
+}
+.sort{
+    display: inline-block;
+    vertical-align: middle;
+    padding-right: 0.5rem;
+}
+.postage{
+    border: 1px solid #2abbb4;
+    color: #2abbb4;
+    width: 3em;
+    text-align: center;
+    display: inline-block;
+    margin-left: 0.5rem;
+    border-radius: 3px;
+    line-height: 1.6;
+}
+.martLogo{
+    width: 1.5rem;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+}
+.productDetail{
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+    /*padding-bottom: 4.5rem;*/
+}
+.proDescription{
+    font-size: 1.3rem;
+}
+.AllFreeBtn{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 555;
+    width: 100%;
+    height: 5.4rem;
+    border-top:1px solid #DEDBD7;
+    background: #fff;
+    text-align:center;
+}
+.shengqianBtn{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 555;
+    width: 100%;
+    height: 3.6rem;
+    background: #f22f4a;
+    text-align:center;
+    line-height: 3.6rem;
+    font-size:1.5rem;
+}
+.shenqianLink{
+    color: #ffffff;
+    text-decoration: none;
+}
+.btn{
+    width: 13.6rem;
+    height: 3.2rem;
+    color: #fff;
+    line-height: 3.2rem;
+    text-align: center;
+    margin:0 auto;
+    margin-top: 1.1rem;
+    border-radius: 0.5rem;
+    font-size:1.4rem;
+    text-decoration: none;
+}
+.btnS{
+    height: 2.8rem;
+    color: #fff;
+    line-height: 2.8rem;
+    text-align: center;
+    float: right;
+    border-radius: 4px;
+    padding: 0 0.88rem;
+    font-size:1.2rem;
+    margin-top: 0.5rem;
+    text-decoration: none;
+}
+.btnL{
+    height: 4rem;
+    width: 12rem;
+    color: #fff;
+    display: inline-block;
+    background: #2abbb4;
+    line-height: 4rem;
+    text-align: center;
+    border-radius: 4px;
+    font-size:1.76rem;
+    margin-top: 1rem;
+}
+.btnRed{
+    background: #FF0000;
+}
+.btnCyan{
+    background: #f22f4a;
+    font-style: normal;
+}
+.download_banner{
+    height: 6.4rem;
+    padding: 1.28rem 1.2rem;
+    background: #000;
+    background: rgba(0,0,0,0.8);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index:2;
+}
+.download_banner div{
+    display: inline-block;
+    vertical-align: top;
+}
+.topX{
+    width: 1.5rem;
+    /*height: 3.8rem;*/
+    text-align: center;
+    float: left;
+    margin: 1rem 1rem 1rem 0;
+}
+.bottom2{
+    height: 6.4rem;
+    padding: 1.28rem 1.2rem;
+    background: #000;
+    opacity: 0.8;
+    -khtml-opacity: 0.8;
+}
+.bottom2 div{
+    display: inline-block;
+}
+.logoBox{
+    width: 3.8rem;
+    height: 3.8rem;
+    overflow: hidden;
+    margin-right: 1.2rem;
+    vertical-align: top;
+}
+.shengqianBanner .logoBox{
+    width: 3.2rem;
+    height: 3.2rem;
+}
+.logoText{
+    color: #fff;
+    line-height: 1.4;
+}
+.logoText h4{
+    font-size: 1.6rem;
+}
+.logoText p{
+    font-size: 1.12rem;
+    margin-top: 0.2rem;
+}
+.shengqianBanner .logoText p{
+    font-size: 1rem;
+    margin-top: 0.1rem;
+}
+.shengqianBanner .logoText h4{
+    font-size: 1.4rem;
+}
+.btnSQ{
+    height: 2.4rem;
+    color: #fff;
+    line-height: 2.5rem;
+    text-align: center;
+    float: right;
+    border-radius: 4px;
+    padding: 0 0.88rem;
+    font-size:1.1rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+    text-decoration: none;
+    background:#f22f4a;
+    width:7em;
+    border-radius: 1em;
+}
+#popUpBg{
+    display: none;
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index:1001;
+    background: rgba(0,0,0,0.5);
+}
+.sectionP{
+    padding:2rem;
+    background: #e3e3e3;
+    padding-bottom: 5.4rem;
+}
+.sectionP article{
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #666;
+}
+.shengqianBanner{
+    height: 4.5rem;
+    padding: 0.6rem 1.2rem 0.6rem 0.8rem;
+}
+/*#pp,#pp1{
+	display: none;
+}*/
+.p1buyNow{
+    text-align:center;
+}
+
+.goUrl {
+    width: 7em;
+    font-size: 1.12rem;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 2em;
+    line-height: 2em;
+    text-align: center;
+    background: #fff;
+    color: #f22f4a;
+    border-radius: 5px;
+}
+.goUrl a{
+    color:#f22f4a;
+    text-decoration: none;
+}
+
+.leftBox img{height:100%}
+.closeXBtn {
+    height:100%;
+    width: 1rem;
+    position: relative;
+    margin-right: 0.4rem;
+}
+.closeXBtn img{
+    width: 1rem;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 0rem;
+    transform: translatey(-50%);
+    -ms-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+}
+.fixTop{
+    height: 4.5rem;
+}
