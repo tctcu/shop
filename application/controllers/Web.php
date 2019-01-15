@@ -1,6 +1,8 @@
 <?php
 class WebController extends Yaf_Controller_Abstract
 {
+    private $pid = 'mm_234440039_166200410_57891600477';//'mm_116356778_18618211_65740777';
+
     function init(){
         header('content-type:text/html;charset=utf-8');
     }
@@ -61,9 +63,9 @@ class WebController extends Yaf_Controller_Abstract
         $tb_detail_info = $tb_detail_model->getDataByItemId($itemid);
         $tb_info['taobao_detail'] = $tb_detail_info['taobao_detail'];
         $data = $tb_detail_model->makeDetail($tb_info);
-//        echo '<pre>';
-//print_r($data);die;
-        $data['url'] = 'http://uland.taobao.com/coupon/edetail?activityId=' . $val['activityid'] . '&itemId=' . $val['itemid'] . '&src=qmmf_sqrb&mt=1&pid=' . $this->pid;
+        echo '<pre>';
+print_r($data);die;
+        $data['url'] = 'http://uland.taobao.com/coupon/edetail?activityId=' . $tb_info['activityid'] . '&itemId=' . $tb_info['itemid'] . '&src=qmmf_sqrb&mt=1&pid=' . $this->pid;
         $this->_view->tb_info = $data;
     }
 

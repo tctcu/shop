@@ -249,7 +249,7 @@ class TaobaoModel{
         return $retData;
     }
 
-
+    #创建淘口令
     function TbkTpwdCreateRequest($condition = array()){
         $text = isset($condition['text']) ? trim($condition['text']) : '';//关键词
         $url = isset($condition['url']) ? trim($condition['url']) : '';//链接
@@ -273,6 +273,13 @@ class TaobaoModel{
         }
 
         return $retData;
+    }
+
+    function WirelessShareTpwdQueryRequest(){
+
+        $req = new WirelessShareTpwdQueryRequest;
+        $req->setPasswordContent("【天猫品牌号】，复制这条信息￥sMCl0Yra3Ae￥后打开手机淘宝");
+        $resp = $c->execute($req);
     }
 
 
