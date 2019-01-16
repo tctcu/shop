@@ -220,13 +220,10 @@ add `w_openid` varchar(40) NOT NULL DEFAULT '' COMMENT '微信openid' after `sta
 
  CREATE TABLE `tb_order_log` (
    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-   `type` int(11) NOT NULL DEFAULT '0' COMMENT '记录来源 1-定时获取 2-每日汇总',
    `json` varchar(5000) NOT NULL DEFAULT '' COMMENT '获取json详情',
    `trade_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '订单id',
    `tk_status` int(11) NOT NULL DEFAULT '0' COMMENT '订单状态',
-   `trade_parent_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '父订单id',
    `num_iid` bigint(20) NOT NULL DEFAULT '0' COMMENT '淘宝id',
-   `item_title` varchar(300) NOT NULL DEFAULT '' COMMENT '标题',
    `item_num` int(11) NOT NULL DEFAULT '0' COMMENT '数量',
    `site_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '媒体id',
    `adzone_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '广告位id',

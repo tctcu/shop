@@ -1,7 +1,7 @@
 <?php
 /**
- * 订单获取 5分钟一次
- * 改进 当订单超过100单/5分钟
+ * 订单获取 5分钟一次 前20分钟订单
+ * 改进 更快的频率
  *
  */
 include('Common_func.php');
@@ -25,168 +25,108 @@ Tip:
  * */
 
 
-
-$time = time()-300;//查300秒内的订单
-$start_time = date('Y-m-d H:i:s',$time);
+$start_time = date('Y-m-d H:i:s',time()-1200);//查20分钟内的订单
 $all = 'trade_parent_id,trade_id,num_iid,item_title,item_num,price,pay_price,seller_nick,seller_shop_title,commission,commission_rate,unid,create_time,earning_time,tk_status,tk3rd_type,tk3rd_pub_id,order_type,income_rate,pub_share_pre_fee,subsidy_rate,subsidy_type,terminal_type,auction_category,site_idString,site_name,adzone_id,adzone_name,alipay_total_price,total_commission_rate,total_commission_fee,subsidy_fee,relation_id,special_id,click_time';
-
-$status = [//1: 全部订单（默认值），3：订单结算，12：订单付款， 13：订单失效，14：订单成功
-    12 => 'pay',
-    14 => 'success',
-    3 => 'clearing',
-    13 => 'lose',
-];
 
 $requ = [
     'session' => SESSION,
     'fields' => 'tb_trade_parent_id,tb_trade_id,site_id,adzone_id,alipay_total_price,income_rate,pub_share_pre_fee,num_iid,item_title,item_num,create_time,tk_status',
     'start_time' => $start_time,
-    'span' => '300',//秒
+    'span' => '1200',//秒
     'page_size' => '100',
     'order_query_type' => 'create_time',
+    'tk_status' => '1',
 ];
 $url = 'http://gateway.kouss.com/tbpub/orderGet';
 
 $dbh = dsn();
-foreach($status as $k => $v){
-    $requ['tk_status'] = $k;
+$page = 1;
+while(true){
+
+    $requ['page'] = $page;
     $resp = post_json_curl($url,$requ);
 
     if (isset($resp['tbk_sc_order_get_response']['results'])) {
         if(isset($resp['tbk_sc_order_get_response']['results']['n_tbk_order']) && empty($resp['tbk_sc_order_get_response']['results']['n_tbk_order'])) {
-            foreach ($resp['tbk_sc_order_get_response']['results']['n_tbk_order'] as $val) {
+            $order_list = $resp['tbk_sc_order_get_response']['results']['n_tbk_order'];
+            foreach ($order_list as $val) {
                 insertOrderLog($dbh,$val);
-                if(empty($v($dbh,$val))){
-                    hdk_log($start_time.' '.$v.': '.json_encode($val));
+
+                $date = [
+                    'adzone_id' => $val['adzone_id'],
+                    'site_id' => $val['site_id'],
+                    'rebate' => sprintf("%.2f",$val['pub_share_pre_fee'] * ConfigModel::REBATE),//订单返利
+                    'pub_share_pre_fee' => $val['pub_share_pre_fee'],
+                    'tk_status' => $val['tk_status'],
+                    'updated_at' => time()
+                ];
+
+                $select_sql = "select id from tb_order where trade_id={$val['trade_id']}";
+                $order = $dbh->query($select_sql)->fetch(PDO::FETCH_ASSOC);
+                if($order){
+                    $date['alipay_total_price'] = $val['alipay_total_price'];
+                    $date['create_time'] = $val['create_time'];
+                    $date['income_rate'] = $val['income_rate']*100;//单位%
+                    $date['item_num'] = $val['item_num'];
+                    $date['item_title'] = $val['item_title'];
+                    $date['num_iid'] = $val['num_iid'];
+                    $date['terminal_type'] = $val['terminal_type'];
+                    $date['trade_id'] = $val['trade_id'];
+                    $date['trade_parent_id'] = $val['trade_parent_id'];
+                    $date['created_at'] = time();
+
+                    $insert_sql = "insert into tb_order(";
+                    foreach ($date as $k => $v) {
+                        $insert_sql .= '`' . $k . '`,';
+                    }
+                    $insert_sql = rtrim($insert_sql, ",") . ') values(';
+
+                    foreach ($date as $v) {
+                        $insert_sql .= "'" . $v . "',";
+                    }
+                    $insert_sql = rtrim($insert_sql, ",") . ')';
+                    $dbh->exec($insert_sql);
+                } else {
+                    $update_sql = 'update tb_order set ';
+                    foreach ($date as $k=>$v) {
+                        $update_sql .=  $k . "='" . $v . "',";
+                    }
+                    $update_sql = rtrim($update_sql, ",") . " where id =".$order['id'];
+                    $dbh->exec($update_sql);
                 }
             }
+
+            if(count($order_list)<100){
+                return 'over';
+            } else {
+                $page++;
+            }
+        } else {
+            return 'over';
         }
     } else {
         hdk_log(date('Y-m-d H:i:s') . ' [定时获取订单 api error]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
     }
-    sleep(10);
+    sleep(5);
 }
 
 echo 'over';die;
 
 
-
-
-#付款订单
-function pay($dbh,$val){
-    $date = [
-        'adzone_id' => $val['adzone_id'],
-        'site_id' => $val['site_id'],
-        'alipay_total_price' => $val['alipay_total_price'],
-        'create_time' => $val['create_time'],
-        'income_rate' => $val['income_rate']*100,//单位%
-        'item_num' => $val['item_num'],
-        'item_title' => $val['item_title'],
-        'num_iid' => $val['num_iid'],
-        'pub_share_pre_fee' => $val['pub_share_pre_fee'],
-        'rebate' => sprintf("%.2f",$val['pub_share_pre_fee'] * ConfigModel::REBATE),//订单返利
-        'tk_status' => $val['tk_status'],
-        'terminal_type' => $val['terminal_type'],
-        'trade_id' => $val['trade_id'],
-        'trade_parent_id' => $val['trade_parent_id'],
-        'created_at' => time(),
-        'updated_at' => time()
-    ];
-
-    $insert_sql = "insert into tb_order(";
-    foreach ($date as $k => $v) {
-        $insert_sql .= '`' . $k . '`,';
-    }
-    $insert_sql = rtrim($insert_sql, ",") . ') values(';
-
-    foreach ($date as $v) {
-        $insert_sql .= "'" . $v . "',";
-    }
-    $insert_sql = rtrim($insert_sql, ",") . ')';
-
-    return $dbh->exec($insert_sql);
-}
-
-#订单成功
-function success($dbh,$val){
-    $date = [
-        'adzone_id' => $val['adzone_id'],
-        'site_id' => $val['site_id'],
-        'rebate' => sprintf("%.2f",$val['pub_share_pre_fee'] * ConfigModel::REBATE),//订单返利
-        'pub_share_pre_fee' => $val['pub_share_pre_fee'],
-        'tk_status' => 14,
-        'updated_at' => time()
-    ];
-
-
-    $update_sql = 'update tb_order set ';
-    foreach ($date as $k=>$v) {
-        $update_sql .=  $k . "='" . $v . "',";
-    }
-    $update_sql = rtrim($update_sql, ",") . " where trade_id =".$val['trade_id'];
-    return $dbh->exec($update_sql);
-}
-
-#订单结算
-function clearing($dbh,$val){
-    $date = [
-        'adzone_id' => $val['adzone_id'],
-        'site_id' => $val['site_id'],
-        'rebate' => sprintf("%.2f",$val['pub_share_pre_fee'] * ConfigModel::REBATE),//订单返利
-        'pub_share_pre_fee' => $val['pub_share_pre_fee'],
-        'tk_status' => 3,
-        'updated_at' => time()
-    ];
-
-
-    $update_sql = 'update tb_order set ';
-    foreach ($date as $k=>$v) {
-        $update_sql .=  $k . "='" . $v . "',";
-    }
-    $update_sql = rtrim($update_sql, ",") . " where trade_id =".$val['trade_id'];
-    return $dbh->exec($update_sql);
-}
-
-#查失效订单
-function lose($dbh,$val){
-    $date = [
-        'rebate' => 0.00,//订单返利
-        'pub_share_pre_fee' => 0.00,
-        'tk_status' => 13,
-        'updated_at' => time()
-    ];
-
-
-    $update_sql = 'update tb_order set ';
-    foreach ($date as $k=>$v) {
-        $update_sql .=  $k . "='" . $v . "',";
-    }
-    $update_sql = rtrim($update_sql, ",") . " where trade_id =".$val['trade_id'];
-    return $dbh->exec($update_sql);
-}
-
-
 #订单记录
 function insertOrderLog($dbh,$val){
     $date = [
-        'type' => 1,//1-定时获取 2-每日汇总
-        'json' => json_encode($val),
+        'json' => json_encode($val,JSON_UNESCAPED_UNICODE),
         'adzone_id' => $val['adzone_id'],
-        'site_id' => $val['site_id'],
         'alipay_total_price' => $val['alipay_total_price'],
         'create_time' => $val['create_time'],
-        'income_rate' => $val['income_rate']*100,//单位%
-        'item_num' => $val['item_num'],
-        'item_title' => $val['item_title'],
         'num_iid' => $val['num_iid'],
         'pub_share_pre_fee' => $val['pub_share_pre_fee'],
         'rebate' => sprintf("%.2f",$val['pub_share_pre_fee'] * ConfigModel::REBATE),//订单返利
         'tk_status' => $val['tk_status'],
         'trade_id' => $val['trade_id'],
-        'trade_parent_id' => $val['trade_parent_id'],
         'created_at' => time()
     ];
-
 
     $insert_sql = "insert into tb_order_list(";
     foreach ($date as $k => $v) {
