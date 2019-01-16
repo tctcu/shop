@@ -1,7 +1,6 @@
 <?php
 /**
- * 订单获取 1天一次 过了凌晨 汇总前一日订单
- * 改进 半天一次 或 更短 20分钟内超过100单无分页
+ * 订单获取 1天一次 第二天 刷一遍前一日订单
  *
  */
 include('Common_func.php');
@@ -26,14 +25,11 @@ Tip:
 $yesterday = strtotime(date('Y-m-d 00:00:00', strtotime("-1 day")));
 $today = strtotime(date('Y-m-d 00:00:00'));
 
-$yesterday = strtotime(date('Y-m-d 23:00:00', strtotime("-2 day")));
-$today = strtotime(date('Y-m-d 00:00:00', strtotime("-1 day")));
-
 if ($today - $yesterday <> 86400) {
-    //return 'error';
+    return 'error';
 }
 
-$url = 'http://gateway.kouss.com/tbpub/orderGet';
+
 $requ = [
     'session' => SESSION,
     'fields' => 'tb_trade_parent_id,tb_trade_id,site_id,adzone_id,alipay_total_price,income_rate,pub_share_pre_fee,num_iid,item_title,item_num,create_time,tk_status',
@@ -42,51 +38,107 @@ $requ = [
     'order_query_type' => 'create_time',
     'tk_status' => '1',
 ];
+$url = 'http://gateway.kouss.com/tbpub/orderGet';
+
 $dbh = dsn();
 
 for ($start = $yesterday; $start < $today; $start += 1200) {
     $requ['start_time'] = date('Y-m-d H:i:s', $start);
-    $resp = post_json_curl($url, $requ);
-    if (isset($resp['tbk_sc_order_get_response']['results'])) {
-        if(isset($resp['tbk_sc_order_get_response']['results']['n_tbk_order']) && empty($resp['tbk_sc_order_get_response']['results']['n_tbk_order'])) {
-            foreach ($resp['tbk_sc_order_get_response']['results']['n_tbk_order'] as $val) {
-                insertOrderLog($dbh, $val);
+    $page = 1;
+    while (true) {
+
+        $requ['page'] = $page;
+        $resp = post_json_curl($url, $requ);
+
+        if (isset($resp['tbk_sc_order_get_response']['results'])) {
+            if (isset($resp['tbk_sc_order_get_response']['results']['n_tbk_order']) && empty($resp['tbk_sc_order_get_response']['results']['n_tbk_order'])) {
+                $order_list = $resp['tbk_sc_order_get_response']['results']['n_tbk_order'];
+                foreach ($order_list as $val) {
+                    $date = [
+                        'adzone_id' => $val['adzone_id'],
+                        'site_id' => $val['site_id'],
+                        'rebate' => sprintf("%.2f", $val['pub_share_pre_fee'] * ConfigModel::REBATE),//订单返利
+                        'pub_share_pre_fee' => $val['pub_share_pre_fee'],
+                        'tk_status' => $val['tk_status'],
+                        'updated_at' => time()
+                    ];
+
+                    $select_sql = "select id,tk_status from tb_order where trade_id={$val['trade_id']}";
+                    $order = $dbh->query($select_sql)->fetch(PDO::FETCH_ASSOC);
+                    if ($order) {
+                        hdk_log(date('Y-m-d H:i:s') . ' [丢单]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
+
+                        $date['alipay_total_price'] = $val['alipay_total_price'];
+                        $date['create_time'] = $val['create_time'];
+                        $date['income_rate'] = $val['income_rate'] * 100;//单位%
+                        $date['item_num'] = $val['item_num'];
+                        $date['item_title'] = $val['item_title'];
+                        $date['num_iid'] = $val['num_iid'];
+                        $date['terminal_type'] = $val['terminal_type'];
+                        $date['trade_id'] = $val['trade_id'];
+                        $date['trade_parent_id'] = $val['trade_parent_id'];
+                        $date['created_at'] = time();
+
+                        $insert_sql = "insert into tb_order(";
+                        foreach ($date as $k => $v) {
+                            $insert_sql .= '`' . $k . '`,';
+                        }
+                        $insert_sql = rtrim($insert_sql, ",") . ') values(';
+
+                        foreach ($date as $v) {
+                            $insert_sql .= "'" . $v . "',";
+                        }
+                        $insert_sql = rtrim($insert_sql, ",") . ')';
+                        insertOrderLog($dbh, $val);
+                        $dbh->exec($insert_sql);
+                    } else {
+                        if($order['tk_status'] == $val['tk_status']){
+                            continue;
+                        }
+                        $update_sql = 'update tb_order set ';
+                        foreach ($date as $k => $v) {
+                            $update_sql .= $k . "='" . $v . "',";
+                        }
+                        $update_sql = rtrim($update_sql, ",") . " where id =" . $order['id'];
+                        insertOrderLog($dbh, $val);
+                        $dbh->exec($update_sql);
+                    }
+                }
+
+                if (count($order_list) < 100) {
+                    return 'over';
+                } else {
+                    $page++;
+                }
+            } else {
+                return 'over';
             }
+        } else {
+            hdk_log(date('Y-m-d H:i:s') . ' [每日获取订单 api error]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
         }
-    } else {
-        hdk_log(date('Y-m-d H:i:s') . ' [每天获取订单 api error]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
+        sleep(5);
     }
-    sleep(10);
 }
 
-echo 'over';
-die;
+echo 'over';die;
 
 
 #订单记录
-function insertOrderLog($dbh, $val)
-{
+function insertOrderLog($dbh,$val){
     $date = [
-        'type' => 2,//1-定时获取 2-每日汇总
         'json' => json_encode($val,JSON_UNESCAPED_UNICODE),
         'adzone_id' => $val['adzone_id'],
-        'site_id' => $val['site_id'],
         'alipay_total_price' => $val['alipay_total_price'],
         'create_time' => $val['create_time'],
-        'income_rate' => $val['income_rate'] * 100,//单位%
-        'item_num' => $val['item_num'],
-        'item_title' => $val['item_title'],
         'num_iid' => $val['num_iid'],
         'pub_share_pre_fee' => $val['pub_share_pre_fee'],
-        'rebate' => sprintf("%.2f", $val['pub_share_pre_fee'] * ConfigModel::REBATE),//订单返利
+        'rebate' => sprintf("%.2f",$val['pub_share_pre_fee'] * ConfigModel::REBATE),//订单返利
         'tk_status' => $val['tk_status'],
         'trade_id' => $val['trade_id'],
-        'trade_parent_id' => $val['trade_parent_id'],
         'created_at' => time()
     ];
 
-
-    $insert_sql = "insert into tb_order_log(";
+    $insert_sql = "insert into tb_order_list(";
     foreach ($date as $k => $v) {
         $insert_sql .= '`' . $k . '`,';
     }
@@ -99,6 +151,5 @@ function insertOrderLog($dbh, $val)
 
     return $dbh->exec($insert_sql);
 }
-
 
 

@@ -215,16 +215,20 @@ class MyController extends ApiController
         if($error){
             $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
         }
-
-        $tb_order_model = new TbOrderModel();
-        $count_order = $tb_order_model->getWaitByUid($uid);
-        $count_order = $tb_order_model->getTodayByUid($uid);
+        $today = $wait = '0.00';
+        $user_pid_model = new UserPidModel();
+        $pid_info = $user_pid_model->getDataByUid($uid);
+        if($pid_info['site_id'] && $pid_info['adzone_id']){
+            $tb_order_model = new TbOrderModel();
+            $today = $tb_order_model->getWaitByPid($pid_info['site_id'], $pid_info['adzone_id']);
+            $wait = $tb_order_model->getTodayByPid($pid_info['site_id'], $pid_info['adzone_id']);
+        }
 
         $data = [
-            'use' => '0.00',
-            'today' => '',
-            'wait' => '',
-            'total' => '0.00',
+            'use' => !empty($user_info['use']) ? $user_info['use'] : '0.00',
+            'today' => $today,
+            'wait' => $wait,
+            'total' => !empty($user_info['total']) ? $user_info['total'] : '0.00',
         ];
 
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);

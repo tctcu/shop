@@ -50,8 +50,6 @@ while(true){
         if(isset($resp['tbk_sc_order_get_response']['results']['n_tbk_order']) && empty($resp['tbk_sc_order_get_response']['results']['n_tbk_order'])) {
             $order_list = $resp['tbk_sc_order_get_response']['results']['n_tbk_order'];
             foreach ($order_list as $val) {
-                insertOrderLog($dbh,$val);
-
                 $date = [
                     'adzone_id' => $val['adzone_id'],
                     'site_id' => $val['site_id'],
@@ -85,13 +83,19 @@ while(true){
                         $insert_sql .= "'" . $v . "',";
                     }
                     $insert_sql = rtrim($insert_sql, ",") . ')';
+                    insertOrderLog($dbh,$val);
                     $dbh->exec($insert_sql);
                 } else {
+                    if($order['tk_status'] == $val['tk_status']){
+                        continue;
+                    }
+
                     $update_sql = 'update tb_order set ';
                     foreach ($date as $k=>$v) {
                         $update_sql .=  $k . "='" . $v . "',";
                     }
                     $update_sql = rtrim($update_sql, ",") . " where id =".$order['id'];
+                    insertOrderLog($dbh,$val);
                     $dbh->exec($update_sql);
                 }
             }

@@ -224,16 +224,14 @@ add `w_openid` varchar(40) NOT NULL DEFAULT '' COMMENT '微信openid' after `sta
    `trade_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '订单id',
    `tk_status` int(11) NOT NULL DEFAULT '0' COMMENT '订单状态',
    `num_iid` bigint(20) NOT NULL DEFAULT '0' COMMENT '淘宝id',
-   `item_num` int(11) NOT NULL DEFAULT '0' COMMENT '数量',
-   `site_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '媒体id',
    `adzone_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '广告位id',
    `alipay_total_price` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '付款金额',
-   `income_rate` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '收入比率(%)',
    `pub_share_pre_fee` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '效果预估',
    `rebate` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '返利金额',
    `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '下单时间',
    `created_at` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间戳',
-   PRIMARY KEY (`id`)
+   PRIMARY KEY (`id`),
+   UNIQUE KEY `trade_status` (`trade_id`,`tk_status`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='淘宝订单日志表';
 
 
