@@ -9,7 +9,6 @@ include('function.php');
 require(dirname(dirname(__FILE__)) . '/application/models/Config.php'); //加载配置
 
 
-
 /*
     订单状态值，分别有：1: 全部订单（默认值），3：订单结算，12：订单付款， 13：订单失效，14：订单成功；注意：若订单查询类型参数order_query_type为“结算时间 settle_time”时，则本值只能查订单结算状态（即值为3）
 
@@ -24,17 +23,20 @@ Tip:
 3、订单失效：表示下了单但关闭订单等情形。
  * */
 
-$yesterday = strtotime(date('Y-m-d 00:00:00',strtotime("-1 day")));
+$yesterday = strtotime(date('Y-m-d 00:00:00', strtotime("-1 day")));
 $today = strtotime(date('Y-m-d 00:00:00'));
-if($today-$yesterday<>86400){
-    return 'error';
+
+$yesterday = strtotime(date('Y-m-d 23:00:00', strtotime("-2 day")));
+$today = strtotime(date('Y-m-d 00:00:00', strtotime("-1 day")));
+
+if ($today - $yesterday <> 86400) {
+    //return 'error';
 }
 
 $url = 'http://gateway.kouss.com/tbpub/orderGet';
-$resp = [
+$requ = [
     'session' => SESSION,
     'fields' => 'tb_trade_parent_id,tb_trade_id,site_id,adzone_id,alipay_total_price,income_rate,pub_share_pre_fee,num_iid,item_title,item_num,create_time,tk_status',
-    'start_time' => $start_time,
     'span' => '1200',//秒
     'page_size' => '100',
     'order_query_type' => 'create_time',
@@ -42,36 +44,41 @@ $resp = [
 ];
 $dbh = dsn();
 
-for( $start = $yesterday; $start < $today; $start += 1200){
-    $resp['start_time'] = date('Y-m-d H:i:s',$start);
-    $resp = post_json_curl($url,$resp);
-    if(isset($resp['tbk_sc_order_get_response']['results']['n_tbk_order']) && !empty($resp['tbk_sc_order_get_response']['results']['n_tbk_order'])) {
-        foreach ($resp['tbk_sc_order_get_response']['results']['n_tbk_order'] as $val) {
-            insertOrderLog($dbh,$val);
+for ($start = $yesterday; $start < $today; $start += 1200) {
+    $requ['start_time'] = date('Y-m-d H:i:s', $start);
+    $resp = post_json_curl($url, $requ);
+    if (isset($resp['tbk_sc_order_get_response']['results'])) {
+        if(isset($resp['tbk_sc_order_get_response']['results']['n_tbk_order']) && empty($resp['tbk_sc_order_get_response']['results']['n_tbk_order'])) {
+            foreach ($resp['tbk_sc_order_get_response']['results']['n_tbk_order'] as $val) {
+                insertOrderLog($dbh, $val);
+            }
         }
+    } else {
+        hdk_log(date('Y-m-d H:i:s') . ' [每天获取订单 api error]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
     }
-    sleep(60);
+    sleep(10);
 }
 
-echo 'over';die;
-
+echo 'over';
+die;
 
 
 #订单记录
-function insertOrderLog($dbh,$val){
+function insertOrderLog($dbh, $val)
+{
     $date = [
         'type' => 2,//1-定时获取 2-每日汇总
-        'json' => json_encode($val),
+        'json' => json_encode($val,JSON_UNESCAPED_UNICODE),
         'adzone_id' => $val['adzone_id'],
         'site_id' => $val['site_id'],
         'alipay_total_price' => $val['alipay_total_price'],
         'create_time' => $val['create_time'],
-        'income_rate' => $val['income_rate']*100,//单位%
+        'income_rate' => $val['income_rate'] * 100,//单位%
         'item_num' => $val['item_num'],
         'item_title' => $val['item_title'],
         'num_iid' => $val['num_iid'],
         'pub_share_pre_fee' => $val['pub_share_pre_fee'],
-        'rebate' => sprintf("%.2f",$val['pub_share_pre_fee'] * ConfigModel::REBATE),//订单返利
+        'rebate' => sprintf("%.2f", $val['pub_share_pre_fee'] * ConfigModel::REBATE),//订单返利
         'tk_status' => $val['tk_status'],
         'trade_id' => $val['trade_id'],
         'trade_parent_id' => $val['trade_parent_id'],
@@ -79,7 +86,7 @@ function insertOrderLog($dbh,$val){
     ];
 
 
-    $insert_sql = "insert into tb_order_list(";
+    $insert_sql = "insert into tb_order_log(";
     foreach ($date as $k => $v) {
         $insert_sql .= '`' . $k . '`,';
     }

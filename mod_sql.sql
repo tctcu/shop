@@ -237,7 +237,7 @@ add `w_openid` varchar(40) NOT NULL DEFAULT '' COMMENT '微信openid' after `sta
    `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '下单时间',
    `created_at` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间戳',
    PRIMARY KEY (`id`)
- ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COMMENT='淘宝订单日志表';
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='淘宝订单日志表';
 
 
  ALTER TABLE tb_order add `rebate` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '返利金额' after `pub_share_pre_fee`;

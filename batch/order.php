@@ -37,7 +37,7 @@ $status = [//1: 全部订单（默认值），3：订单结算，12：订单付�
     13 => 'lose',
 ];
 
-$resp = [
+$requ = [
     'session' => SESSION,
     'fields' => 'tb_trade_parent_id,tb_trade_id,site_id,adzone_id,alipay_total_price,income_rate,pub_share_pre_fee,num_iid,item_title,item_num,create_time,tk_status',
     'start_time' => $start_time,
@@ -49,16 +49,22 @@ $url = 'http://gateway.kouss.com/tbpub/orderGet';
 
 $dbh = dsn();
 foreach($status as $k => $v){
-    $resp['tk_status'] = $k;
-    $resp = post_json_curl($url,$resp);
-    if(isset($resp['tbk_sc_order_get_response']['results']['n_tbk_order']) && !empty($resp['tbk_sc_order_get_response']['results']['n_tbk_order'])) {
-        foreach ($resp['tbk_sc_order_get_response']['results']['n_tbk_order'] as $val) {
-            insertOrderLog($dbh,$val);
-            if(empty($v($dbh,$val))){
-                hdk_log($start_time.' '.$v.': '.json_encode($val));
+    $requ['tk_status'] = $k;
+    $resp = post_json_curl($url,$requ);
+
+    if (isset($resp['tbk_sc_order_get_response']['results'])) {
+        if(isset($resp['tbk_sc_order_get_response']['results']['n_tbk_order']) && empty($resp['tbk_sc_order_get_response']['results']['n_tbk_order'])) {
+            foreach ($resp['tbk_sc_order_get_response']['results']['n_tbk_order'] as $val) {
+                insertOrderLog($dbh,$val);
+                if(empty($v($dbh,$val))){
+                    hdk_log($start_time.' '.$v.': '.json_encode($val));
+                }
             }
         }
+    } else {
+        hdk_log(date('Y-m-d H:i:s') . ' [定时获取订单 api error]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
     }
+    sleep(10);
 }
 
 echo 'over';die;

@@ -59,12 +59,12 @@ class TbDetailModel extends MysqlModel
                 'share_title' => $info['itemshorttitle'] . '到手价￥' . $info['itemprice'],
                 'share_pic' => $info['itempic'] . '_150x150.jpg',
                 'share_url' => 'http://' . $_SERVER['HTTP_HOST'] . '/Web/shareDetail?itemid=' . $info['itemid'] . '&tkl=',
-                'share_tpwd' => $info['itemshorttitle'] . "\n
-                --------\n
-                【在售价】". $info['itemprice'] ."元\n
-                【到手价】". $info['itemendprice'] ."元\n
-                --------\n
-                復·制这段描述【tpwd】,\n
+                'share_tpwd' => $info['itemshorttitle'] . "
+                --------
+                【在售价】". $info['itemprice'] ."元
+                【到手价】". $info['itemendprice'] ."元
+                --------
+                復·制这段描述【tpwd】
                 咑閞淘♂寳♀即可查看"
             ]
         ];
