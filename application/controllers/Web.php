@@ -14,7 +14,8 @@ class WebController extends Yaf_Controller_Abstract
     #淘宝分享详情
     function shareDetailAction(){
         $itemid =  intval($_REQUEST['itemid']);
-        $token =  intval($_REQUEST['token']);
+        $tkl =  trim($_REQUEST['tkl']);
+        //$tkl =  '￥miWFbqdOWkc￥';
         if(empty($itemid)){
             echo 404;die;
         }
@@ -63,9 +64,14 @@ class WebController extends Yaf_Controller_Abstract
         $tb_detail_info = $tb_detail_model->getDataByItemId($itemid);
         $tb_info['taobao_detail'] = $tb_detail_info['taobao_detail'];
         $data = $tb_detail_model->makeDetail($tb_info);
-        echo '<pre>';
-print_r($data);die;
+
         $data['url'] = 'http://uland.taobao.com/coupon/edetail?activityId=' . $tb_info['activityid'] . '&itemId=' . $tb_info['itemid'] . '&src=qmmf_sqrb&mt=1&pid=' . $this->pid;
+
+        if($tkl){
+            $tbk_info = json_decode(file_get_contents(ConfigModel::TKL_URL.$tkl),true);
+            $data['url'] = $tbk_info['url'];
+        }
+
         $this->_view->tb_info = $data;
     }
 

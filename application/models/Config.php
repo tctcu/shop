@@ -8,6 +8,7 @@ class ConfigModel{
         '234440039' => 1,
         '116356778' => 2,
     ];
+    const TKL_URL = 'http://api.taokouling.com/tkl/tkljm?apikey=zDEHNzldSQ&tkl=';
 
 
 }
