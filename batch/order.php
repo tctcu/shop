@@ -42,10 +42,9 @@ $url = 'http://gateway.kouss.com/tbpub/orderGet';
 $dbh = dsn();
 $page = 1;
 while(true){
-
+    sleep(5);
     $requ['page'] = $page;
     $resp = post_json_curl($url,$requ);
-
     if (isset($resp['tbk_sc_order_get_response']['results'])) {
         if(isset($resp['tbk_sc_order_get_response']['results']['n_tbk_order']) && empty($resp['tbk_sc_order_get_response']['results']['n_tbk_order'])) {
             $order_list = $resp['tbk_sc_order_get_response']['results']['n_tbk_order'];
@@ -110,8 +109,8 @@ while(true){
         }
     } else {
         hdk_log(date('Y-m-d H:i:s') . ' [定时获取订单 api error]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
+        return 'error';
     }
-    sleep(5);
 }
 
 echo 'over';die;
@@ -132,7 +131,7 @@ function insertOrderLog($dbh,$val){
         'created_at' => time()
     ];
 
-    $insert_sql = "insert into tb_order_list(";
+    $insert_sql = "insert into tb_order_log(";
     foreach ($date as $k => $v) {
         $insert_sql .= '`' . $k . '`,';
     }
