@@ -116,7 +116,7 @@ for ($start = $yesterday; $start < $today; $start += 1200) {
         } else {
             hdk_log(date('Y-m-d H:i:s') . ' [每日获取订单 api error]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
         }
-        sleep(10);
+        sleep(5);
     }
 }
 

@@ -23,7 +23,7 @@ Tip:
 
 3、订单失效：表示下了单但关闭订单等情形。
  * */
-
+sleep(3);//避开其他脚本获取订单
 
 $start_time = date('Y-m-d H:i:s',time()-1200);//查20分钟内的订单
 $all = 'trade_parent_id,trade_id,num_iid,item_title,item_num,price,pay_price,seller_nick,seller_shop_title,commission,commission_rate,unid,create_time,earning_time,tk_status,tk3rd_type,tk3rd_pub_id,order_type,income_rate,pub_share_pre_fee,subsidy_rate,subsidy_type,terminal_type,auction_category,site_idString,site_name,adzone_id,adzone_name,alipay_total_price,total_commission_rate,total_commission_fee,subsidy_fee,relation_id,special_id,click_time';
@@ -111,7 +111,7 @@ while(true){
     } else {
         hdk_log(date('Y-m-d H:i:s') . ' [定时获取订单 api error]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
     }
-    sleep(10);
+    sleep(5);
 }
 
 echo 'over';die;
