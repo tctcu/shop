@@ -119,7 +119,7 @@ Tip:
         }
         $start_today = date('Y-m-d 00:00:00');
         $end_today = date('Y-m-d 23:59:59');
-        $sql = "select sum(rebate) as today from {$this->_name} where site_id={$site_id} and adzone_id={$adzone_id} and tk_status in (3,12,14) and create_time>={$start_today} and create_time<={$end_today} ";
+        $sql = "select sum(rebate) as today from {$this->_name} where site_id={$site_id} and adzone_id={$adzone_id} and tk_status in (3,12,14) and create_time>='".$start_today."' and create_time<='".$end_today."' ";
         $result = $this->_db->fetchRow($sql);
         $num = '0.00';
         if(!empty($result['today'])) {
