@@ -111,7 +111,7 @@ while(true){
     } else {
         hdk_log(date('Y-m-d H:i:s') . ' [定时获取订单 api error]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
     }
-    sleep(5);
+    sleep(10);
 }
 
 echo 'over';die;
