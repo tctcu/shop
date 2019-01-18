@@ -46,7 +46,7 @@ while(true){
     $requ['page'] = $page;
     $resp = post_json_curl($url,$requ);
     if (isset($resp['tbk_sc_order_get_response']['results'])) {
-        if(isset($resp['tbk_sc_order_get_response']['results']['n_tbk_order']) && empty($resp['tbk_sc_order_get_response']['results']['n_tbk_order'])) {
+        if(isset($resp['tbk_sc_order_get_response']['results']['n_tbk_order']) && !empty($resp['tbk_sc_order_get_response']['results']['n_tbk_order'])) {
             $order_list = $resp['tbk_sc_order_get_response']['results']['n_tbk_order'];
             foreach ($order_list as $val) {
                 $date = [
@@ -58,9 +58,22 @@ while(true){
                     'updated_at' => time()
                 ];
 
-                $select_sql = "select id from tb_order where trade_id={$val['trade_id']}";
+                $select_sql = "select id,tk_status from tb_order where trade_id={$val['trade_id']}";
                 $order = $dbh->query($select_sql)->fetch(PDO::FETCH_ASSOC);
+
                 if($order){
+                    if($order['tk_status'] == $val['tk_status']){
+                        continue;
+                    }
+
+                    $update_sql = 'update tb_order set ';
+                    foreach ($date as $k=>$v) {
+                        $update_sql .=  $k . "='" . $v . "',";
+                    }
+                    $update_sql = rtrim($update_sql, ",") . " where id =".$order['id'];
+                    insertOrderLog($dbh,$val);
+                    $dbh->exec($update_sql);
+                } else {
                     $date['alipay_total_price'] = $val['alipay_total_price'];
                     $date['create_time'] = $val['create_time'];
                     $date['income_rate'] = $val['income_rate']*100;//单位%
@@ -84,18 +97,6 @@ while(true){
                     $insert_sql = rtrim($insert_sql, ",") . ')';
                     insertOrderLog($dbh,$val);
                     $dbh->exec($insert_sql);
-                } else {
-                    if($order['tk_status'] == $val['tk_status']){
-                        continue;
-                    }
-
-                    $update_sql = 'update tb_order set ';
-                    foreach ($date as $k=>$v) {
-                        $update_sql .=  $k . "='" . $v . "',";
-                    }
-                    $update_sql = rtrim($update_sql, ",") . " where id =".$order['id'];
-                    insertOrderLog($dbh,$val);
-                    $dbh->exec($update_sql);
                 }
             }
 
