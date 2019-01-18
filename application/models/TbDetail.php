@@ -37,6 +37,8 @@ class TbDetailModel extends MysqlModel
 
     function makeDetail($info)
     {
+        $price = $info['itemprice'] == $info['itemendprice'] ? "【到手价】". $info['itemendprice'] ."元" : "【在售价】". $info['itemprice'] ."元
+                【券后价】". $info['itemendprice'] ."元";
         return [
             'itemid' => $info['itemid'],
             'itemshorttitle' => $info['itemshorttitle'],
@@ -61,8 +63,7 @@ class TbDetailModel extends MysqlModel
                 'share_url' => 'http://' . $_SERVER['HTTP_HOST'] . '/Web/shareDetail?itemid=' . $info['itemid'] . '&tkl=',
                 'share_tpwd' => $info['itemshorttitle'] . "
                 --------
-                【在售价】". $info['itemprice'] ."元
-                【到手价】". $info['itemendprice'] ."元
+                ".$price."
                 --------
                 復·制这段描述【tpwd】
                 咑閞淘♂寳♀即可查看"

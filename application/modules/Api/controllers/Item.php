@@ -44,7 +44,7 @@ class ItemController extends ApiController
             $tb_model = new TbModel();
             $tb_info = $tb_model->getDataByItemId($itemid);
         }
-        if(empty($tb_info['taobao_image'])){//淘宝图片
+        if($tb_info['itemid'] && empty($tb_info['taobao_image'])){//淘宝图片
             $condition = [
                 'item_id' => $itemid
             ];
@@ -69,6 +69,9 @@ class ItemController extends ApiController
             ];
             $yuque_model = new YuQueModel();
             $url_info = $yuque_model->privilegeGet($condition);
+            if(empty($url_info)){
+                $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
+            }
             $tb_info = $taobao_model->makeTb($item_info,$url_info);
             $tb_info['taobao_image'] = implode(',',$item_info['small_images']['string']);
             $tb_info['tkrates'] = $url_info['max_commission_rate'];
@@ -76,6 +79,7 @@ class ItemController extends ApiController
         } else {//好单库的商品都有优惠券
             $tb_info['coupon_type'] = '1';//优惠券状态 0-没有券
         }
+
         $tb_detail_model = new TbDetailModel();
         $tb_detail_info = $tb_detail_model->getDataByItemId($itemid);
         $tb_info['taobao_detail'] = $tb_detail_info['taobao_detail'];
