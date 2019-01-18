@@ -183,8 +183,6 @@ class MyController extends ApiController
 
         $user_pid_model = new UserPidModel();
         $pid_info = $user_pid_model->getDataByUid($uid);
-        $pid_info['site_id'] = '166200410';
-        $pid_info['adzone_id'] = '57891600477';
         $data = [];
 
         if($pid_info['site_id'] && $pid_info['adzone_id']){
