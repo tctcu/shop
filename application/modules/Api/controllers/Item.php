@@ -98,18 +98,27 @@ class ItemController extends ApiController
 
         $taobao_detail = [];
         if($itemid && $detail_arr['data']['pcDescContent']){
-            $reg = '/<img[\s\S]*?src\s*=\s*[\"|\'](.*?)[\"|\'][\s\S]*?>/';
-            $matches = array();
-            preg_match_all($reg, $detail_arr['data']['pcDescContent'], $matches);
-
-            if($matches[1]) {
-                foreach($matches[1] as $val){
-                    $taobao_detail[] = 'https:'.$val;
+            $arr = explode('<img',$detail_arr['data']['pcDescContent']);
+            $reg = '/[\s\S]*?src\s*=\s*[\"|\'](.*?jpg)[\"|\'][\s\S]*?[\s\S]*?size\s*=\s*[\"|\'](\d+)x(\d+)[\"|\'][\s\S]*?/';
+            foreach($arr as $val) {
+                $matches = [];
+                preg_match_all($reg, $val, $matches);
+                if ($matches[1] && $matches[2] && $matches[3]) {
+                    $taobao_detail[] = [
+                        'url' => 'https:' . $matches[1][0] . '_400x400q90.jpg',
+                        'size' => [
+                            'w' => $matches[2][0],
+                            'h' => $matches[3][0]
+                        ]
+                    ];
                 }
+            }
+
+            if($taobao_detail) {
                 $tb_detail_model = new TbDetailModel();
                 $add = [
                     'itemid' => $itemid,
-                    'taobao_detail' => implode(',',$taobao_detail),
+                    'taobao_detail' => json_encode($taobao_detail),
                 ];
                 try {
                     $tb_detail_model->addData($add);
