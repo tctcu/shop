@@ -53,7 +53,7 @@ class TbDetailModel extends MysqlModel
             'couponendtime' => $info['couponendtime'],
             'shoptype' => $info['shoptype'],
             'rebate' => sprintf("%.2f", $info['tkrates'] * ConfigModel::RATE * $info['itemendprice'] * ConfigModel::REBATE),
-            'taobao_image' => $info['taobao_image'] ? explode(',', str_replace('.jpg','.jpg_400x400q90.jpg',$info['taobao_image'])) : [],
+            'taobao_image' => $info['taobao_image'] ? explode(',', str_replace('.jpg','.jpg_800x800q90.jpg',$info['taobao_image'])) : [],
             'taobao_detail' => $info['taobao_detail'] ? json_decode($info['taobao_detail'],true) : [],
             'shopname' => $info['shopname'],
             'detail_json_url' => 'https://h5api.m.taobao.com/h5/mtop.taobao.detail.getdesc/6.0/?data={%22id%22:%22' . $info['itemid'] . '%22}',
