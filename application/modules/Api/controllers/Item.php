@@ -105,7 +105,7 @@ class ItemController extends ApiController
                 preg_match_all($reg, $val, $matches);
                 if ($matches[1] && $matches[2] && $matches[3]) {
                     $taobao_detail[] = [
-                        'url' => 'https:' . $matches[1][0] . '_'.$matches[2][0].'x'.$matches[3][0].'q90.jpg',
+                        'url' => 'https:' . $matches[1][0] . '_q90.jpg',
                         'size' => [
                             'w' => $matches[2][0],
                             'h' => $matches[3][0]

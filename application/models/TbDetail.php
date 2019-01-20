@@ -53,13 +53,13 @@ class TbDetailModel extends MysqlModel
             'couponendtime' => $info['couponendtime'],
             'shoptype' => $info['shoptype'],
             'rebate' => sprintf("%.2f", $info['tkrates'] * ConfigModel::RATE * $info['itemendprice'] * ConfigModel::REBATE),
-            'taobao_image' => $info['taobao_image'] ? explode(',', str_replace('.jpg','.jpg_800x800q90.jpg',$info['taobao_image'])) : [],
+            'taobao_image' => $info['taobao_image'] ? explode(',', str_replace('.jpg','.jpg_q90.jpg',$info['taobao_image'])) : [],
             'taobao_detail' => $info['taobao_detail'] ? json_decode($info['taobao_detail'],true) : [],
             'shopname' => $info['shopname'],
             'detail_json_url' => 'https://h5api.m.taobao.com/h5/mtop.taobao.detail.getdesc/6.0/?data={%22id%22:%22' . $info['itemid'] . '%22}',
             'share' => [
                 'share_title' => $info['itemshorttitle'] . '到手价￥' . $info['itemprice'],
-                'share_pic' => $info['itempic'] . '_150x150q90.jpg',
+                'share_pic' => $info['itempic'] . '_230x230q90.jpg',
                 'share_url' => 'http://' . $_SERVER['HTTP_HOST'] . '/Web/shareDetail?itemid=' . $info['itemid'] . '&tkl=',
                 'share_tpwd' => $info['itemshorttitle'] . "
                 --------
