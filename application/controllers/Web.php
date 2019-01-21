@@ -11,6 +11,8 @@ class WebController extends Yaf_Controller_Abstract
     function protocolAction(){}
     #引导识别淘口令
     function courseAction(){}
+    #返利规则
+    function rebateRuleAction(){}
     #淘宝分享详情
     function shareDetailAction(){
         $itemid =  intval($_REQUEST['itemid']);
