@@ -237,3 +237,7 @@ add `w_openid` varchar(40) NOT NULL DEFAULT '' COMMENT '微信openid' after `sta
 
  ALTER TABLE tb_order add `rebate` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '返利金额' after `pub_share_pre_fee`;
 
+
+ ALTER TABLE user
+ add `total` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '累计金额' after `status`,
+ add `use` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '可用余额' after `status`;

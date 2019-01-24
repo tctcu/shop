@@ -218,8 +218,8 @@ class MyController extends ApiController
         $pid_info = $user_pid_model->getDataByUid($uid);
         if($pid_info['site_id'] && $pid_info['adzone_id']){
             $tb_order_model = new TbOrderModel();
-            $today = $tb_order_model->getWaitByPid($pid_info['site_id'], $pid_info['adzone_id']);
-            $wait = $tb_order_model->getTodayByPid($pid_info['site_id'], $pid_info['adzone_id']);
+            $wait = $tb_order_model->getWaitByPid($pid_info['site_id'], $pid_info['adzone_id']);
+            $today = $tb_order_model->getTodayByPid($pid_info['site_id'], $pid_info['adzone_id']);
         }
 
         $data = [
