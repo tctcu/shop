@@ -2,7 +2,7 @@
 #商品表
 class TbModel extends MysqlModel {
     protected $_name = 'tb';
-    private $pid = 'mm_234440039_166200410_57891600477';//'mm_116356778_18618211_65740777';
+    private $pid = 'mm_116356778_18618211_65740777';//'mm_234440039_166200410_57891600477';
     const RATE = '0.01';//换算佣金比例%
     const REBATE = '0.5';//返利比例
     const MEMBER = [//对应config
@@ -105,22 +105,28 @@ class TbModel extends MysqlModel {
             if(empty($data['min_id']) || $item['min_id'] < $data['min_id']){
                 $data['min_id'] = $item['min_id'];
             }
-            $data['list'][] = [
-                'itemid' => $item['itemid'],
-                'itemshorttitle' => $item['itemshorttitle'],
-                'itemdesc' => $item['itemdesc'],
-                'itemprice' => $item['itemprice'],
-                'itemsale' => $item['itemsale'],
-                'itempic' => $item['itempic'],
-                'itemendprice' => $item['itemendprice'],
-                'couponmoney' => $item['couponmoney'],
-                'couponexplain' => $item['couponexplain'],
-                'couponstarttime' => $item['couponstarttime'],
-                'couponendtime' => $item['couponendtime'],
-                'shoptype' => $item['shoptype'],
-                'rebate' => sprintf("%.2f",$item['tkrates'] * ConfigModel::RATE * $item['itemendprice'] * ConfigModel::REBATE)
-            ];
+            $data['list'][] = $this->makeItem($item);
         }
         return $data;
+    }
+
+    function makeItem($item){
+        return [
+            'itemid' => $item['itemid'],
+            'itemshorttitle' => $item['itemshorttitle'],
+            'itemdesc' => $item['itemdesc'],
+            'itemprice' => $item['itemprice'],
+            'itemsale' => $item['itemsale'],
+            'itempic' => $item['itempic'],
+            'itemendprice' => $item['itemendprice'],
+            'url' => 'http://uland.taobao.com/coupon/edetail?activityId=' . $item['activityid'] . '&itemId=' . $item['itemid'] . '&src=qmmf_sqrb&mt=1&pid=' . $this->pid,
+            'coupon_type' => '1',//优惠券状态 0-没有券 好单库的都有券
+            'couponmoney' => $item['couponmoney'],
+            'couponexplain' => $item['couponexplain'],
+            'couponstarttime' => $item['couponstarttime'],
+            'couponendtime' => $item['couponendtime'],
+            'shoptype' => $item['shoptype'],
+            'rebate' => sprintf("%.2f",$item['tkrates'] * ConfigModel::RATE * $item['itemendprice'] * ConfigModel::REBATE)
+        ];
     }
 }

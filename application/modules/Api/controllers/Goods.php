@@ -230,31 +230,51 @@ class GoodsController extends ApiController
         }
 
         $taobao_model = new TaobaoModel();
-        $yuque_model = new YuQueModel(2);//使用个人账户
-        $item_id = $this->quid($content);//链接
-        if(empty($item_id)) {
+        $yuque_model = new YuQueModel();
+        $itemid = $this->quid($content);//链接
+        if(empty($itemid)) {
             if (preg_match('#\x{ffe5}([a-zA-Z0-9]{11})\x{ffe5}#isu', $content, $m)) {//淘口令
                 $condition = [
                     'password_content' => $m[0]
                 ];
-                $item_id = $yuque_model->tpwdConvert($condition);
+                $itemid = $yuque_model->tpwdConvert($condition);
             } else if(mb_strlen($content)>10){//标题
                 $condition = [
                     'keyword' => $content
                 ];
                 $item_info = $taobao_model->TbkItemGetRequest($condition);
-                $item_id = $item_info['num_iid'];
+                $itemid = $item_info['num_iid'];
+            }
+        }
+        if(empty($itemid)){
+            $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
+        }
+
+        $url = "http://v2.api.haodanku.com/item_detail/apikey/allfree/itemid/" . $itemid;
+        $json = file_get_contents($url);
+        $tb_info = json_decode($json, true)['data'];
+        $tb_model = new TbModel();
+        if(empty($tb_info)){//查库
+            $tb_info = $tb_model->getDataByItemId($itemid);
+
+            if($tb_info['status']<>1 || $tb_info['couponendtime']<=time()){//过滤失效的商品
+                $tb_info = [];
+            }
+        } else {
+            if($tb_info['couponendtime']<=time() || $tb_info['end_time']<=time() || $tb_info['report_status'] == 3){//过滤失效的商品
+                $tb_info = [];
             }
         }
 
-        $data = [];
-        if($item_id) {
+        if($tb_info) {
+            $data = $tb_model->makeItem($tb_info);
+        } else {
             $condition = [
-                $item_id
+                $itemid
             ];
             $item_info = $taobao_model->TbkItemInfoGetRequest($condition);
             $condition = [
-                'item_id' => $item_id
+                'item_id' => $itemid
             ];
             $url_info = $yuque_model->privilegeGet($condition);
             $data = $taobao_model->makeTb($item_info,$url_info);
@@ -308,25 +328,10 @@ class GoodsController extends ApiController
     #格式化列表数据
     private function make($data)
     {
+        $tb_model = new TbModel();
         $list = [];
         foreach ($data as $val) {
-            $list[] = array(
-                'itemid' => $val['itemid'],
-                'itemshorttitle' => $val['itemshorttitle'],
-                'itemdesc' => $val['itemdesc'],
-                'itemprice' => $val['itemprice'],
-                'itemsale' => $val['itemsale'],
-                'itempic' => $val['itempic'],
-                'itemendprice' => $val['itemendprice'],
-                'url' => 'http://uland.taobao.com/coupon/edetail?activityId=' . $val['activityid'] . '&itemId=' . $val['itemid'] . '&src=qmmf_sqrb&mt=1&pid=' . $this->pid,
-                'couponmoney' => $val['couponmoney'],
-                'couponexplain' => '',
-                'couponstarttime' => $val['couponstarttime'],
-                'couponendtime' => $val['couponendtime'],
-                'shoptype' => $val['shoptype'],
-                'rebate' => sprintf("%.2f", $val['tkrates'] * ConfigModel::RATE * $val['itemendprice'] * ConfigModel::REBATE),//返利专用
-                //'taobao_image' => explode(',' ,$val['taobao_image']),
-            );
+            $list[] = $tb_model->makeItem($val);
         }
         return $list;
     }

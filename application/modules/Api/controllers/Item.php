@@ -43,6 +43,14 @@ class ItemController extends ApiController
         if(empty($tb_info)){//查库
             $tb_model = new TbModel();
             $tb_info = $tb_model->getDataByItemId($itemid);
+
+            if($tb_info['status']<>1 || $tb_info['couponendtime']<=time()){//过滤失效的商品
+                $tb_info = [];
+            }
+        } else {
+            if($tb_info['couponendtime']<=time() || $tb_info['end_time']<=time() || $tb_info['report_status'] == 3){//过滤失效的商品
+                $tb_info = [];
+            }
         }
         if($tb_info['itemid'] && empty($tb_info['taobao_image'])){//淘宝图片
             $condition = [
@@ -67,6 +75,7 @@ class ItemController extends ApiController
             $condition = [
                 'item_id' => $itemid
             ];
+
             $yuque_model = new YuQueModel();
             $url_info = $yuque_model->privilegeGet($condition);
             if(empty($url_info)){
