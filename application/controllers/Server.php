@@ -70,6 +70,7 @@ class ServerController extends Yaf_Controller_Abstract{
 
         $wechat_info = $this->wechat_model->snsapi_userinfo($access_token,$s_openid);
 echo '<pre>';
+        echo '<img width="400" src="'.$wechat_info['headimgurl'].'">';
         print_r($wechat_info);die;
         $unionid = $wechat_info['unionid'];
 
