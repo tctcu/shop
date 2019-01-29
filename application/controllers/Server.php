@@ -69,7 +69,8 @@ class ServerController extends Yaf_Controller_Abstract{
         $s_openid = $token['openid'];
 
         $wechat_info = $this->wechat_model->snsapi_userinfo($access_token,$s_openid);
-
+echo '<pre>';
+        print_r($wechat_info);die;
         $unionid = $wechat_info['unionid'];
 
         $user_model = new UserModel();
