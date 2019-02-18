@@ -5,14 +5,26 @@
     <div class="col-md-9">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <span class="app-panel-title" >统计列表</span>
+                <span class="app-panel-title" >订单列表</span>
                 <div style="clear:both;"></div>
             </div>
 
             <div class="panel-body">
                 <table class="table table-bordered table-striped">
-                    <tr><td>ID</td><td>管理</td></tr>
+                    <tr><td>标题</td><td>UID</td><td>状态</td><td>支付</td><td>佣金</td><td>返利</td><td>下单时间</td></tr>
+                    <?php foreach ($show_list as $row){ ?>
+                        <tr>
+                            <td><a href="https://detail.tmall.com/item.htm?id=<?php echo $row['num_iid']?>" target="_blank"><?php echo $row['item_title'];?></a></td>
+                            <td><a href="/admin/user/index?uid=<?php echo $row['uid']?>" target="_blank"><?php echo $row['uid'];?></a></td>
+                            <td><?php echo TbOrderModel::ORDER_STATUS[$row['tk_status']];?></td>
+                            <td><?php echo $row['alipay_total_price'];?></td>
+                            <td><?php echo $row['pub_share_pre_fee'];?></td>
+                            <td><?php echo $row['rebate'];?></td>
+                            <td><?php echo $row['create_time'];?></td>
+                        </tr>
+                    <?php } ?>
                 </table>
+                <?php $pager->render();?>
             </div>
         </div>
     </div>

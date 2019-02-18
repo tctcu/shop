@@ -166,7 +166,7 @@ class MyController extends ApiController
 
     #订单
     function orderAction(){
-        $min_id = isset($_REQUEST['min_id']) ? intval($_REQUEST['token']) : '0';
+        $min_id = isset($_REQUEST['min_id']) ? intval($_REQUEST['min_id']) : '0';
         $uid = $this->uid;
 
         $error = true;
@@ -192,7 +192,7 @@ class MyController extends ApiController
                 'adzone_id' => $pid_info['adzone_id']
             ];
             $tb_order_model = new TbOrderModel();
-            $order_info = $tb_order_model->getListData(20,$condition);
+            $order_info = $tb_order_model->getList(20,$condition);
             $data = $tb_order_model->makeOrder($order_info);
         }
 

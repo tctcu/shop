@@ -65,6 +65,14 @@ for ($start = $yesterday; $start < $today; $start += 1200) {
                         'updated_at' => time()
                     ];
 
+                    #订单关联用户
+                    $select_sql = "select uid from user_pid where site_id={$val['site_id']} and adzone_id={$val['adzone_id']}";
+                    $user_pid = $dbh->query($select_sql)->fetch(PDO::FETCH_ASSOC);
+                    if($user_pid['uid']){
+                        $data['uid'] = $user_pid['uid'];
+                    }
+
+
                     $select_sql = "select id,tk_status from tb_order where trade_id={$val['trade_id']}";
                     $order = $dbh->query($select_sql)->fetch(PDO::FETCH_ASSOC);
                     if ($order) {

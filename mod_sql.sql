@@ -241,3 +241,7 @@ add `w_openid` varchar(40) NOT NULL DEFAULT '' COMMENT '微信openid' after `sta
  ALTER TABLE user
  add `total` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '累计金额' after `status`,
  add `use` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '可用余额' after `status`;
+
+
+ ALTER table tb_order
+ add `uid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '用户uid' after `id`;

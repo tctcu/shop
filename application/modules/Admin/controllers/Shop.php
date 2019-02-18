@@ -19,7 +19,6 @@ class ShopController extends AdminController
         $admin_user_model = new BannerModel();
         $show_list = $admin_user_model->getListData($page,$page_size,$condition);
 
-        $this->_view->page = $page;
         $this->_view->show_list = $show_list;
         #分页处理
         $total_num = $admin_user_model->getListCount($condition);

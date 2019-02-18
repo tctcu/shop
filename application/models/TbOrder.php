@@ -45,7 +45,7 @@ Tip:
         return false;
     }
 
-    function getListData($page_size =  20,$condition = array()){
+    function getList($page_size =  20,$condition = array()){
         $sql = " select * from {$this->_name} where 1 ";
         if(!empty($condition['id'])){
             $sql .= " and id={$condition['id']} ";
@@ -59,7 +59,6 @@ Tip:
         if(!empty($condition['adzone_id'])){
             $sql .= " and adzone_id={$condition['adzone_id']} ";
         }
-
         if(!empty($condition['min_id']) && $condition['min_id']>1){
             $sql .= " and id<{$condition['min_id']} ";
         }
@@ -76,6 +75,29 @@ Tip:
         return $data;
     }
 
+
+    function getListData($page = 1,$page_size = 20,$condition = array()){
+        $sql = " select * from {$this->_name} where 1 ";
+        if(!empty($condition['id'])){
+            $sql .= " and id={$condition['id']} ";
+        }
+        if(!empty($condition['status'])){
+            $sql .= " and status={$condition['status']} ";
+        }
+
+        $sql .= " order by id desc ";
+
+        $start = ($page -1 ) * $page_size;
+        $sql .= " limit {$start}, {$page_size}";
+
+        try{
+            $data = $this->_db->fetchAll($sql);
+        }catch(Exception $ex){
+            $data = array();
+        }
+        return $data;
+    }
+
     function getListCount($condition = array()){
         $sql = " select count(*) as num from {$this->_name} where 1 ";
         if(!empty($condition['id'])){
@@ -83,12 +105,6 @@ Tip:
         }
         if(!empty($condition['status'])){
             $sql .= " and status={$condition['status']} ";
-        }
-        if(!empty($condition['site_id'])){
-            $sql .= " and site_id={$condition['site_id']} ";
-        }
-        if(!empty($condition['adzone_id'])){
-            $sql .= " and adzone_id={$condition['adzone_id']} ";
         }
 
         $result = $this->_db->fetchRow($sql);
