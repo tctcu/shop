@@ -245,3 +245,10 @@ add `w_openid` varchar(40) NOT NULL DEFAULT '' COMMENT '微信openid' after `sta
 
  ALTER table tb_order
  add `uid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '用户uid' after `id`;
+
+ ALTER TABLE user
+ add `s_openid` varchar(40) NOT NULL DEFAULT '' COMMENT '微信提现服务号openid' after `total`;
+
+ update tb_order a inner join user_pid b on a.adzone_id=b.adzone_id and a.site_id=b.site_id set a.uid = b.uid;
+
+

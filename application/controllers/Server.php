@@ -60,37 +60,23 @@ class ServerController extends Yaf_Controller_Abstract{
 
     #授权回调 (服务号)
     public function callbackAction(){
+        $token = $this->wechat_model->authorization_code($_GET['code']);
 
-        $code = $_GET['code'];
-
-        $token = $this->wechat_model->authorization_code($code);
-
-        $access_token = $token['access_token'];
-        $s_openid = $token['openid'];
-
-        $wechat_info = $this->wechat_model->snsapi_userinfo($access_token,$s_openid);
-echo '<pre>';
-        echo '<img width="400" src="'.$wechat_info['headimgurl'].'">';
-        print_r($wechat_info);die;
-        $unionid = $wechat_info['unionid'];
+        $wechat_info = $this->wechat_model->snsapi_userinfo($token['access_token'],$token['openid']);
 
         $user_model = new UserModel();
-        $user_info = $user_model->getDataByUnionid($unionid);
+        $user_info = $user_model->getDataByUnionid($wechat_info['unionid']);
 
-        $date['nickname'] = $wechat_info['nickname'];
-        $date['sex'] = $wechat_info['sex'];
-        $date['headimgurl'] = $wechat_info['headimgurl'];
-        $date['s_openid'] = $s_openid;
-        if($user_info){
+        if(empty($user_info)){
+            echo '<h1>该微信未授权登录券购APP,请更换注册微信绑定</h1>';exit;
+        } elseif ($user_info['s_openid']){
+            echo  '<h1>提现微信已经绑定过,无需再次绑定</h1>';exit;
+        } else {
+            $date = ['s_openid' => $token['openid']];
             $user_model->updateData($date,$user_info['uid']);
-        }else{
-            $date['unionid'] = $unionid;
-            $user_model->addData($date);
         }
 
-        $time_out = time() + 60 * 60 * 24 * 30;
-        setcookie("unionid", $unionid, $time_out,'/');
-        header("Location:/wap/user/index") ;exit;
+        echo  '<h1>提现微信绑定成功,返回APP即可提现</h1>';exit;
     }
 
 
