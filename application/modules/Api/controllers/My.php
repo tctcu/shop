@@ -232,4 +232,29 @@ class MyController extends ApiController
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
+    #绑定微信
+    function bindWeChatAction(){
+        $uid = $this->uid;
+
+        $user_model = new UserModel();
+        $user_info = $user_model->getDataByUid($uid);
+
+        $data = [
+            'is_bind' => !empty($user_info['s_openid']) ? '1' : '0',
+            'qr_code' => CommonModel::IMAGE_URL.CommonModel::BIND_WE_CHAT,
+        ];
+
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+    }
+
+
+    #提现
+    function extractAction(){
+        $uid = $this->uid;
+        $money = intval($_REQUEST['money']);
+        $data = [];
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+    }
+
+
 }
