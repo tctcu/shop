@@ -253,6 +253,44 @@ class MyController extends ApiController
         $uid = $this->uid;
         $money = intval($_REQUEST['money']);
         $data = [];
+        $user_model = new UserModel();
+        $user_info = $user_model->getDataByUid($uid);
+        $balance = $user_info['use'] - $money;
+        if($balance < 0){
+            $this->responseJson('10009', '用户可用余额不足');
+        }
+        $account_record_model = new AccountRecordModel();
+        $account_record_model->addData([
+            'uid' => $uid,
+            'type' => 2,//提现
+            'before' => $user_info['use'],
+            'money' => $money,
+            'balance' => $balance,
+        ]);
+        $user_model->updateData([
+            'use' => $balance
+        ],$uid);
+
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+    }
+
+    #资金记录
+    function accountRecordAction(){
+        $uid = $this->uid;
+        $min_id = intval($_REQUEST['min_id']) ? intval($_REQUEST['min_id']) : 1;
+
+        $account_record_model = new AccountRecordModel();
+        $account_list = $account_record_model->getList(20,[
+            'uid' => $uid,
+            'min_id' => $min_id
+        ]);
+        $data = [];
+        foreach($account_list as $val){
+            if(empty($data['min_id']) || $val['id'] < $data['min_id']){
+                $data['min_id'] = $val['id'];
+            }
+            $data[] = $account_record_model->makeAccountRecord($val);
+        }
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 

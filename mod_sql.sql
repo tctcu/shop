@@ -252,3 +252,16 @@ add `w_openid` varchar(40) NOT NULL DEFAULT '' COMMENT '微信openid' after `sta
  update tb_order a inner join user_pid b on a.adzone_id=b.adzone_id and a.site_id=b.site_id set a.uid = b.uid;
 
 
+
+ CREATE TABLE `account_record` (
+   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+   `uid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '用户uid',
+   `type` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '类型 1-返利发放 2-提现',
+   `before` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '之前',
+   `money` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '操作金额',
+   `balance` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '余额',
+   `created_at` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间戳',
+   PRIMARY KEY (`id`),
+   KEY `uid` (`uid`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账户记录表';
+
