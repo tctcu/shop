@@ -1,6 +1,7 @@
 <?php
 /**
- * 订单获取 1月一次  发放上个月订单返利
+ * 结算订单获取 次月20号之后 获取上个月已结算订单 并统一发放返利
+ * 改进 可随时结算15天前已结算订单
  *
  */
 include('Common_func.php');
@@ -27,19 +28,18 @@ $start_time = strtotime(date("Y-m-d 00:00:00",strtotime("$end_day -1 month")));
 $end_time = strtotime($end_day);
 
 
-for ($start = $start_time; $start < $end_time; $start += 1200) {
-    echo date("Y-m-d H:i:s",$start)."\n";
-
-}
+$start_time = strtotime('2019-01-01 14:00:00');
+$all = 'trade_parent_id,trade_id,num_iid,item_title,item_num,price,pay_price,seller_nick,seller_shop_title,commission,commission_rate,unid,create_time,earning_time,tk_status,tk3rd_type,tk3rd_pub_id,order_type,income_rate,pub_share_pre_fee,subsidy_rate,subsidy_type,terminal_type,auction_category,site_idString,site_name,adzone_id,adzone_name,alipay_total_price,total_commission_rate,total_commission_fee,subsidy_fee,relation_id,special_id,click_time';
 
 
 $requ = [
     'session' => SESSION,
-    'fields' => 'tb_trade_parent_id,tb_trade_id,site_id,adzone_id,alipay_total_price,income_rate,pub_share_pre_fee,num_iid,item_title,item_num,create_time,tk_status',
+    //'fields' => 'tb_trade_parent_id,tb_trade_id,site_id,adzone_id,alipay_total_price,income_rate,pub_share_pre_fee,num_iid,item_title,item_num,create_time,tk_status',
+    'fields' => $all,
     'span' => '1200',//秒
     'page_size' => '100',
-    'order_query_type' => 'create_time',
-    'tk_status' => '1',
+    'order_query_type' => 'settle_time',
+    'tk_status' => '3',
 ];
 $url = 'http://gateway.kouss.com/tbpub/orderGet';
 
@@ -47,21 +47,24 @@ $dbh = dsn();
 for ($start = $start_time; $start < $end_time; $start += 1200) {
     $requ['start_time'] = date('Y-m-d H:i:s', $start);
 
+    echo $requ['start_time']."\n";
     $page = 1;
     while (true) {
-        sleep(5);
+        sleep(2);
         $requ['page'] = $page;
         $resp = post_json_curl($url, $requ);
         if (isset($resp['tbk_sc_order_get_response']['results'])) {
             if (isset($resp['tbk_sc_order_get_response']['results']['n_tbk_order']) && !empty($resp['tbk_sc_order_get_response']['results']['n_tbk_order'])) {
                 $order_list = $resp['tbk_sc_order_get_response']['results']['n_tbk_order'];
                 foreach ($order_list as $val) {
-                    $date = [
+                    $data = [
                         'adzone_id' => $val['adzone_id'],
                         'site_id' => $val['site_id'],
                         'rebate' => sprintf("%.2f", $val['pub_share_pre_fee'] * ConfigModel::REBATE),//订单返利
                         'pub_share_pre_fee' => $val['pub_share_pre_fee'],
                         'tk_status' => $val['tk_status'],
+                        'earning_time' => $val['earning_time'],//结算时间
+                        'is_final' => 1,//淘宝结算
                         'updated_at' => time()
                     ];
 
@@ -75,37 +78,37 @@ for ($start = $start_time; $start < $end_time; $start += 1200) {
                     $select_sql = "select id,tk_status from tb_order where trade_id={$val['trade_id']}";
                     $order = $dbh->query($select_sql)->fetch(PDO::FETCH_ASSOC);
                     if ($order) {
-                        if($order['tk_status'] == $val['tk_status']){
+                        if($order['is_final'] == 1){
                             continue;
                         }
                         $update_sql = 'update tb_order set ';
-                        foreach ($date as $k => $v) {
+                        foreach ($data as $k => $v) {
                             $update_sql .= $k . "='" . $v . "',";
                         }
                         $update_sql = rtrim($update_sql, ",") . " where id =" . $order['id'];
                         insertOrderLog($dbh, $val);
                         $dbh->exec($update_sql);
                     } else {
-                        hdk_log(date('Y-m-d H:i:s') . ' [丢单]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
+                        hdk_log(date('Y-m-d H:i:s') . ' [月结算丢单]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
 
-                        $date['alipay_total_price'] = $val['alipay_total_price'];
-                        $date['create_time'] = $val['create_time'];
-                        $date['income_rate'] = $val['income_rate'] * 100;//单位%
-                        $date['item_num'] = $val['item_num'];
-                        $date['item_title'] = $val['item_title'];
-                        $date['num_iid'] = $val['num_iid'];
-                        $date['terminal_type'] = $val['terminal_type'];
-                        $date['trade_id'] = $val['trade_id'];
-                        $date['trade_parent_id'] = $val['trade_parent_id'];
-                        $date['created_at'] = time();
+                        $data['alipay_total_price'] = $val['alipay_total_price'];
+                        $data['create_time'] = $val['create_time'];
+                        $data['income_rate'] = $val['income_rate'] * 100;//单位%
+                        $data['item_num'] = $val['item_num'];
+                        $data['item_title'] = $val['item_title'];
+                        $data['num_iid'] = $val['num_iid'];
+                        $data['terminal_type'] = $val['terminal_type'];
+                        $data['trade_id'] = $val['trade_id'];
+                        $data['trade_parent_id'] = $val['trade_parent_id'];
+                        $data['created_at'] = time();
 
                         $insert_sql = "insert into tb_order(";
-                        foreach ($date as $k => $v) {
+                        foreach ($data as $k => $v) {
                             $insert_sql .= '`' . $k . '`,';
                         }
                         $insert_sql = rtrim($insert_sql, ",") . ') values(';
 
-                        foreach ($date as $v) {
+                        foreach ($data as $v) {
                             $insert_sql .= "'" . $v . "',";
                         }
                         $insert_sql = rtrim($insert_sql, ",") . ')';
@@ -123,12 +126,59 @@ for ($start = $start_time; $start < $end_time; $start += 1200) {
                 break 1;
             }
         } else {
-            hdk_log(date('Y-m-d H:i:s') . ' [每日获取订单 api error]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
+            hdk_log(date('Y-m-d H:i:s') . ' [每月获取订单 api error]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
             return 'error';
         }
     }
 }
 
+
+//发放返利给用户
+$sql = "select sum(rebate) as this_rebate,uid from tb_order where is_rebate=0 and tk_status=3 and is_final=1 and earning_time<>'0000-00-00 00:00:00' and uid<>0 group by uid";
+$resGetItemList = $dbh->prepare($sql);
+$resGetItemList->execute();
+$time = time();
+while ($row = $resGetItemList->fetch(PDO::FETCH_ASSOC)) {
+
+    $select_sql = "select use,total from `user` where uid={$row['uid']}";
+    $user_info = $dbh->query($select_sql)->fetch(PDO::FETCH_ASSOC);
+
+    if ($user_info) {
+        $use = $user_info['use'] + $row['this_rebate'];
+        $total = $user_info['total'] + $row['this_rebate'];
+
+        #关闭自动提交
+        $dbh->setAttribute(PDO::ATTR_AUTOCOMMIT, false);
+        try {
+            $dbh->beginTransaction();//开启事务处理
+
+            #插入返利发放记录
+            $insert_sql = "insert into account_record(uid,`type`,before,money,balance,created_at) VALUES({$row['uid']},1,{$user_info['use']},{$row['this_rebate']},{$use},{$time})";
+            $affected_rows = $dbh->exec($insert_sql);
+            if (!$affected_rows) {
+                throw new PDOException("插入返利发放记录失败");
+            }
+            #操作返利金账户
+            $update_user = "update `user` set use={$use},total={$total} where uid={$row['uid']}";
+            $affected_rows = $dbh->exec($update_user);
+            if (!$affected_rows) {
+                throw new PDOException("更新用户金额失败");
+            }
+            #更新订单返利状态
+            $update_order = "update tb_order set is_rebate=1 where uid={$row['uid']} and is_rebate=0 and tk_status=3 and is_final=1 and earning_time<>'0000-00-00 00:00:00'";
+            $affected_rows = $dbh->exec($update_order);
+            if (!$affected_rows) {
+                throw new PDOException("活动记录状态更改失败");
+            }
+            $dbh->commit();//提交
+        } catch (PDOException $e) {
+            echo $e->getMessage() . 'UID' . $row['uid'] . "\n";
+            $dbh->rollback();//回滚
+        }
+        #开启自动提交
+        $dbh->setAttribute(PDO::ATTR_AUTOCOMMIT, true);
+    }
+}
 echo 'over';die;
 
 

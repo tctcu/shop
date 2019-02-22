@@ -265,3 +265,7 @@ add `w_openid` varchar(40) NOT NULL DEFAULT '' COMMENT '微信openid' after `sta
    KEY `uid` (`uid`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账户记录表';
 
+ ALTER table tb_order
+ add `is_final` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '淘宝结算 1-已结算' after `tk_status`,
+ add `is_rebate` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '返利结算 1-已发放用户' after `rebate`,
+ add `earning_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '结算时间' after `create_time`;
