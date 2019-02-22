@@ -27,10 +27,7 @@ $end_day = date("Y-m-01");//本月1号
 $start_time = strtotime(date("Y-m-d 00:00:00",strtotime("$end_day -1 month")));
 $end_time = strtotime($end_day);
 
-
-$start_time = strtotime('2019-01-01 14:00:00');
 $all = 'trade_parent_id,trade_id,num_iid,item_title,item_num,price,pay_price,seller_nick,seller_shop_title,commission,commission_rate,unid,create_time,earning_time,tk_status,tk3rd_type,tk3rd_pub_id,order_type,income_rate,pub_share_pre_fee,subsidy_rate,subsidy_type,terminal_type,auction_category,site_idString,site_name,adzone_id,adzone_name,alipay_total_price,total_commission_rate,total_commission_fee,subsidy_fee,relation_id,special_id,click_time';
-
 
 $requ = [
     'session' => SESSION,
@@ -50,7 +47,7 @@ for ($start = $start_time; $start < $end_time; $start += 1200) {
     echo $requ['start_time']."\n";
     $page = 1;
     while (true) {
-        sleep(2);
+        sleep(3);
         $requ['page'] = $page;
         $resp = post_json_curl($url, $requ);
         if (isset($resp['tbk_sc_order_get_response']['results'])) {
@@ -75,7 +72,7 @@ for ($start = $start_time; $start < $end_time; $start += 1200) {
                         $data['uid'] = $user_pid['uid'];
                     }
 
-                    $select_sql = "select id,tk_status from tb_order where trade_id={$val['trade_id']}";
+                    $select_sql = "select id,tk_status,is_final from tb_order where trade_id={$val['trade_id']}";
                     $order = $dbh->query($select_sql)->fetch(PDO::FETCH_ASSOC);
                     if ($order) {
                         if($order['is_final'] == 1){
@@ -139,7 +136,6 @@ $resGetItemList = $dbh->prepare($sql);
 $resGetItemList->execute();
 $time = time();
 while ($row = $resGetItemList->fetch(PDO::FETCH_ASSOC)) {
-
     $select_sql = "select use,total from `user` where uid={$row['uid']}";
     $user_info = $dbh->query($select_sql)->fetch(PDO::FETCH_ASSOC);
 
