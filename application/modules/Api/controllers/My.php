@@ -252,10 +252,11 @@ class MyController extends ApiController
     function extractAction(){
         $uid = $this->uid;
         $money = intval($_REQUEST['money']);
-        $data = [];
+
         $user_model = new UserModel();
         $user_info = $user_model->getDataByUid($uid);
         $balance = $user_info['use'] - $money;
+
         if($balance < 0){
             $this->responseJson('10009', '用户可用余额不足');
         }
@@ -271,7 +272,7 @@ class MyController extends ApiController
             'use' => $balance
         ],$uid);
 
-        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
     }
 
     #资金记录
