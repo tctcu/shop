@@ -33,6 +33,48 @@ class ServerController extends Yaf_Controller_Abstract{
         //$this->_log = true;
     }
 
+    public function testAction(){
+        $curtime = time();
+        $order_id = time();//订单号
+        $openid = 'oAp4h1Z5dAJF65DpmAs9fklVEs_E';
+        $money = 1;
+
+
+        #构造请求参数
+        $nonce_str = strtoupper(md5($curtime . mt_rand(0,1000)) );
+
+        $req_param = array(
+            'nonce_str' => $nonce_str,//自定义字符串
+            'partner_trade_no' => $order_id,//订单号
+            'openid' => $openid,//openid
+            're_user_name' => '券购',//用户名
+            'amount' => $money,//金额
+        );
+
+        $resp_ary = $this->wechat_model->transfers($req_param);
+
+        #解析响应
+        $err_msg = '';
+        if(isset($resp_ary['return_code']) && isset($resp_ary['result_code'])){
+            if($resp_ary['return_code'] == 'SUCCESS' && $resp_ary['result_code'] == 'SUCCESS'){
+                $order_id = isset($resp_ary['mch_billno']) ? intval(substr($resp_ary['mch_billno'], 0, 10)) : $order_id;
+                $wechat_trans_no = isset($resp_ary['send_listid']) ? $resp_ary['send_listid'] : '';
+
+                $err_msg = '微信成功支付,支付订单号:' . $wechat_trans_no;
+            } elseif($resp_ary['return_code'] != 'SUCCESS') {
+                $err_msg = isset($resp_ary['return_msg']) ? $resp_ary['return_msg'] : '微信未返回return_code错误信息';
+            } elseif($resp_ary['result_code'] != 'SUCCESS'){
+                $err_msg = isset($resp_ary['err_code_des']) ? $resp_ary['err_code_des'] : '微信未返回err_code错误信息';
+            }
+        } else {
+            $err_msg = '微信返回非协议格式数据';
+        }
+
+        echo $err_msg;die;
+    }
+
+
+
     #入口
     public function indexAction(){
         if(isset($_GET['echostr'])){

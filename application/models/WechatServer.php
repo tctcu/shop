@@ -168,7 +168,7 @@ class WechatServerModel extends WechatModel
         $req_param['mchid'] = $this->wechat_config->mchid;
         $req_param['client_ip'] = $_SERVER['SERVER_ADDR'];
         $req_param['send_name'] = '全民免费';
-
+print_r($req_param);die;
         ksort($req_param);
 
         $sign_str = '';
