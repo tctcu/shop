@@ -251,14 +251,16 @@ class MyController extends ApiController
     #提现
     function extractAction(){
         $uid = $this->uid;
-        $money = intval($_REQUEST['money']);
-
+        $money = floatval($_REQUEST['money']);
+        if($money <= 0){
+            $this->responseJson('10008', '提现金额有误');
+        }
         $user_model = new UserModel();
         $user_info = $user_model->getDataByUid($uid);
         $balance = $user_info['use'] - $money;
 
         if($balance < 0){
-            $this->responseJson('10009', '用户可用余额不足');
+            $this->responseJson('10009', '可用余额不足');
         }
         $account_record_model = new AccountRecordModel();
         $account_record_model->addData([
