@@ -68,12 +68,12 @@ class AlipayModel
 
         $bizContent = array(
             "out_biz_no" => $out_biz_no,
-            "payee_type" => 'ALIPAY_LOGONID',//收款方账户类型 1、ALIPAY_USERID：支付宝账号对应的支付宝唯一用户号。以2088开头的16位纯数字组成。 2、ALIPAY_LOGONID：支付宝登录号，支持邮箱和手机号格式。
+            "payee_type" => 'ALIPAY_USERID',//'ALIPAY_LOGONID',//收款方账户类型 1、ALIPAY_USERID：支付宝账号对应的支付宝唯一用户号。以2088开头的16位纯数字组成。 2、ALIPAY_LOGONID：支付宝登录号，支持邮箱和手机号格式。
             "payee_account" => $payee_account,
             "amount" => $amount,
-            "payer_show_name" => '头号试玩平台',//付款方姓名
+            "payer_show_name" => '券购',//付款方姓名
             "payee_real_name" => $payee_real_name,
-            "remark" => "头号试玩平台结算",
+            "remark" => "券购返利",
         );
         $request->setBizContent(json_encode($bizContent));
         $result = $this->aop->execute($request);
@@ -281,7 +281,8 @@ class AlipayModel
     public function oauth2code($redirect_uri)
     {
         $redirect_uri = urlencode($redirect_uri);
-        $request_url = "https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?$this->appId=" . self::$this->appId . "&scope=auth_user,auth_base,auth_ecard&redirect_uri=" . $redirect_uri;
+        $request_url = "https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=" . $this->appId . "&scope=auth_user,auth_base,auth_ecard&redirect_uri=" . $redirect_uri;
+        //return $request_url;die;
         //手机端支付宝app外换起支付宝
         $request_url = "alipays://platformapi/startapp?appId=20000067&url=" . urlencode($request_url);
         return $request_url;

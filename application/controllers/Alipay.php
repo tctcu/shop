@@ -15,6 +15,7 @@ class AlipayController extends Yaf_Controller_Abstract
         $redirect_uri = "http://" . $_SERVER['HTTP_HOST'] . "/Alipay/callback";
         $model = new AlipayModel();
         $url = $model->oauth2code($redirect_uri);
+        //echo $url;die;
         echo "<a style='font-size:50px' href='" . $url . "'>点击去授权</a>";
         return false;
     }
@@ -107,6 +108,20 @@ class AlipayController extends Yaf_Controller_Abstract
         }
         $result = $model->mobileRisk($mobile);
         die;
+    }
+
+
+    function testAction(){
+
+        $out_biz_no = time();
+        $payee_account = 'xm0563@qq.com';
+        $payee_account = '2088302553007832';
+        $payee_real_name = '张顺灵';
+        $amount = 0.1;
+        $model = new AlipayModel();
+
+        $res = $model->AlipayFundTransToaccountTransferRequest($out_biz_no, $payee_account, $payee_real_name, $amount);
+        print_r($res);die;
     }
 
     private function log($content = '')
