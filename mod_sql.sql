@@ -269,3 +269,8 @@ add `w_openid` varchar(40) NOT NULL DEFAULT '' COMMENT '微信openid' after `sta
  add `is_final` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '淘宝结算 1-已结算' after `tk_status`,
  add `is_rebate` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '返利结算 1-已发放用户' after `rebate`,
  add `earning_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '结算时间' after `create_time`;
+
+ ALTER TABLE user
+ add `z_name` varchar(40) NOT NULL DEFAULT '' COMMENT '支付宝实名' after `z_user_id`,
+ add `z_account` varchar(100) NOT NULL DEFAULT '' COMMENT '支付宝登录账号' after `z_user_id`;
+

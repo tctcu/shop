@@ -247,8 +247,24 @@ class MyController extends ApiController
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
+    #绑定支付宝提现信息
+    function bindZfbAction(){
+        $uid = $this->uid;
 
-    #提现
+        $user_model = new UserModel();
+        $user_info = $user_model->getDataByUid($uid);
+
+        $data = [
+            'is_bind' => !empty($user_info['z_name']) && !empty($user_info['z_account']) ? '1' : '0',
+            'z_name' => $user_info['z_name'],
+            'account' => $user_info['z_account']
+        ];
+
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+    }
+
+
+    #微信提现
     function extractAction(){
         $uid = $this->uid;
         $money = floatval($_REQUEST['money']);
@@ -257,6 +273,51 @@ class MyController extends ApiController
         }
         $user_model = new UserModel();
         $user_info = $user_model->getDataByUid($uid);
+        $balance = $user_info['use'] - $money;
+
+        if($balance < 0){
+            $this->responseJson('10009', '可用余额不足');
+        }
+        $account_record_model = new AccountRecordModel();
+        $account_record_model->addData([
+            'uid' => $uid,
+            'type' => 2,//提现
+            'before' => $user_info['use'],
+            'money' => $money,
+            'balance' => $balance,
+        ]);
+        $user_model->updateData([
+            'use' => $balance
+        ],$uid);
+
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
+    }
+
+
+    #支付宝提现
+    function zfbExtractAction(){
+        $uid = $this->uid;
+        $money = floatval($_REQUEST['money']);
+        $name = trim($_REQUEST['name']);
+        $account = trim($_REQUEST['account']);
+
+        if(empty($name) || empty($account) || $money <= 0){
+            $this->responseJson('10008', '提现金额有误');
+        }
+        //todo::检测姓名和账号的准确性
+
+        $user_model = new UserModel();
+        $user_info = $user_model->getDataByUid($uid);
+
+        if($user_info['z_name'] && $user_info['z_account']){
+            if($account <> $user_info['z_account'] || $name <> $user_info['z_name']){
+                $this->responseJson('10007', '提现实名信息不正确');
+            }
+        } else {//更新支付宝提现信息
+            $user_model->updateData(['z_name' => $name,'z_account' => $account],$uid);
+        }
+
+
         $balance = $user_info['use'] - $money;
 
         if($balance < 0){
