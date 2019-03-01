@@ -304,11 +304,17 @@ class MyController extends ApiController
         if(empty($name) || empty($account) || $money <= 0){
             $this->responseJson('10008', '提现金额有误');
         }
-        //todo::检测姓名和账号的准确性
-
         $user_model = new UserModel();
-        $user_info = $user_model->getDataByUid($uid);
 
+        if(!(preg_match('/^[\x{4e00}-\x{9fa5}]{2,10}$|^[a-zA-Z\s]*[a-zA-Z\s]{2,20}$/isu',$name))){
+            $this->responseJson('10008', '请提供真实的支付宝实名信息');
+        }
+
+        if(!($user_model->is_mobile_phone($account) || $user_model->is_email($account))){
+            $this->responseJson('10008', '支付宝账号非邮箱或手机号');
+        }
+
+        $user_info = $user_model->getDataByUid($uid);
         if($user_info['z_name'] && $user_info['z_account']){
             if($account <> $user_info['z_account'] || $name <> $user_info['z_name']){
                 $this->responseJson('10007', '提现实名信息不正确');

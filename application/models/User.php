@@ -104,4 +104,31 @@ class UserModel extends MysqlModel {
         }
         return $num;
     }
+
+
+    function is_email($email)
+    {
+        $chars = "/^([a-z0-9+_]|\\-|\\.)+@(([a-z0-9_]|\\-)+\\.)+[a-z]{2,6}\$/i";
+        if (strpos($email, '@') !== false && strpos($email, '.') !== false)
+        {
+            if (preg_match($chars, $email))
+            {
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+
+    function is_mobile_phone ($mobile_phone)
+    {
+        $chars = "/^1[0-9]{10}$/";
+        if(preg_match($chars, $mobile_phone))
+        {
+            return true;
+        }
+        return false;
+    }
 }
