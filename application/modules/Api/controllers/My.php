@@ -256,7 +256,7 @@ class MyController extends ApiController
 
         $data = [
             'is_bind' => !empty($user_info['z_name']) && !empty($user_info['z_account']) ? '1' : '0',
-            'z_name' => $user_info['z_name'],
+            'name' => $user_info['z_name'],
             'account' => $user_info['z_account']
         ];
 
