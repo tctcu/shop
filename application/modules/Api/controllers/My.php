@@ -341,7 +341,17 @@ class MyController extends ApiController
             'use' => $balance
         ],$uid);
 
+        $this->zfbSendMoney($account,$name,0.1);
+
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
+    }
+
+    function zfbSendMoney($payee_account,$payee_real_name,$amount=0.1){
+        $out_biz_no = time();
+
+        $model = new AlipayModel();
+        $res = $model->AlipayFundTransToaccountTransferRequest($out_biz_no, $payee_account, $payee_real_name, $amount);
+        return $res;
     }
 
     #资金记录
