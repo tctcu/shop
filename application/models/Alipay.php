@@ -89,21 +89,7 @@ class AlipayModel
             } else {
                 $sub_code = $result->$responseNode->sub_code;
                 $sub_msg = $result->$responseNode->sub_msg;
-
-                #记录alipay_error
-                $alpay_error_model = new AlipayErrorModel();
-                $add_alipay_error = array(
-                    'out_biz_no' => $out_biz_no,
-                    'err_code' => $resultCode,
-                    'sub_code' => $sub_code,
-                    'err_msg' => $sub_msg,
-                    'created_at' => time(),
-                );
-                $alpay_error_model->addData($add_alipay_error);
-
-                $ret['errcode'] = 1;
-                $ret['errmsg'] = $sub_msg;
-
+echo $sub_msg;die;
                 if ($sub_code == 'SYSTEM_ERROR') {
                    // self::TransToaccount($out_biz_no, $payee_account, $payee_real_name, $amount);
                 }
