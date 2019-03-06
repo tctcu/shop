@@ -274,3 +274,5 @@ add `w_openid` varchar(40) NOT NULL DEFAULT '' COMMENT '微信openid' after `sta
  add `z_name` varchar(40) NOT NULL DEFAULT '' COMMENT '支付宝实名' after `z_user_id`,
  add `z_account` varchar(100) NOT NULL DEFAULT '' COMMENT '支付宝登录账号' after `z_user_id`;
 
+ALTER TABLE user
+ add `z_bind` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '提现支付宝绑定 0-否 1-是' after `z_user_id`;

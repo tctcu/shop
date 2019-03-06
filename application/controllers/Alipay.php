@@ -115,7 +115,7 @@ class AlipayController extends Yaf_Controller_Abstract
 
         $out_biz_no = time();
         $payee_account = 'xm0563@qq.com';
-        $payee_account = '2088302553007832';
+        //$payee_account = '2088302553007832';
         $payee_real_name = '张顺灵';
         $amount = 0.1;
         $model = new AlipayModel();

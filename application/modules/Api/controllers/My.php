@@ -232,32 +232,19 @@ class MyController extends ApiController
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
-    #绑定微信
-    function bindWeChatAction(){
+    #提现绑定信息
+    function bindInfoAction(){
         $uid = $this->uid;
 
         $user_model = new UserModel();
         $user_info = $user_model->getDataByUid($uid);
 
         $data = [
-            'is_bind' => !empty($user_info['s_openid']) ? '1' : '0',
-            'qr_code' => CommonModel::IMAGE_URL.CommonModel::BIND_WE_CHAT,
-        ];
-
-        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
-    }
-
-    #绑定支付宝提现信息
-    function bindZfbAction(){
-        $uid = $this->uid;
-
-        $user_model = new UserModel();
-        $user_info = $user_model->getDataByUid($uid);
-
-        $data = [
-            'is_bind' => !empty($user_info['z_name']) && !empty($user_info['z_account']) ? '1' : '0',
-            'name' => $user_info['z_name'],
-            'account' => $user_info['z_account']
+            'z_bind' =>$user_info['z_bind'],//支付宝绑定 1-是 0-否
+            'z_name' => $user_info['z_name'],
+            'z_account' => $user_info['z_account'],
+            'w_bind' => !empty($user_info['s_openid']) ? '1' : '0',//微信绑定 1-是 0-否
+            'w_qr_code' => CommonModel::IMAGE_URL.CommonModel::BIND_WE_CHAT,
         ];
 
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
@@ -315,14 +302,11 @@ class MyController extends ApiController
         }
 
         $user_info = $user_model->getDataByUid($uid);
-        if($user_info['z_name'] && $user_info['z_account']){
+        if($user_info['z_bind']){//已绑定
             if($account <> $user_info['z_account'] || $name <> $user_info['z_name']){
                 $this->responseJson('10007', '提现实名信息不正确');
             }
-        } else {//更新支付宝提现信息
-            $user_model->updateData(['z_name' => $name,'z_account' => $account],$uid);
         }
-
 
         $balance = $user_info['use'] - $money;
 
@@ -337,11 +321,20 @@ class MyController extends ApiController
             'money' => $money,
             'balance' => $balance,
         ]);
-        $user_model->updateData([
-            'use' => $balance
-        ],$uid);
 
-        $this->zfbSendMoney($account,$name,0.1);
+//测试体验到账1毛
+$z_bind = 0;
+$res = $this->zfbSendMoney($account,$name,0.1);
+if($res['errcode'] == 2){
+    $z_bind = 1;
+}
+
+        $user_model->updateData([
+            'use' => $balance,
+            'z_name' => $name,
+            'z_account' => $account,
+            'z_bind' => $z_bind,
+        ],$uid);
 
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
     }
