@@ -321,20 +321,19 @@ class MyController extends ApiController
             'money' => $money,
             'balance' => $balance,
         ]);
-
-//测试体验到账1毛
-$z_bind = 0;
-$res = $this->zfbSendMoney($account,$name,0.1);
-if($res['errcode'] == 2){
-    $z_bind = 1;
-}
-
-        $user_model->updateData([
+        $update_user = [
             'use' => $balance,
-            'z_name' => $name,
-            'z_account' => $account,
-            'z_bind' => $z_bind,
-        ],$uid);
+        ];
+        if(empty($user_info['z_bind'])) {//未绑定
+            $update_user['z_name'] = $name;
+            $update_user['z_account'] = $account;
+            //测试体验到账1毛
+            $res = $this->zfbSendMoney($account, $name, 0.1);
+            if ($res['errcode'] == 2) {//验证成功
+                $update_user['z_bind'] = 1;
+            }
+        }
+        $user_model->updateData($update_user,$uid);
 
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
     }
