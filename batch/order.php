@@ -49,7 +49,7 @@ while(true){
         if(isset($resp['tbk_sc_order_get_response']['results']['n_tbk_order']) && !empty($resp['tbk_sc_order_get_response']['results']['n_tbk_order'])) {
             $order_list = $resp['tbk_sc_order_get_response']['results']['n_tbk_order'];
             foreach ($order_list as $val) {
-                $date = [
+                $data = [
                     'adzone_id' => $val['adzone_id'],
                     'site_id' => $val['site_id'],
                     'rebate' => sprintf("%.2f",$val['pub_share_pre_fee'] * ConfigModel::REBATE),//订单返利
@@ -74,31 +74,31 @@ while(true){
                     }
 
                     $update_sql = 'update tb_order set ';
-                    foreach ($date as $k=>$v) {
+                    foreach ($data as $k=>$v) {
                         $update_sql .=  $k . "='" . $v . "',";
                     }
                     $update_sql = rtrim($update_sql, ",") . " where id =".$order['id'];
                     insertOrderLog($dbh,$val);
                     $dbh->exec($update_sql);
                 } else {
-                    $date['alipay_total_price'] = $val['alipay_total_price'];
-                    $date['create_time'] = $val['create_time'];
-                    $date['income_rate'] = $val['income_rate']*100;//单位%
-                    $date['item_num'] = $val['item_num'];
-                    $date['item_title'] = $val['item_title'];
-                    $date['num_iid'] = $val['num_iid'];
-                    $date['terminal_type'] = $val['terminal_type'];
-                    $date['trade_id'] = $val['trade_id'];
-                    $date['trade_parent_id'] = $val['trade_parent_id'];
-                    $date['created_at'] = time();
+                    $data['alipay_total_price'] = $val['alipay_total_price'];
+                    $data['create_time'] = $val['create_time'];
+                    $data['income_rate'] = $val['income_rate']*100;//单位%
+                    $data['item_num'] = $val['item_num'];
+                    $data['item_title'] = $val['item_title'];
+                    $data['num_iid'] = $val['num_iid'];
+                    $data['terminal_type'] = $val['terminal_type'];
+                    $data['trade_id'] = $val['trade_id'];
+                    $data['trade_parent_id'] = $val['trade_parent_id'];
+                    $data['created_at'] = time();
 
                     $insert_sql = "insert into tb_order(";
-                    foreach ($date as $k => $v) {
+                    foreach ($data as $k => $v) {
                         $insert_sql .= '`' . $k . '`,';
                     }
                     $insert_sql = rtrim($insert_sql, ",") . ') values(';
 
-                    foreach ($date as $v) {
+                    foreach ($data as $v) {
                         $insert_sql .= "'" . $v . "',";
                     }
                     $insert_sql = rtrim($insert_sql, ",") . ')';
