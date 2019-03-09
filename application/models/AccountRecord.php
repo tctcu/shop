@@ -103,7 +103,8 @@ class AccountRecordModel extends MysqlModel {
             'type' => AccountRecordModel::ACCOUNT_RECORD_TYPE[$data['type']],
             'before' => $data['before'],
             'money' => $data['money'],
-            'balance' => $data['balance']
+            'balance' => $data['balance'],
+            'created_at' => $data['created_at']
         ];
     }
 

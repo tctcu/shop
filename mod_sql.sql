@@ -298,5 +298,9 @@ ALTER TABLE user
  add `pay_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '提现方式记录id' after `uid`,
  add `pay_type` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '提现方式 1-支付宝 2-微信' after `uid`;
 
+ ALTER TABLE alipay_extract change `order_id` `order_id` varchar(100)  NOT NULL DEFAULT '' COMMENT '订单号';
+
+
+
 
 
