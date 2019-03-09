@@ -1,14 +1,7 @@
 <?php
-#资金记录表
-class AccountRecordModel extends MysqlModel {
-    protected $_name = 'account_record';
-
-    const ACCOUNT_RECORD_TYPE = [
-        '1' => '返利发放',
-        '2' => '提现申请',
-        '3' => '提现到账',
-        '4' => '提现失败',
-    ];
+#支付宝提现记录表
+class AlipayExtractModel extends MysqlModel {
+    protected $_name = 'alipay_extract';
 
     function __construct(){
         parent::__construct();
@@ -96,15 +89,6 @@ class AccountRecordModel extends MysqlModel {
             $num = $result['num'];
         }
         return $num;
-    }
-
-    function makeAccountRecord($data){
-        return [
-            'type' => AccountRecordModel::ACCOUNT_RECORD_TYPE[$data['type']],
-            'before' => $data['before'],
-            'money' => $data['money'],
-            'balance' => $data['balance']
-        ];
     }
 
 }

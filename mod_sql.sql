@@ -276,3 +276,27 @@ add `w_openid` varchar(40) NOT NULL DEFAULT '' COMMENT '微信openid' after `sta
 
 ALTER TABLE user
  add `z_bind` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '提现支付宝绑定 0-否 1-是' after `z_user_id`;
+
+ ALTER TABLE account_record change `type` `type` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '类型 1-返利发放 2-提现申请 3-提现到账 4-提现失败';
+
+ CREATE TABLE `alipay_extract` (
+   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+   `uid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '用户uid',
+   `name` varchar(40) NOT NULL DEFAULT '' COMMENT '支付宝实名',
+   `account` varchar(100) NOT NULL DEFAULT '' COMMENT '支付宝登录账号',
+   `type` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '支付类型 1-错误 2-成功 3-失败',
+   `msg` varchar(100) NOT NULL DEFAULT '' COMMENT '原因',
+   `code` varchar(100) NOT NULL DEFAULT '' COMMENT '支付宝错误码',
+   `order_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '订单号',
+   `pay_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '支付时间',
+   `created_at` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间戳',
+   PRIMARY KEY (`id`),
+   KEY `uid` (`uid`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='支付宝提现记录';
+
+ ALTER TABLE `account_record`
+ add `pay_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '提现方式记录id' after `uid`,
+ add `pay_type` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '提现方式 1-支付宝 2-微信' after `uid`;
+
+
+

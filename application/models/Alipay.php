@@ -52,15 +52,15 @@ class AlipayModel
     public function AlipayFundTransToaccountTransferRequest($out_biz_no, $payee_account, $payee_real_name, $amount)
     {
         $ret = array(
-            'errcode' => 1,
-            'errmsg' => '',
-            'errmsg_alipay' => '',
+            'type' => 1,
+            'msg' => '',
+            'code' => '',
             'order_id' => '',
             'pay_date' => ''
         );
         if (empty($out_biz_no) || empty($payee_account) || empty($payee_real_name) || empty($amount)) {
-            $ret['errcode'] = 1;
-            $ret['errmsg'] = '参数错误';
+            $ret['type'] = 1;
+            $ret['msg'] = '参数错误';
             return $ret;
         }
         $this->autoload('AlipayFundTransToaccountTransferRequest');
@@ -82,55 +82,20 @@ class AlipayModel
         $resultCode = $result->$responseNode->code;
         if (!empty($resultCode)) {
             if ($resultCode == 10000) {
-                $ret['errcode'] = 2;
-                $ret['errmsg'] = '成功';
+                $ret['type'] = 2;
+                $ret['msg'] = '成功';
                 $ret['order_id'] = $result->$responseNode->order_id;
                 $ret['pay_date'] = $result->$responseNode->pay_date;
+
             } else {
-                $sub_code = $result->$responseNode->sub_code;
-                $sub_msg = $result->$responseNode->sub_msg;
-echo $sub_msg;die;
-                if ($sub_code == 'SYSTEM_ERROR') {
-                   // self::TransToaccount($out_biz_no, $payee_account, $payee_real_name, $amount);
-                }
-                /*switch ($sub_code){
-                    case 'INVALID_PARAMETER':
-                        $ret['errmsg'] = '参数错误！';
-                        break;
-                    case 'SYSTEM_ERROR':
-                        self::TransToaccount($out_biz_no, $payee_account, $payee_real_name, $amount);
-                        $ret['errmsg'] = '支付宝系统繁忙，请稍候再试！';
-                        break;
-                    case 'PERMIT_CHECK_PERM_LIMITED':
-                    case 'PERM_AML_NOT_REALNAME_REV':
-                    case 'EXCEED_LIMIT_UNRN_DM_AMOUNT':
-                    case 'PERMIT_NON_BANK_LIMIT_PAYEE':
-                        $ret['errmsg'] = '收款账号需补充身份信息!';
-                        break;
-                    case 'PAYEE_NOT_EXIST':
-                        $ret['errmsg'] = '收款账号不存在!';
-                        break;
-                    case 'PAYEE_USER_INFO_ERROR':
-                        $ret['errmsg'] = '支付宝账号和姓名不匹配，请确认姓名是否正确!';
-                        break;
-                    case 'PAYER_BALANCE_NOT_ENOUGH':
-                        $ret['errmsg'] = '付款方余额不足!';
-                        break;
-                    case 'PAYMENT_INFO_INCONSISTENCY':
-                        $ret['errmsg'] = '两次请求商户单号一样，但是参数不一致!';
-                        break;
-                    case 'EXCEED_LIMIT_DM_MAX_AMOUNT':
-                        $ret['errmsg'] = '单日最多可转100万元。!';
-                        break;
-                    default :
-                        $ret['errmsg'] = '提现异常,请联系客服人员.错误码：' . $msg;
-                        break;
-                }*/
+                $ret['type'] = 3;
+                $ret['code'] = $result->$responseNode->sub_code;
+                $ret['msg'] = $result->$responseNode->sub_msg;
             }
             return $ret;
         } else {
-            $ret['errcode'] = 1;
-            $ret['errmsg'] = '支付宝连接失败';
+            $ret['type'] = 1;
+            $ret['msg'] = '支付宝连接失败';
             return $ret;
         }
     }

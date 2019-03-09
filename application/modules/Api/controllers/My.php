@@ -284,15 +284,18 @@ class MyController extends ApiController
     #支付宝提现
     function zfbExtractAction(){
         $uid = $this->uid;
-        $money = floatval($_REQUEST['money']);
+        $money = intval($_REQUEST['money']);
         $name = trim($_REQUEST['name']);
         $account = trim($_REQUEST['account']);
 
         if(empty($name) || empty($account) || $money <= 0){
+            $this->responseJson('10008', '非法提现');
+        }
+        if(!in_array($money,[1,10,30,100])){
             $this->responseJson('10008', '提现金额有误');
         }
-        $user_model = new UserModel();
 
+        $user_model = new UserModel();
         if(!(preg_match('/^[\x{4e00}-\x{9fa5}]{2,10}$|^[a-zA-Z\s]*[a-zA-Z\s]{2,20}$/isu',$name))){
             $this->responseJson('10008', '请提供真实的支付宝实名信息');
         }
@@ -306,34 +309,64 @@ class MyController extends ApiController
             if($account <> $user_info['z_account'] || $name <> $user_info['z_name']){
                 $this->responseJson('10007', '提现实名信息不正确');
             }
+            if($money == 1){// 绑定之后不能提1元
+                $this->responseJson('10008', '提现金额有误');
+            }
         }
 
         $balance = $user_info['use'] - $money;
-
         if($balance < 0){
             $this->responseJson('10009', '可用余额不足');
         }
+
+        $update_user = [
+            'use' => $balance,
+        ];
+        $type = 2;//2-提现申请 3-提现到账
+        $pay_id = 0;
+        if($money == 1) {//未绑定 1元立即到账
+            $out_biz_no = $uid.time();
+
+            $model = new AlipayModel();
+            $res = $model->AlipayFundTransToaccountTransferRequest($out_biz_no, $account, $name, $money);
+
+            $alipay_extract_model = new AlipayExtractModel();
+            $pay_id = $alipay_extract_model->addData([
+                'uid' => $uid,
+                'type' => $res['type'],
+                'msg' => $res['msg'],
+                'code' => $res['code'],
+                'order_id' => $res['order_id'],
+                'pay_date' => $res['pay_date'],
+                'name' => $name,
+                'account' => $account
+            ]);
+
+            $update_user['z_name'] = $name;
+            $update_user['z_account'] = $account;
+
+            if ($res['type'] == 2) {// 支付成功
+                $update_user['z_bind'] = 1;
+                $type = 3;
+            } else {
+                unset($update_user['use']);
+                $user_model->updateData($update_user,$uid);//记录上次输入的用户信息
+                $this->responseJson('10011', '提现失败,'.$res['msg']);
+            }
+        }
+        //更新用户余额等
+        $user_model->updateData($update_user,$uid);
+        //提现记录
         $account_record_model = new AccountRecordModel();
         $account_record_model->addData([
             'uid' => $uid,
-            'type' => 2,//提现
+            'type' => $type,
+            'pay_type' => 1,//1-支付宝 2-微信
+            'pay_id' => $pay_id,
             'before' => $user_info['use'],
             'money' => $money,
             'balance' => $balance,
         ]);
-        $update_user = [
-            'use' => $balance,
-        ];
-        if(empty($user_info['z_bind'])) {//未绑定
-            $update_user['z_name'] = $name;
-            $update_user['z_account'] = $account;
-            //测试体验到账1毛
-            $res = $this->zfbSendMoney($account, $name, 0.1);
-            if ($res['errcode'] == 2) {//验证成功
-                $update_user['z_bind'] = 1;
-            }
-        }
-        $user_model->updateData($update_user,$uid);
 
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
     }
