@@ -361,10 +361,9 @@ class MyController extends ApiController
             if(empty($data['min_id']) || $val['id'] < $data['min_id']){
                 $data['min_id'] = $val['id'];
             }
-            $data[] = $account_record_model->makeAccountRecord($val);
+            $data['list'][] = $account_record_model->makeAccountRecord($val);
         }
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
-
 
 }
