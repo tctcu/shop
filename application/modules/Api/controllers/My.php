@@ -371,14 +371,6 @@ class MyController extends ApiController
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
     }
 
-    function zfbSendMoney($payee_account,$payee_real_name,$amount=0.1){
-        $out_biz_no = time();
-
-        $model = new AlipayModel();
-        $res = $model->AlipayFundTransToaccountTransferRequest($out_biz_no, $payee_account, $payee_real_name, $amount);
-        return $res;
-    }
-
     #资金记录
     function accountRecordAction(){
         $uid = $this->uid;
