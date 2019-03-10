@@ -100,8 +100,8 @@ class AccountRecordModel extends MysqlModel {
 
     function makeAccountRecord($data){
         return [
-            'mark' => AccountRecordModel::ACCOUNT_RECORD_TYPE[$data['type']],
-            'type' => $data['type'],
+            'type' => AccountRecordModel::ACCOUNT_RECORD_TYPE[$data['type']],
+            'symbol' => in_array($data['type'],[1,4]) ? '+' : '-',
             'pay_type' => $data['pay_type'],
             'before' => $data['before'],
             'money' => $data['money'],
