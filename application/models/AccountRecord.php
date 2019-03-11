@@ -1,6 +1,7 @@
 <?php
 #资金记录表
-class AccountRecordModel extends MysqlModel {
+//class AccountRecordModel extends MysqlModel {
+class AccountRecordModel extends PdoModel {
     protected $_name = 'account_record';
 
     const ACCOUNT_RECORD_TYPE = [
@@ -28,7 +29,7 @@ class AccountRecordModel extends MysqlModel {
         if(empty($uid)){
             return false;
         }
-        $where = $this->_db->quoteInto('uid = ?',$uid);
+        $where = $this->quoteInto('uid = ?',$uid);
         $data = $this->fetchRow($where);
         if(!empty($data)){
             return $data->toArray();
@@ -51,7 +52,7 @@ class AccountRecordModel extends MysqlModel {
         $sql .= " limit {$page_size}";
 
         try{
-            $data = $this->_db->fetchAll($sql);
+            $data = $this->fetchAll($sql);
         }catch(Exception $ex){
             $data = array();
         }
@@ -74,7 +75,7 @@ class AccountRecordModel extends MysqlModel {
         $sql .= " limit {$start}, {$page_size}";
 
         try{
-            $data = $this->_db->fetchAll($sql);
+            $data = $this->fetchAll($sql);
         }catch(Exception $ex){
             $data = array();
         }
@@ -90,7 +91,7 @@ class AccountRecordModel extends MysqlModel {
             $sql .= " and type={$condition['type']} ";
         }
 
-        $result = $this->_db->fetchRow($sql);
+        $result = $this->fetchRow($sql);
         $num = 0;
         if(!empty($result['num'])) {
             $num = $result['num'];

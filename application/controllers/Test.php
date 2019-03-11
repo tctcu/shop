@@ -589,6 +589,16 @@ echo $url;die;
     }
 
 
+
+    function pdoAction(){
+        $model = new AccountRecordModel();
+        $list = $model->getDataByUid(5);
+        echo '<pre>';
+        print_r($list);
+        die;
+    }
+
+
     private function log($content='') {
         $fp = fopen('/tmp/test_book.log','a');
         if(!$fp){
