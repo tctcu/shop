@@ -407,7 +407,7 @@ class MyController extends ApiController
     #资金记录
     function accountRecordAction(){
         $uid = $this->uid;
-        $min_id = intval($_REQUEST['min_id']) ? intval($_REQUEST['min_id']) : 1;
+        $min_id = intval($_REQUEST['min_id']) ? intval($_REQUEST['min_id']) : 0;
 
         $account_record_model = new AccountRecordModel();
         $account_list = $account_record_model->getList(20,[
