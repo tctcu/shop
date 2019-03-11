@@ -247,7 +247,7 @@ class GoodsController extends ApiController
             }
         }
         if(empty($itemid)){
-            $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
+            $this->responseJson('20189', '抱歉!识别不到该商品优惠信息');
         }
 
         $url = "http://v2.api.haodanku.com/item_detail/apikey/allfree/itemid/" . $itemid;
