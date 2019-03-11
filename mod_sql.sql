@@ -277,6 +277,9 @@ add `w_openid` varchar(40) NOT NULL DEFAULT '' COMMENT '微信openid' after `sta
 ALTER TABLE user
  add `z_bind` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '提现支付宝绑定 0-否 1-是' after `z_user_id`;
 
+ ALTER TABLE user
+ add `w_bind` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '提现微信绑定 0-否 1-是' after `s_openid`;
+
  ALTER TABLE account_record change `type` `type` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '类型 1-返利发放 2-提现申请 3-提现到账 4-提现失败';
 
  CREATE TABLE `alipay_extract` (

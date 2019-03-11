@@ -240,10 +240,12 @@ class MyController extends ApiController
         $user_info = $user_model->getDataByUid($uid);
 
         $data = [
+            'z_status' => '1',//支付宝提现 1-开启 0-关闭
             'z_bind' => $user_info['z_bind'],//支付宝绑定 1-是 0-否
             'z_name' => $user_info['z_name'],
             'z_account' => $user_info['z_account'],
             'z_extract_level' => $user_info['z_bind'] == 0 ? [1,10,30] : [10,30,100],
+            'w_status' => '0',//微信提现 1-开启 0-关闭
             'w_bind' => !empty($user_info['s_openid']) ? '1' : '0',//微信绑定 1-是 0-否
             'w_qr_code' => CommonModel::IMAGE_URL.CommonModel::BIND_WE_CHAT,
             'w_extract_level' => empty($user_info['s_openid']) ? [1,10,30] : [10,30,100],
@@ -254,30 +256,59 @@ class MyController extends ApiController
 
 
     #微信提现
-    function extractAction(){
+    function wxExtractAction(){
         $uid = $this->uid;
-        $money = floatval($_REQUEST['money']);
-        if($money <= 0){
+        $money = intval($_REQUEST['money']);
+
+        if(!in_array($money,[1,10,30,100])){
             $this->responseJson('10008', '提现金额有误');
         }
+
         $user_model = new UserModel();
         $user_info = $user_model->getDataByUid($uid);
-        $balance = $user_info['use'] - $money;
+        if(empty(['s_openid'])){
+            $this->responseJson('10005', '请先绑定提现微信');
+        }
 
+        if($user_info['w_bind']){//已绑定
+            if($money == 1){// 绑定之后不能提1元
+                $this->responseJson('10008', '提现金额有误');
+            }
+        }
+
+        $balance = $user_info['use'] - $money;
         if($balance < 0){
             $this->responseJson('10009', '可用余额不足');
         }
+
+        $update_user = [
+            'use' => $balance,
+        ];
+        $type = 2;//2-提现申请 3-提现到账
+        $pay_id = 0;
+        if($money == 1) {//未绑定 1元立即到账
+            //TODO:: 微信支付1元
+            $res['type']  = 0;
+            if ($res['type'] == 2) {// 支付成功
+                $update_user['w_bind'] = 1;
+                $type = 3;
+            } else {
+                $this->responseJson('10011', '微信提现敬请期待');
+            }
+        }
+        //更新用户余额等
+        $user_model->updateData($update_user,$uid);
+        //提现记录
         $account_record_model = new AccountRecordModel();
         $account_record_model->addData([
             'uid' => $uid,
-            'type' => 2,//提现
+            'type' => $type,
+            'pay_type' => 2,//1-支付宝 2-微信
+            'pay_id' => $pay_id,
             'before' => $user_info['use'],
             'money' => $money,
             'balance' => $balance,
         ]);
-        $user_model->updateData([
-            'use' => $balance
-        ],$uid);
 
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
     }
