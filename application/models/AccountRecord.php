@@ -42,7 +42,7 @@ class AccountRecordModel extends MysqlModel {
             $sql .= " and uid={$condition['uid']} ";
         }
 
-        if(!empty($condition['min_id']) && $condition['min_id']>1){
+        if(!empty($condition['min_id']) && $condition['min_id']>0){
             $sql .= " and id<{$condition['min_id']} ";
         }
 
