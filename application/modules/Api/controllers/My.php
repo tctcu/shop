@@ -240,11 +240,13 @@ class MyController extends ApiController
         $user_info = $user_model->getDataByUid($uid);
 
         $data = [
-            'z_bind' =>$user_info['z_bind'],//支付宝绑定 1-是 0-否
+            'z_bind' => $user_info['z_bind'],//支付宝绑定 1-是 0-否
             'z_name' => $user_info['z_name'],
             'z_account' => $user_info['z_account'],
+            'z_extract_level' => $user_info['z_bind'] == 0 ? [1,10,30] : [10,30,100],
             'w_bind' => !empty($user_info['s_openid']) ? '1' : '0',//微信绑定 1-是 0-否
             'w_qr_code' => CommonModel::IMAGE_URL.CommonModel::BIND_WE_CHAT,
+            'w_extract_level' => empty($user_info['s_openid']) ? [1,10,30] : [10,30,100],
         ];
 
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
