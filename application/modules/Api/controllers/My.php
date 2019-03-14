@@ -338,6 +338,7 @@ class MyController extends ApiController
         }
 
         $user_info = $user_model->getDataByUid($uid);
+        $update_user = [];
         if($user_info['z_bind']){//已绑定
             if($account <> $user_info['z_account'] || $name <> $user_info['z_name']){
                 $this->responseJson('10007', '提现实名信息不正确');
@@ -345,19 +346,21 @@ class MyController extends ApiController
             if($money == 1){// 绑定之后不能提1元
                 $this->responseJson('10008', '提现金额有误');
             }
+        } else {// 未绑定 更新用户提现信息
+            $update_user = [
+                'z_name' => $name,
+                'z_account' => $account,
+            ];
         }
 
         $balance = $user_info['use'] - $money;
         if($balance < 0){
             $this->responseJson('10009', '可用余额不足');
         }
-
-        $update_user = [
-            'use' => $balance,
-        ];
+        $update_user['use'] = $balance;
         $type = 2;//2-提现申请 3-提现到账
         $pay_id = 0;
-        if($money == 1) {//未绑定 1元立即到账
+        if($money == 1) {//1元立即到账
             $out_biz_no = $uid.time();
 
             $model = new AlipayModel();
@@ -374,9 +377,6 @@ class MyController extends ApiController
                 'name' => $name,
                 'account' => $account
             ]);
-
-            $update_user['z_name'] = $name;
-            $update_user['z_account'] = $account;
 
             if ($res['type'] == 2) {// 支付成功
                 $update_user['z_bind'] = 1;
