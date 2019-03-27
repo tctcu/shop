@@ -90,5 +90,33 @@ class YuQueModel{
         return $retData;
     }
 
+    #订单
+    function orderGet($start){
+        $resp = [
+            'session' => $this->session,
+            //'fields' => 'relation_id,special_id,tb_trade_parent_id,tb_trade_id,site_id,adzone_id,alipay_total_price,income_rate,pub_share_pre_fee,num_iid,item_title,item_num,create_time,tk_status',
+            'fields' => 'relation_id,special_id,tb_trade_parent_id,tb_trade_id,num_iid,item_title,item_num,price,pay_price,seller_nick,seller_shop_title,commission,commission_rate,unid,create_time,earning_time,tk3rd_pub_id,tk3rd_site_id,tk3rd_adzone_id,relation_id,tb_trade_parent_id,tb_trade_id,num_iid,item_title,item_num,price,pay_price,seller_nick,seller_shop_title,commission,commission_rate,unid,create_time,earning_time,tk3rd_pub_id,tk3rd_site_id,tk3rd_adzone_id,special_id,click_time',
+            'span' => '1200',//秒
+            'page_size' => '100',
+            'order_query_type' => 'create_time',
+            'tk_status' => '1',
+            'start_time' => $start,
+            'infoext' => 1,
+        ];
+
+        $url = 'http://gateway.kouss.com/tbpub/orderGet';
+        $resp = $this->curl($url,$resp);
+        $retData = [];
+        if (isset($resp['tbk_sc_order_get_response']['results'])) {
+            if (isset($resp['tbk_sc_order_get_response']['results']['n_tbk_order']) && !empty($resp['tbk_sc_order_get_response']['results']['n_tbk_order'])) {
+                $retData = $resp['tbk_sc_order_get_response']['results']['n_tbk_order'];
+            }
+        } else {
+            return 'busy';
+        }
+
+        return $retData;
+    }
+
 
 }

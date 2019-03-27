@@ -277,7 +277,7 @@ class TaobaoModel{
 
     function WirelessShareTpwdQueryRequest(){
 
-        $req = new WirelessShareTpwdQueryRequest;
+        $req = new TbkScPublisherInfoSaveRequest;
         $req->setPasswordContent("【天猫品牌号】，复制这条信息￥sMCl0Yra3Ae￥后打开手机淘宝");
         $resp = $c->execute($req);
     }

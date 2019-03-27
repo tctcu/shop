@@ -554,6 +554,15 @@ echo $url;die;
     }
 
 
+    function orderAction(){
+
+        $start = '2019-03-26 19:00:00';
+        $taobao_model = new YuQueModel();
+        $res = $taobao_model->orderGet($start);
+        print_r($res);die;
+    }
+
+
     function sendAction(){
         $mail = new SendMail();
 
