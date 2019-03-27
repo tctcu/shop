@@ -24,6 +24,7 @@ class StatController extends AdminController
 		$pagination = $this->getPagination($total_num, $page, $page_size);
 		$this->_view->page = $page;
 		$this->_view->pager = new System_Page($this->base_url, $condition, $pagination);
+		$this->_view->params = $condition;
 
 		$this->_layout->meta_title = '订单列表';
 	}
