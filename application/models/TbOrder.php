@@ -81,8 +81,17 @@ Tip:
         if(!empty($condition['id'])){
             $sql .= " and id={$condition['id']} ";
         }
-        if(!empty($condition['status'])){
-            $sql .= " and status={$condition['status']} ";
+        if(!empty($condition['tk_status'])){
+            $sql .= " and tk_status={$condition['tk_status']} ";
+        }
+        if(!empty($condition['uid'])){
+            $sql .= " and uid={$condition['uid']} ";
+        }
+        if(!empty($condition['trade_id'])){
+            $sql .= " and trade_id={$condition['trade_id']} ";
+        }
+        if(!empty($condition['item_title'])){
+            $sql .= " and item_title like '%{$condition['item_title']}%' ";
         }
 
         $sql .= " order by id desc ";
@@ -103,8 +112,17 @@ Tip:
         if(!empty($condition['id'])){
             $sql .= " and id={$condition['id']} ";
         }
-        if(!empty($condition['status'])){
-            $sql .= " and status={$condition['status']} ";
+        if(!empty($condition['tk_status'])){
+            $sql .= " and tk_status={$condition['tk_status']} ";
+        }
+        if(!empty($condition['uid'])){
+            $sql .= " and uid={$condition['uid']} ";
+        }
+        if(!empty($condition['trade_id'])){
+            $sql .= " and trade_id={$condition['trade_id']} ";
+        }
+        if(!empty($condition['item_title'])){
+            $sql .= " and item_title like '%{$condition['item_title']}%' ";
         }
 
         $result = $this->_db->fetchRow($sql);
