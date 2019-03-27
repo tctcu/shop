@@ -592,7 +592,7 @@ echo $url;die;
 
     function pdoAction(){
         $model = new AccountRecordModel();
-        $list = $model->getDataByUid(5);
+        $list = $model->getListCount();
         echo '<pre>';
         print_r($list);
         die;

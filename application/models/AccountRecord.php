@@ -29,13 +29,29 @@ class AccountRecordModel extends PdoModel {
         if(empty($uid)){
             return false;
         }
-        $where = $this->quoteInto('uid = ?',$uid);
-        $data = $this->fetchRow($where);
-        if(!empty($data)){
-            return $data->toArray();
-        }
-        return false;
+        return $this->find("uid = $uid");
     }
+
+    #删除
+    function deleteData($id = 0){
+        if(empty($id)){
+            return false;
+        }
+        $row = $this->find("id = {$id}");
+        if(empty($row)){
+            return false;
+        }
+        return $this->delete("id = {$id}");
+    }
+
+    #更新
+    function updateData($data,$id){
+        if(empty($data) || empty($id)){
+            return false;
+        }
+        return $this->update($data,"id = {$id}");
+    }
+
 
     function getList($page_size =  20,$condition = array()){
         $sql = " select * from {$this->_name} where 1 ";
