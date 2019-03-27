@@ -129,8 +129,9 @@ class MyController extends ApiController
                 'text' => $tb_info['itemshorttitle'],
                 'logo' => $tb_info['itempic']
             ];
+        }
 
-        } else {//其他方式 语雀
+        if (empty($url_info['coupon_click_url'])) {//其他方式 语雀
             $condition = [
                 'item_id' => $itemid,
                 'session' => $taobao_account->session,
