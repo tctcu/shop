@@ -11,6 +11,7 @@ class UserController extends AdminController
 		$condition = array();
 		$page = isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 1;
 		$condition['uid'] = isset($_REQUEST['uid']) ? intval($_REQUEST['uid']) : 0;
+		$condition['mobile'] = isset($_REQUEST['mobile']) ? intval($_REQUEST['mobile']) : 0;
 		$page_size = 20;
 		$admin_user_model = new UserModel();
 		$show_list = $admin_user_model->getListData($page,$page_size,$condition);

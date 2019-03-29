@@ -3,6 +3,23 @@
         <?php include(dirname(dirname(__FILE__)).'/admin_left_menu.phtml');?>
     </div>
     <div class="col-md-9">
+        <style>
+            .form-div{display:inline-block; min-width:400px;margin-bottom:15px;}
+            .form-div label{width:100px;}
+        </style>
+        <form class="form-inline" role="form" action = "/admin/stat/index" method = "GET">
+            <div class="form-div">
+                <label>手机号：</label>
+                <input type="text" name="mobile" value="<?php if(!empty($params['mobile'])){ echo $params['mobile']; } ?>"/>
+            </div>
+            <div class="form-div" >
+                <label>UID：</label>
+                <input type="text"  name="uid" value="<?php if(!empty($params['uid'])){ echo $params['uid']; } ?>"/>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-default">搜索</button>
+            <br/><br/>
+        </form>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <span class="app-panel-title" >用户列表</span>
@@ -11,13 +28,17 @@
 
             <div class="panel-body">
                 <table class="table table-bordered table-striped">
-                    <tr><td>UID</td><td>微信昵称</td><td>微信头像</td><td>手机号</td><td>注册时间</td></tr>
+                    <tr><td>UID</td><td>微信昵称</td><td>微信头像</td><td>手机号</td><td>设备</td><td>待发放</td><td>总收益</td><td>订单</td><td>注册时间</td></tr>
                     <?php foreach ($show_list as $row){ ?>
                         <tr>
                             <td><?php echo $row['uid'];?></td>
                             <td><?php echo $row['w_nickname']?></td>
                             <td><img src="<?php echo $row['w_headimgurl']?>" width="150" height="150"> </td>
                             <td><?php echo $row['mobile']?></td>
+                            <td><?php echo $row['device_type'] == 1 ? 'IOS': '安卓'; ?></td>
+                            <td><?php echo $row['use']?></td>
+                            <td><?php echo $row['total']?></td>
+                            <td><a target="_blank" href="/admin/stat/index?uid=<?php echo $row['uid']?>">查看订单</td>
                             <td><?php echo date('Y-m-d H:i',$row['created_at']);?></td>
                         </tr>
                     <?php } ?>
