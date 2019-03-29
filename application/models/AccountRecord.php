@@ -24,11 +24,11 @@ class AccountRecordModel extends MysqlModel {
     }
 
     #查找单条信息
-    function getDataByUid($uid = 0){
-        if(empty($uid)){
+    function getDataById($id = 0){
+        if(empty($id)){
             return false;
         }
-        $where = $this->_db->quoteInto('uid = ?',$uid);
+        $where = $this->_db->quoteInto('id = ?',$id);
         $data = $this->fetchRow($where);
         if(!empty($data)){
             return $data->toArray();

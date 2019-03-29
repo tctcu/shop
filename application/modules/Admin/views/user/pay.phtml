@@ -33,7 +33,10 @@
                             <td><?php echo $row['money']?></td>
                             <td><?php echo $row['balance']?></td>
                             <td><?php echo date('Y-m-d H:i',$row['created_at']);?></td>
-                            <td>处理</td>
+                            <td>
+                                <a class="btn btn-success btn-xs confirm" href="/admin/user/grant?action=1&id=<?php echo $val['id']?>&uid=<?php echo $val['uid']?>"><i class="glyphicon glyphicon-arrow-right"></i>发放</a>
+                                <a class="btn btn-danger btn-xs confirm" href="/admin/user/grant?action=2&id=<?php echo $val['id']?>&uid=<?php echo $val['uid']?>"><i class="glyphicon glyphicon-arrow-right"></i>驳回</a>
+                            </td>
                         </tr>
                     <?php } ?>
                 </table>
