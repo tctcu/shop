@@ -131,13 +131,13 @@ class UserController extends AdminController
 		$user_model = new UserModel();
 		$user_info = $user_model->getDataByUid($uid);
 
-		if(empty($user_info['account']) || empty($user_info['name']) ||  $user_info['total'] < $money ){
+		if(empty($user_info['z_account']) || empty($user_info['z_name']) ||  $user_info['total'] < $money ){
 			return false;
 		}
 
 		$out_biz_no = $uid.time();
 		$model = new AlipayModel();
-		$res = $model->AlipayFundTransToaccountTransferRequest($out_biz_no, $user_info['account'], $user_info['name'], $money);
+		$res = $model->AlipayFundTransToaccountTransferRequest($out_biz_no, $user_info['z_account'], $user_info['z_name'], $money);
 
 		$alipay_extract_model = new AlipayExtractModel();
 		$pay_id = $alipay_extract_model->addData([
@@ -147,8 +147,8 @@ class UserController extends AdminController
 			'code' => $res['code'],
 			'order_id' => $res['order_id'],
 			'pay_date' => $res['pay_date'],
-			'name' => $user_info['name'],
-			'account' => $user_info['account']
+			'name' => $user_info['z_name'],
+			'account' => $user_info['z_account']
 		]);
 		//支付成功更新用户绑定
 		if ($res['type'] == 2 && $user_info['z_bind']<>1) {
