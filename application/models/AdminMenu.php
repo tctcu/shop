@@ -33,6 +33,11 @@
 							'href' => '/admin/user/index/',
 							'style' => 'glyphicon glyphicon-chevron-right'
 						),
+						'pay' => array(
+							'title' => '提现审核',
+							'href' => '/admin/user/pay/',
+							'style' => 'glyphicon glyphicon-chevron-right'
+						),
 
 					)
 				),

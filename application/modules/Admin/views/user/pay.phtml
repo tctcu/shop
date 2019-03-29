@@ -1,0 +1,44 @@
+<div class="row" style="margin-top:40px;">
+    <div class="col-md-3">
+        <?php include(dirname(dirname(__FILE__)).'/admin_left_menu.phtml');?>
+    </div>
+    <div class="col-md-9">
+        <style>
+            .form-div{display:inline-block; min-width:400px;margin-bottom:15px;}
+            .form-div label{width:100px;}
+        </style>
+        <form class="form-inline" role="form" action = "/admin/user/pay" method = "GET">
+            <div class="form-div" >
+                <label>UID：</label>
+                <input type="text"  name="uid" value="<?php if(!empty($params['uid'])){ echo $params['uid']; } ?>"/>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-default">搜索</button>
+            <br/><br/>
+        </form>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="app-panel-title" >提现列表</span>
+                <div style="clear:both;"></div>
+            </div>
+
+            <div class="panel-body">
+                <table class="table table-bordered table-striped">
+                    <tr><td>UID</td><td>支付方式</td><td>提之前</td><td>提现</td><td>提后余额</td><td>申请时间</td><td>操作</td></tr>
+                    <?php foreach ($show_list as $row){ ?>
+                        <tr>
+                            <td><a href="/admin/user/index?uid=<?php echo $row['uid']?>" target="_blank"><?php echo $row['uid'];?></a></td>
+                            <td><?php echo $row['pay_type'] == 1 ? '支付宝' : '微信'; ?></td>
+                            <td><?php echo $row['before']?></td>
+                            <td><?php echo $row['money']?></td>
+                            <td><?php echo $row['balance']?></td>
+                            <td><?php echo date('Y-m-d H:i',$row['created_at']);?></td>
+                            <td>处理</td>
+                        </tr>
+                    <?php } ?>
+                </table>
+                <?php $pager->render();?>
+            </div>
+        </div>
+    </div>
+</div>

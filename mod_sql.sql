@@ -46,6 +46,7 @@ insert into admin_access (id, title, m, c, a) values (1003, '增加/编辑广告
 insert into admin_access (id, title, m, c, a) values (1004, '删除广告', 'admin', 'shop', 'delbanner');
 
 insert into admin_access (id, title, m, c, a) values (2001, '用户列表', 'admin', 'user', 'index');
+insert into admin_access (id, title, m, c, a) values (2002, '提现审核', 'admin', 'user', 'pay');
 
 insert into admin_access (id, title, m, c, a) values (3001, '统计列表', 'admin', 'stat', 'index');
 

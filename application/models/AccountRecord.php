@@ -67,6 +67,9 @@ class AccountRecordModel extends MysqlModel {
         if(!empty($condition['type'])){
             $sql .= " and type={$condition['type']} ";
         }
+        if(is_array($condition['pay_type'])){
+            $sql .= " and pay_type in (".implode(',',$condition['pay_type']).") ";
+        }
 
         $sql .= " order by id desc ";
 
@@ -88,6 +91,9 @@ class AccountRecordModel extends MysqlModel {
         }
         if(!empty($condition['type'])){
             $sql .= " and type={$condition['type']} ";
+        }
+        if(is_array($condition['pay_type'])){
+            $sql .= " and pay_type in (".implode(',',$condition['pay_type']).") ";
         }
 
         $result = $this->_db->fetchRow($sql);
