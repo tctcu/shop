@@ -7,7 +7,7 @@
             .form-div{display:inline-block; min-width:400px;margin-bottom:15px;}
             .form-div label{width:100px;}
         </style>
-        <form class="form-inline" role="form" action = "/admin/stat/index" method = "GET">
+        <form class="form-inline" role="form" action = "/admin/user/index" method = "GET">
             <div class="form-div">
                 <label>手机号：</label>
                 <input type="text" name="mobile" value="<?php if(!empty($params['mobile'])){ echo $params['mobile']; } ?>"/>
@@ -28,7 +28,7 @@
 
             <div class="panel-body">
                 <table class="table table-bordered table-striped">
-                    <tr><td>UID</td><td>微信昵称</td><td>微信头像</td><td>手机号</td><td>设备</td><td>待发放</td><td>总收益</td><td>订单</td><td>注册时间</td></tr>
+                    <tr><td>UID</td><td>微信昵称</td><td>微信头像</td><td>手机号</td><td>设备</td><td>可提</td><td>总收益</td><td>订单</td><td>注册时间</td></tr>
                     <?php foreach ($show_list as $row){ ?>
                         <tr>
                             <td><?php echo $row['uid'];?></td>
