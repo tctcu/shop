@@ -305,7 +305,22 @@ ALTER TABLE user
 
  ALTER TABLE alipay_extract change `order_id` `order_id` varchar(100)  NOT NULL DEFAULT '' COMMENT '订单号';
 
+update `user` set `use` = '0.99' where  uid=5;
+update `user` set `use` = '1.58' where  uid=6;
+update `user` set `use` = '4.26' where  uid=9;
+update `user` set `use` = '0.3' where  uid=19;
+update `user` set `use` = '4.26' where  uid=24;
+update `user` set `use` = '1.13' where  uid=43;
+update `user` set `use` = '11.26' where  uid=47;
+update `user` set `use` = '3.9' where  uid=49;
+update `user` set `use` = '1.9' where  uid=49;
+update `user` set `use` = '6.25' where  uid=69;
+update `user` set `use` = '18.84' where  uid=109;
 
+ insert into account_record(id,uid,type,`before`,money,balance,created_at) VALUES
+   (3,5,1,0.54,100,100.54,1553889791),
+   (4,6,1,0.23,100,100.23,1553889791),
+   (5,9,1,0,100,100,1553889791);
 
 
 
