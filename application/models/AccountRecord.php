@@ -23,6 +23,14 @@ class AccountRecordModel extends MysqlModel {
         return $this->insert($data);
     }
 
+    #更新
+    function updateData($data, $id){
+        if(empty($data) || empty($id)){
+            return false;
+        }
+        return $this->update($data,"id = {$id}");
+    }
+
     #查找单条信息
     function getDataById($id = 0){
         if(empty($id)){

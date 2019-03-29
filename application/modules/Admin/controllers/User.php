@@ -69,7 +69,7 @@ class UserController extends AdminController
 
 		if($action<>1){//驳回
 			//提现记录更新
-			$account_record_model->update([
+			$account_record_model->updateData([
 				'type' => 4,//类型 3-提现到账 4-提现失败
 			],$id);
 			//补回金额
@@ -87,7 +87,7 @@ class UserController extends AdminController
 				return FALSE;
 			}
 			//提现记录更新
-			$account_record_model->update([
+			$account_record_model->updateData([
 				'type' => $res['type'] == 2 ? 3 : 4,//类型 3-提现到账 4-提现失败
 				'pay_id' => $res['pay_id'],
 			],$id);
@@ -119,7 +119,7 @@ class UserController extends AdminController
 		}
 		$user_model = new UserModel();
 		$user_info = $user_model->getDataByUid($uid);
-		$user_model->update(['use'=>$user_info['use']+$money],$uid);
+		$user_model->updateData(['use'=>$user_info['use']+$money],$uid);
 		return true;
 	}
 

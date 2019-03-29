@@ -1130,7 +1130,10 @@ abstract class Zend_Db_Table_Abstract
     public function update(array $data, $where)
     {
         $tableSpec = ($this->_schema ? $this->_schema . '.' : '') . $this->_name;
-        return $this->_db->update($tableSpec, $data, $where);
+        if(strpos($where,'=') !== false){//不带条件不能执行
+            return $this->_db->update($tableSpec, $data, $where);
+        }
+        return false;
     }
 
     /**
