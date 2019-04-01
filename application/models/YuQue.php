@@ -11,8 +11,10 @@ class YuQueModel{
 
     public function __construct($type = 1){
         $yuque_config = Yaf_Registry::get("config")->get('taobao.account.'.$type);
+        $common_model = new CommonModel();
+        $common_info = $common_model->getDataByType('session',$type);
 
-        $this->session = $yuque_config->session;
+        $this->session = $common_info['session'];
         $this->site_id = $yuque_config->site_id;
         $this->adzone_id = $yuque_config->adzone_id;
     }

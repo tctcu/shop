@@ -30,10 +30,9 @@
 
             <div class="panel-body">
                 <table class="table table-bordered table-striped">
-                    <tr><td>类型</td><td>key</td><td>value</td><td>创建日期</td><td>更新日期</td><td>管理</td></tr>
+                    <tr><td>key</td><td>value</td><td>创建日期</td><td>更新日期</td><td>管理</td></tr>
                     <?php foreach ($show_list as $row){ ?>
                         <tr>
-                            <td><?php echo $row['type'];?></td>
                             <td><?php echo $row['key'];?></td>
                             <td><?php echo $row['value'];?></td>
                             <td><?php echo date('Y-m-d H:i',$row['created_at']);?></td>

@@ -134,8 +134,8 @@ class ShopController extends AdminController
         if($id > 0){
             $common_model->deleteData($id);
         }
-        $this->set_flush_message("删除广告成功");
-        $this->redirect('/admin/shop/banner/');
+        $this->set_flush_message("删除配置成功");
+        $this->redirect('/admin/shop/common/');
         return FALSE;
     }
 

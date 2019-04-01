@@ -114,9 +114,10 @@ class MyController extends ApiController
         #获取库信息
         $tb_model = new TbModel();
         $tb_info = $tb_model->getDataByItemId($itemid);
-        $taobao_account = Yaf_Registry::get("config")->get('taobao.account.' . $type);
-        $taobao_model = new TaobaoModel($type);
+
         if($tb_info['activityid']){//好单库转高佣
+            $taobao_account = Yaf_Registry::get("config")->get('taobao.account.' . $type);
+
             $url = "http://v2.api.haodanku.com/ratesurl";
             $request_data['apikey'] = 'allfree';
             $request_data['itemid'] = $itemid;
@@ -131,10 +132,13 @@ class MyController extends ApiController
             ];
         }
 
+        $taobao_model = new TaobaoModel($type);
         if (empty($url_info['coupon_click_url'])) {//其他方式 语雀
+            $common_model = new CommonModel();
+            $common_info = $common_model->getDataByType('session',$type);
             $condition = [
                 'item_id' => $itemid,
-                'session' => $taobao_account->session,
+                'session' => $common_info['value'],
                 'site_id' => $pid_info['site_id'],
                 'adzone_id' => $pid_info['adzone_id']
             ];
