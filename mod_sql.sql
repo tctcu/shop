@@ -40,21 +40,24 @@ insert into admin_user (uid, name, password, mobile, salt, type, created_at, upd
 values ('1', '张顺灵', '43e708ad2d43852f8c496f83b05a2f13', '15305634799', '1234', '9', '1530981900', '1530981900');
 
 
-insert into admin_access (id, title, m, c, a) values (1001, '商品列表', 'admin', 'shop', 'index');
-insert into admin_access (id, title, m, c, a) values (1002, '广告列表', 'admin', 'shop', 'banner');
-insert into admin_access (id, title, m, c, a) values (1003, '增加/编辑广告', 'admin', 'shop', 'createbanner');
-insert into admin_access (id, title, m, c, a) values (1004, '删除广告', 'admin', 'shop', 'delbanner');
+ insert into admin_access (id, title, m, c, a) values (1001, '商品列表', 'admin', 'shop', 'index');
+ insert into admin_access (id, title, m, c, a) values (1002, '广告列表', 'admin', 'shop', 'banner');
+ insert into admin_access (id, title, m, c, a) values (1003, '增加/编辑广告', 'admin', 'shop', 'createbanner');
+ insert into admin_access (id, title, m, c, a) values (1004, '删除广告', 'admin', 'shop', 'delbanner');
+ insert into admin_access (id, title, m, c, a) values (1005, '配置列表', 'admin', 'shop', 'common');
+ insert into admin_access (id, title, m, c, a) values (1006, '增加/编辑配置', 'admin', 'shop', 'createcommon');
+ insert into admin_access (id, title, m, c, a) values (1007, '删除配置', 'admin', 'shop', 'delcommon');
 
-insert into admin_access (id, title, m, c, a) values (2001, '用户列表', 'admin', 'user', 'index');
-insert into admin_access (id, title, m, c, a) values (2002, '提现审核', 'admin', 'user', 'pay');
-insert into admin_access (id, title, m, c, a) values (2003, '提现发放', 'admin', 'user', 'grant');
+ insert into admin_access (id, title, m, c, a) values (2001, '用户列表', 'admin', 'user', 'index');
+ insert into admin_access (id, title, m, c, a) values (2002, '提现审核', 'admin', 'user', 'pay');
+ insert into admin_access (id, title, m, c, a) values (2003, '提现发放', 'admin', 'user', 'grant');
 
-insert into admin_access (id, title, m, c, a) values (3001, '统计列表', 'admin', 'stat', 'index');
+ insert into admin_access (id, title, m, c, a) values (3001, '统计列表', 'admin', 'stat', 'index');
 
-insert into admin_access (id, title, m, c, a) values (8001, '后台用户管理', 'admin', 'adminuser', 'index');
-insert into admin_access (id, title, m, c, a) values (8002, '编辑用户', 'admin', 'adminuser', 'create');
-insert into admin_access (id, title, m, c, a) values (8003, '权限控制', 'admin', 'adminuser', 'role');
-insert into admin_access (id, title, m, c, a) values (8004, '密码重置', 'admin', 'adminuser', 'reset');
+ insert into admin_access (id, title, m, c, a) values (8001, '后台用户管理', 'admin', 'adminuser', 'index');
+ insert into admin_access (id, title, m, c, a) values (8002, '编辑用户', 'admin', 'adminuser', 'create');
+ insert into admin_access (id, title, m, c, a) values (8003, '权限控制', 'admin', 'adminuser', 'role');
+ insert into admin_access (id, title, m, c, a) values (8004, '密码重置', 'admin', 'adminuser', 'reset');
 
 
 INSERT INTO admin_roles (uid,access_id,created_at) VALUES (1,1001,1530981900);
@@ -321,6 +324,21 @@ update `user` set `use` = '18.84' where  uid=109;
    (3,5,1,0.54,100,100.54,1553889791),
    (4,6,1,0.23,100,100.23,1553889791),
    (5,9,1,0,100,100,1553889791);
+
+
+
+ CREATE TABLE `common` (
+   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+   `type` varchar(20) NOT NULL DEFAULT '' COMMENT '类型',
+   `key` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'key',
+   `value` varchar(500) NOT NULL DEFAULT '' COMMENT 'value',
+   `created_at` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间戳',
+   `updated_at` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间戳',
+   PRIMARY KEY (`id`),
+   UNIQUE KEY `type_key` (`type`,`key`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='配置字典';
+
+
 
 
 

@@ -16,12 +16,12 @@ class ShopController extends AdminController
         $condition = array();
         $page = isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 1;
         $page_size = 20;
-        $admin_user_model = new BannerModel();
-        $show_list = $admin_user_model->getListData($page,$page_size,$condition);
+        $banner_model = new BannerModel();
+        $show_list = $banner_model->getListData($page,$page_size,$condition);
 
         $this->_view->show_list = $show_list;
         #分页处理
-        $total_num = $admin_user_model->getListCount($condition);
+        $total_num = $banner_model->getListCount($condition);
         $pagination = $this->getPagination($total_num, $page, $page_size);
         $this->_view->page = $page;
         $this->_view->pager = new System_Page($this->base_url, $condition, $pagination);
@@ -32,11 +32,11 @@ class ShopController extends AdminController
     #新增/编辑广告
     function createBannerAction(){
         $id = !empty($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
-        $book_model = new BannerModel();
+        $banner_model = new BannerModel();
 
         $info = [];
         if($id > 0){
-            $info = $book_model->getData($id);
+            $info = $banner_model->getData($id);
         }
 
         if($this->getRequest()->isPost()) {
@@ -57,9 +57,9 @@ class ShopController extends AdminController
             }
 
             if($info['id']) {
-                $book_model->updateData($data, $info['id']);
+                $banner_model->updateData($data, $info['id']);
             } else {
-                $book_model->addData($data);
+                $banner_model->addData($data);
             }
 
             $this->set_flush_message("编辑/添加广告成功");
@@ -75,13 +75,56 @@ class ShopController extends AdminController
     #删除广告
     function delBannerAction(){
         $id = !empty($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
-        $book_model = new BannerModel();
+        $banner_model = new BannerModel();
         if($id > 0){
-            $book_model->deleteData($id);
+            $banner_model->deleteData($id);
         }
         $this->set_flush_message("删除广告成功");
         $this->redirect('/admin/shop/banner/');
         return FALSE;
+    }
+
+    #配置
+    function commonAction(){
+        $type = !empty($_REQUEST['type']) ? trim($_REQUEST['type']) : CommonModel::TYPE[0];
+        $common_model = new CommonModel();
+        $data = $common_model->getDataByType($type);
+
+        $this->_view->params = ['type' => $type];
+        $this->_view->show_list = $data;
+        $this->_layout->meta_title = '配置';
+    }
+
+    #新增/编辑配置
+    function createCommonAction(){
+        $id = !empty($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+        $common_model = new CommonModel();
+
+        $info = [];
+        if($id > 0){
+            $info = $common_model->getData($id);
+        }
+
+        if($this->getRequest()->isPost()) {
+            $data = array(
+                'type' => trim($_REQUEST['type']),
+                'key' => intval($_REQUEST['key']),
+                'value' => trim($_REQUEST['value'])
+            );
+
+            if($info['id']) {
+                $common_model->updateData($data, $info['id']);
+            } else {
+                $common_model->addData($data);
+            }
+
+            $this->set_flush_message("编辑/添加配置成功");
+            $this->redirect('/admin/shop/common/?type='.$data['type']);
+            return FALSE;
+        }
+
+        $this->_view->info = $info;
+        $this->_layout->meta_title = '编辑/添加配置';
     }
 
 }
