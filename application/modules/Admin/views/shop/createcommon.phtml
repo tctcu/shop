@@ -1,0 +1,50 @@
+<h2>增加/编辑配置</h2>
+<div class="col-md-12" style="padding-left:0px;">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span class="app-panel-title" >增加/编辑配置</span>
+            <a class="btn btn-sm btn-success app-panel-btn" href="/admin/shop/common/"> <i class="glyphicon glyphicon-chevron-right"></i> 返回配置列表</a>
+            <div style="clear:both;"></div>
+        </div>
+
+        <div class="panel-body">
+            <?php if(!empty($message)){ ?>
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <?php echo htmlspecialchars($message)?>
+                </div>
+            <?php } ?>
+            <form action="/admin/shop/createcommon" method="post" role="form">
+
+                <?php if(!empty($info)){ ?>
+                    <input type="hidden" name="id" value="<?php echo $info['id']?>" />
+                <?php } ?>
+
+                <div class="form-group">
+                    <label for="name">类型:</label>
+                    <select name="type">
+                        <?php foreach(CommonModel::TYPE as $v){ ?>
+                            <option value="<?php echo $v;?>" <?php if(isset($info['type']) && $info['type'] == $v ){ echo "selected"; } ?>><?php echo $v;?></option>
+                        <?php } ?>
+                    </select>
+                    <span class="help-block error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="goto">KEY:</label>
+                    <input type="text" class="form-control" name="key" <?php if(!empty($info)){ ?>value="<?php echo $info['key']?>" <?php } ?> >
+                    <span class="help-block error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="goto">VALUE:</label>
+                    <input type="text" class="form-control" name="value" <?php if(!empty($info)){ ?>value="<?php echo $info['value']?>" <?php } ?> >
+                    <span class="help-block error"></span>
+                </div>
+
+                <button type="submit" class="btn btn-default" >提交</button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
