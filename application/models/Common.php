@@ -28,6 +28,14 @@ class CommonModel extends MysqlModel {
         return $this->insert($data);
     }
 
+    #删除
+    function deleteData($id){
+        if(empty($id)){
+            return false;
+        }
+        return $this->delete("id = {$id}");
+    }
+
     #更新
     function updateData($data, $id){
         if(empty($data) || empty($id)){
@@ -56,7 +64,7 @@ class CommonModel extends MysqlModel {
             return false;
         }
 
-        $sql = "select id,`key`,`value` from {$this->_name} where `type` = '{$type}'";
+        $sql = "select * from {$this->_name} where `type` = '{$type}'";
         if($key){
             return $this->_db->fetchRow($sql." and `key` = {$key}");
         }

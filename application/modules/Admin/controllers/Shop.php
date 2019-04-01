@@ -127,4 +127,16 @@ class ShopController extends AdminController
         $this->_layout->meta_title = '编辑/添加配置';
     }
 
+    #删除广告
+    function delCommonAction(){
+        $id = !empty($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+        $common_model = new CommonModel();
+        if($id > 0){
+            $common_model->deleteData($id);
+        }
+        $this->set_flush_message("删除广告成功");
+        $this->redirect('/admin/shop/banner/');
+        return FALSE;
+    }
+
 }
