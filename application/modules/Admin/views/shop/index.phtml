@@ -15,7 +15,7 @@
                     <?php foreach ($show_list as $row){ ?>
                         <tr>
                             <td><?php echo $row['id'];?></td>
-                            <td><a href="https://detail.tmall.com/item.htm?id=<?php echo $row['itemid']?>" target="_blank"><?php echo $row['itemshorttitle'];?></a><hr><?php echo $row['itemid'];?></td>
+                            <td><a href="<?php echo 'http://uland.taobao.com/coupon/edetail?activityId=' . $row['activityid'] . '&itemId=' . $row['itemid'] . '&src=qmmf_sqrb&mt=1&pid=mm_116356778_18618211_65740777'?>" target="_blank"><?php echo $row['itemshorttitle'];?></a><hr><?php echo $row['itemid'];?></td>
                             <td><img src="<?php echo $row['itempic']?>" width="200px"></td>
                             <td><?php echo $row['itemendprice'];?></td>
                             <td><a href="<?php echo 'http://uland.taobao.com/coupon/edetail?activityId=' . $row['activityid'] . '&itemId=' . $row['itemid'] . '&src=qmmf_sqrb&mt=1&pid=mm_116356778_18618211_65740777'?>" target="_blank"><?php echo $row['couponmoney'].'元券';?></a></td>
