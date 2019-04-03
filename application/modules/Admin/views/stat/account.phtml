@@ -1,0 +1,64 @@
+<div class="row" style="margin-top:40px;">
+    <div class="col-md-3">
+        <?php include(dirname(dirname(__FILE__)).'/admin_left_menu.phtml');?>
+    </div>
+    <div class="col-md-9">
+        <style>
+            .form-div{display:inline-block; min-width:400px;margin-bottom:15px;}
+            .form-div label{width:100px;}
+        </style>
+        <form class="form-inline" role="form" action = "/admin/stat/account" method = "GET">
+            <div class="form-div" >
+                <label>类型：</label>
+                <select name="type">
+                    <option value="0" <?php if(!isset($params['type']) || $params['type'] == '0' ){ echo "selected"; } ?>><?php echo '全部';?></option>
+                    <?php foreach(AccountRecordModel::ACCOUNT_RECORD_TYPE as $k=>$v){ ?>
+                        <option value="<?php echo $k;?>" <?php if(isset($params['type']) && $params['type'] == $k ){ echo "selected"; } ?>><?php echo $v;?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <br>
+            <div class="form-div">
+                <label>提现方式：</label>
+                <select name="pay_type">
+                    <option value="0" <?php if(!isset($params['pay_type']) || $params['pay_type'] == '0' ){ echo "selected"; } ?>><?php echo '全部';?></option>
+                    <?php foreach(AccountRecordModel::PAY_TYPE as $k=>$v){ ?>
+                        <option value="<?php echo $k;?>" <?php if(isset($params['pay_type']) && $params['pay_type'] == $k ){ echo "selected"; } ?>><?php echo $v;?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="form-div" >
+                <label>UID：</label>
+                <input type="text"  name="uid" value="<?php if(!empty($params['uid'])){ echo $params['uid']; } ?>"/>
+            </div>
+            <br/>
+            <button type="submit" class="btn btn-default">搜索</button>
+            <br/><br/>
+        </form>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="app-panel-title" >资金列表</span>
+                <div style="clear:both;"></div>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered table-striped">
+                    <tr><td>ID</td><td>UID</td><td>类型</td><td>提现支付ID</td><td>操作前</td><td>金额</td><td>操作后</td><td>时间</td></tr>
+                    <?php foreach ($show_list as $row){ ?>
+                        <tr>
+                            <td><?php echo $row['id'];?></td>
+                            <td><a href="/admin/user/index?uid=<?php echo $row['uid']?>" target="_blank"><?php echo $row['uid'];?></a></td>
+                            <td><?php echo AccountRecordModel::ACCOUNT_RECORD_TYPE[$row['type']];?></td>
+                            <td><?php echo $row['pay_id'];?></td>
+                            <td><?php echo $row['before'];?></td>
+                            <td><?php echo $row['money'];?></td>
+                            <td><?php echo $row['balance'];?></td>
+                            <td><?php echo date('Y-m-d H:i:s',$row['created_at']);?></td>
+                        </tr>
+                    <?php } ?>
+                </table>
+                <?php $pager->render();?>
+            </div>
+        </div>
+    </div>
+</div>

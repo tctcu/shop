@@ -28,7 +28,7 @@
 
             <div class="panel-body">
                 <table class="table table-bordered table-striped">
-                    <tr><td>UID</td><td>微信昵称</td><td>微信头像</td><td>手机号</td><td>设备</td><td>可提</td><td>总收益</td><td>订单</td><td>注册时间</td></tr>
+                    <tr><td>UID</td><td>微信昵称</td><td>微信头像</td><td>手机号</td><td>设备</td><td>可提</td><td>总收益</td><td>注册时间</td><td>资金记录/<br>订单</td></tr>
                     <?php foreach ($show_list as $row){ ?>
                         <tr>
                             <td><?php echo $row['uid'];?></td>
@@ -38,8 +38,9 @@
                             <td><?php echo $row['device_type'] == 1 ? 'IOS': '安卓'; ?></td>
                             <td><?php echo $row['use']?></td>
                             <td><?php echo $row['total']?></td>
-                            <td><a target="_blank" href="/admin/stat/index?uid=<?php echo $row['uid']?>">查看订单</td>
                             <td><?php echo date('Y-m-d H:i',$row['created_at']);?></td>
+                            <td><a target="_blank" href="/admin/stat/account/?uid=<?php echo $row['uid']?>">查看资金记录<br>
+                            <a target="_blank" href="/admin/stat/index?uid=<?php echo $row['uid']?>">查看订单</td>
                         </tr>
                     <?php } ?>
                 </table>

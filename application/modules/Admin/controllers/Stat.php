@@ -29,4 +29,25 @@ class StatController extends AdminController
 		$this->_layout->meta_title = '订单列表';
 	}
 
+	function accountAction(){
+		$condition = array();
+		$condition['pay_type'] = isset($_REQUEST['pay_type']) ? intval($_REQUEST['pay_type']) : 0;
+		$condition['uid'] = isset($_REQUEST['uid']) ? intval($_REQUEST['uid']) : 0;
+		$condition['type'] = isset($_REQUEST['type']) ? intval($_REQUEST['type']) : 0;
+		$page = isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 1;
+		$page_size = 20;
+		$account_record_model = new AccountRecordModel();
+		$show_list = $account_record_model->getListData($page,$page_size,$condition);
+
+		$this->_view->show_list = $show_list;
+		#分页处理
+		$total_num = $account_record_model->getListCount($condition);
+		$pagination = $this->getPagination($total_num, $page, $page_size);
+		$this->_view->page = $page;
+		$this->_view->pager = new System_Page($this->base_url, $condition, $pagination);
+		$this->_view->params = $condition;
+
+		$this->_layout->meta_title = '资金列表';
+	}
+
 }

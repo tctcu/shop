@@ -53,6 +53,7 @@ values ('1', '张顺灵', '43e708ad2d43852f8c496f83b05a2f13', '15305634799', '12
  insert into admin_access (id, title, m, c, a) values (2003, '提现发放', 'admin', 'user', 'grant');
 
  insert into admin_access (id, title, m, c, a) values (3001, '统计列表', 'admin', 'stat', 'index');
+ insert into admin_access (id, title, m, c, a) values (3002, '资金列表', 'admin', 'stat', 'account');
 
  insert into admin_access (id, title, m, c, a) values (8001, '后台用户管理', 'admin', 'adminuser', 'index');
  insert into admin_access (id, title, m, c, a) values (8002, '编辑用户', 'admin', 'adminuser', 'create');

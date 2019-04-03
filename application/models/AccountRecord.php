@@ -9,6 +9,10 @@ class AccountRecordModel extends MysqlModel {
         '3' => '提现到账',
         '4' => '提现失败',
     ];
+    const PAY_TYPE = [
+        '1' => '支付宝',
+        '2' => '微信',
+    ];
 
     function __construct(){
         parent::__construct();
@@ -77,6 +81,8 @@ class AccountRecordModel extends MysqlModel {
         }
         if(is_array($condition['pay_type'])){
             $sql .= " and pay_type in (".implode(',',$condition['pay_type']).") ";
+        }elseif(!empty($condition['pay_type'])){
+            $sql .= " and pay_type={$condition['pay_type']} ";
         }
 
         $sql .= " order by id desc ";
@@ -102,6 +108,8 @@ class AccountRecordModel extends MysqlModel {
         }
         if(is_array($condition['pay_type'])){
             $sql .= " and pay_type in (".implode(',',$condition['pay_type']).") ";
+        }elseif(!empty($condition['pay_type'])){
+            $sql .= " and pay_type={$condition['pay_type']} ";
         }
 
         $result = $this->_db->fetchRow($sql);

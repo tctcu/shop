@@ -54,8 +54,13 @@
 					'href' => '/admin/stat/index',
 					'childs' => array(
 						'index' => array(
-							'title' => '统计列表',
+							'title' => '订单列表',
 							'href' => '/admin/stat/index/',
+							'style' => 'glyphicon glyphicon-chevron-right'
+						),
+						'account' => array(
+							'title' => '资金列表',
+							'href' => '/admin/stat/account/',
 							'style' => 'glyphicon glyphicon-chevron-right'
 						),
 
