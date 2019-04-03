@@ -7,8 +7,28 @@ class ShopController extends AdminController
         parent::init();
     }
 
+    #商品列表
     function indexAction(){
+        $condition = array();
+        $condition['itemshorttitle'] = isset($_REQUEST['itemshorttitle']) ? trim($_REQUEST['itemshorttitle']) : '';
+        $condition['itemid'] = isset($_REQUEST['itemid']) ? intval($_REQUEST['itemid']) : 0;
+        $condition['fqcat'] = isset($_REQUEST['fqcat']) ? intval($_REQUEST['fqcat']) : 0;
+        $condition['status'] = isset($_REQUEST['status']) ? intval($_REQUEST['status']) : '';
 
+        $page = isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 1;
+        $page_size = 20;
+        $tb_model = new TbModel();
+        $show_list = $tb_model->getListData($page,$page_size,$condition);
+
+        $this->_view->show_list = $show_list;
+        #分页处理
+        $total_num = $tb_model->getListCount($condition);
+        $pagination = $this->getPagination($total_num, $page, $page_size);
+        $this->_view->page = $page;
+        $this->_view->pager = new System_Page($this->base_url, $condition, $pagination);
+        $this->_view->params = $condition;
+
+        $this->_layout->meta_title = '商品列表';
     }
 
     #广告列表

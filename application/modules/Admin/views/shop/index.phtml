@@ -11,8 +11,22 @@
 
             <div class="panel-body">
                 <table class="table table-bordered table-striped">
-                    <tr><td>ID</td><td>管理</td></tr>
+                    <tr><td>ID</td><td>标题/淘宝ID</td><td>图片</td><td>价格</td><td>优惠券</td><td>销量</td><td>佣金(%)</td><td>状态</td><td>上架时间</td></tr>
+                    <?php foreach ($show_list as $row){ ?>
+                        <tr>
+                            <td><?php echo $row['id'];?></td>
+                            <td><a href="https://detail.tmall.com/item.htm?id=<?php echo $row['itemid']?>" target="_blank"><?php echo $row['itemshorttitle'];?></a><hr><?php echo $row['itemid'];?></td>
+                            <td><img src="<?php echo $row['itempic']?>" width="200px"></td>
+                            <td><?php echo $row['itemendprice'];?></td>
+                            <td><a href="<?php echo 'http://uland.taobao.com/coupon/edetail?activityId=' . $row['activityid'] . '&itemId=' . $row['itemid'] . '&src=qmmf_sqrb&mt=1&pid=mm_116356778_18618211_65740777'?>" target="_blank"><?php echo $row['couponmoney'].'元券';?></a></td>
+                            <td><?php echo $row['itemsale'];?></td>
+                            <td><?php echo $row['tkrates'];?></td>
+                            <td><?php echo $row['status'] == 1 ? '上架':'失效';?></td>
+                            <td><?php echo date('Y-m-d H:i:s',$row['created_at']);?></td>
+                        </tr>
+                    <?php } ?>
                 </table>
+                <?php $pager->render();?>
             </div>
         </div>
     </div>

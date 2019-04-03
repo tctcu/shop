@@ -54,7 +54,7 @@ class TbModel extends MysqlModel {
         return false;
     }
 
-    function getListData($page_size =  20,$condition = array()){
+    function getList($page_size =  20,$condition = array()){
         $sql = " select * from {$this->_name} where 1 ";
         if(!empty($condition['id'])){
             $sql .= " and id={$condition['id']} ";
@@ -82,6 +82,37 @@ class TbModel extends MysqlModel {
         return $data;
     }
 
+    function getListData($page = 1,$page_size =  20,$condition = array()){
+        $sql = " select * from {$this->_name} where 1 ";
+        if(!empty($condition['id'])){
+            $sql .= " and id={$condition['id']} ";
+        }
+        if(!empty($condition['status'])){
+            $sql .= " and status={$condition['status']} ";
+        }
+        if(!empty($condition['fqcat'])){
+            $sql .= " and fqcat={$condition['fqcat']} ";
+        }
+        if(!empty($condition['itemid'])){
+            $sql .= " and itemid={$condition['itemid']} ";
+        }
+        if(!empty($condition['itemshorttitle'])){
+            $sql .= " and itemshorttitle like '%{$condition['itemshorttitle']}%' ";
+        }
+
+        $sql .= " order by id desc ";
+
+        $start = ($page -1 ) * $page_size;
+        $sql .= " limit {$start}, {$page_size}";
+
+        try{
+            $data = $this->_db->fetchAll($sql);
+        }catch(Exception $ex){
+            $data = array();
+        }
+        return $data;
+    }
+
     function getListCount($condition = array()){
         $sql = " select count(*) as num from {$this->_name} where 1 ";
         if(!empty($condition['id'])){
@@ -89,6 +120,15 @@ class TbModel extends MysqlModel {
         }
         if(!empty($condition['status'])){
             $sql .= " and status={$condition['status']} ";
+        }
+        if(!empty($condition['fqcat'])){
+            $sql .= " and fqcat={$condition['fqcat']} ";
+        }
+        if(!empty($condition['itemid'])){
+            $sql .= " and itemid={$condition['itemid']} ";
+        }
+        if(!empty($condition['itemshorttitle'])){
+            $sql .= " and itemshorttitle like '%{$condition['itemshorttitle']}%' ";
         }
 
         $result = $this->_db->fetchRow($sql);

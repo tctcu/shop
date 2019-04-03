@@ -22,7 +22,7 @@ class ItemController extends ApiController
         ];
 
         $tb_model = new TbModel();
-        $tb_list = $tb_model->getListData($pageSize,$condition);
+        $tb_list = $tb_model->getList($pageSize,$condition);
         $data = $tb_model->makeList($tb_list);
 
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
