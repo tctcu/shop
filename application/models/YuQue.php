@@ -14,7 +14,7 @@ class YuQueModel{
         $common_model = new CommonModel();
         $common_info = $common_model->getDataByType('session',$type);
 
-        $this->session = $common_info['session'];
+        $this->session = $common_info['value'];
         $this->site_id = $yuque_config->site_id;
         $this->adzone_id = $yuque_config->adzone_id;
     }
@@ -82,7 +82,6 @@ class YuQueModel{
 
         $url = 'http://gateway.kouss.com/tbpub/privilegeGet';
         $resp = $this->curl($url,$resp);
-
         if(isset($resp['result']['data']) && !empty($resp['result']['data'])){
             $retData = $resp['result']['data'];
         } else {
