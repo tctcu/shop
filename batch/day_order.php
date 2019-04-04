@@ -41,6 +41,7 @@ $requ = [
 ];
 
 $dbh = dsn();
+hdk_log(date('Y-m-d H:i:s') . ' [每日获取订单]:start');
 for ($start = $yesterday; $start < $today; $start += 1200) {
     $requ['start_time'] = date('Y-m-d H:i:s', $start);
 
@@ -125,6 +126,7 @@ for ($start = $yesterday; $start < $today; $start += 1200) {
     }
 }
 
+hdk_log(date('Y-m-d H:i:s') . ' [每日获取订单]:over');
 echo 'over';die;
 
 

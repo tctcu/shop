@@ -11,6 +11,12 @@ $dbh = dsn();
 $sql = "select sum(rebate) as this_rebate,uid from tb_order where is_rebate=0 and tk_status=3 and is_final=1 and earning_time<>'0000-00-00 00:00:00' and uid<>0 group by uid";
 $rebateList = $dbh->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 
+if(empty($rebateList)){
+    hdk_log(date('Y-m-d H:i:s') . ' [发放返利]:empty');
+    echo 'empty';die;
+} else {
+    hdk_log(date('Y-m-d H:i:s') . ' [发放返利]:'.json_encode($rebateList, JSON_UNESCAPED_UNICODE));
+}
 $time = time();
 foreach ($rebateList as $row) {
     $select_sql = "select `use`,`total` from `user` where uid={$row['uid']}";
@@ -52,5 +58,5 @@ foreach ($rebateList as $row) {
         $dbh->setAttribute(PDO::ATTR_AUTOCOMMIT, true);
     }
 }
-
+hdk_log(date('Y-m-d H:i:s') . ' [发放返利]:over');
 echo 'over';die;

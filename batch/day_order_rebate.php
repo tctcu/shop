@@ -42,6 +42,8 @@ $requ = [
 ];
 
 $dbh = dsn();
+hdk_log(date('Y-m-d H:i:s') . ' [每天获取结算订单]:start');
+
 for ($start = $start_time; $start < $end_time; $start += 1200) {
     $requ['start_time'] = date('Y-m-d H:i:s', $start);
     $page = 1;
@@ -62,8 +64,6 @@ for ($start = $start_time; $start < $end_time; $start += 1200) {
                         'is_final' => 1,//淘宝结算
                         'updated_at' => time()
                     ];
-
-
 
                     $select_sql = "select id,tk_status,is_final from tb_order where trade_id={$val['trade_id']}";
                     $order = $dbh->query($select_sql)->fetch(PDO::FETCH_ASSOC);
@@ -129,8 +129,7 @@ for ($start = $start_time; $start < $end_time; $start += 1200) {
     }
 }
 
-
-
+hdk_log(date('Y-m-d H:i:s') . ' [每天获取结算订单]:over');
 echo 'over';die;
 
 
