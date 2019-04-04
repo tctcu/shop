@@ -8,8 +8,6 @@ include('Common_func.php');
 include('function.php');
 require(dirname(dirname(__FILE__)) . '/application/models/Config.php'); //加载配置
 
-
-
 /*
     订单状态值，分别有：1: 全部订单（默认值），3：订单结算，12：订单付款， 13：订单失效，14：订单成功；注意：若订单查询类型参数order_query_type为“结算时间 settle_time”时，则本值只能查订单结算状态（即值为3）
 
@@ -23,7 +21,6 @@ Tip:
 
 3、订单失效：表示下了单但关闭订单等情形。
  * */
-sleep(3);//避开其他脚本获取订单
 
 $start_time = date('Y-m-d H:i:s',time()-1200);//查20分钟内的订单
 $all = 'trade_parent_id,trade_id,num_iid,item_title,item_num,price,pay_price,seller_nick,seller_shop_title,commission,commission_rate,unid,create_time,earning_time,tk_status,tk3rd_type,tk3rd_pub_id,order_type,income_rate,pub_share_pre_fee,subsidy_rate,subsidy_type,terminal_type,auction_category,site_idString,site_name,adzone_id,adzone_name,alipay_total_price,total_commission_rate,total_commission_fee,subsidy_fee,relation_id,special_id,click_time';
@@ -37,14 +34,12 @@ $requ = [
     'order_query_type' => 'create_time',
     'tk_status' => '1',
 ];
-$url = 'http://gateway.kouss.com/tbpub/orderGet';
 
 $dbh = dsn();
 $page = 1;
 while(true){
-    sleep(5);
     $requ['page'] = $page;
-    $resp = post_json_curl($url,$requ);
+    $resp = getOrder($requ);
     if (isset($resp['tbk_sc_order_get_response']['results'])) {
         if(isset($resp['tbk_sc_order_get_response']['results']['n_tbk_order']) && !empty($resp['tbk_sc_order_get_response']['results']['n_tbk_order'])) {
             $order_list = $resp['tbk_sc_order_get_response']['results']['n_tbk_order'];
@@ -57,13 +52,6 @@ while(true){
                     'tk_status' => $val['tk_status'],
                     'updated_at' => time()
                 ];
-
-                #订单关联用户
-                $select_sql = "select uid from user_pid where site_id={$val['site_id']} and adzone_id={$val['adzone_id']}";
-                $user_pid = $dbh->query($select_sql)->fetch(PDO::FETCH_ASSOC);
-                if($user_pid['uid']){
-                    $data['uid'] = $user_pid['uid'];
-                }
 
                 $select_sql = "select id,tk_status from tb_order where trade_id={$val['trade_id']}";
                 $order = $dbh->query($select_sql)->fetch(PDO::FETCH_ASSOC);
@@ -81,6 +69,13 @@ while(true){
                     insertOrderLog($dbh,$val);
                     $dbh->exec($update_sql);
                 } else {
+                    #订单关联用户
+                    $select_sql = "select uid from user_pid where site_id={$val['site_id']} and adzone_id={$val['adzone_id']}";
+                    $user_pid = $dbh->query($select_sql)->fetch(PDO::FETCH_ASSOC);
+                    if($user_pid['uid']){
+                        $data['uid'] = $user_pid['uid'];
+                    }
+
                     $data['alipay_total_price'] = $val['alipay_total_price'];
                     $data['create_time'] = $val['create_time'];
                     $data['income_rate'] = $val['income_rate']*100;//单位%
@@ -116,7 +111,7 @@ while(true){
             return 'over';
         }
     } else {
-        hdk_log(date('Y-m-d H:i:s') . ' [定时获取订单 api error]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
+        hdk_log(date('Y-m-d H:i:s') . ' [实时获取订单 api error]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
         return 'error';
     }
 }

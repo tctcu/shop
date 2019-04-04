@@ -1,6 +1,6 @@
 <?php
 /**
- * 订单获取 1天一次 第二天 刷一遍前一日订单
+ * 每天一次 结算15天前已结算的订单
  *
  */
 include('Common_func.php');
@@ -22,28 +22,28 @@ Tip:
 3、订单失效：表示下了单但关闭订单等情形。
  * */
 
-$yesterday = strtotime(date('Y-m-d 00:00:00', strtotime("-1 day")));
-$today = strtotime(date('Y-m-d 00:00:00'));
+$start_time = strtotime(date('Y-m-d 00:00:00', strtotime("-15 day")));
+$end_time = strtotime(date('Y-m-d 00:00:00', strtotime("-14 day")));
 
-
-if ($today - $yesterday <> 86400) {
+if ($end_time - $start_time <> 86400) {
     return 'error';
 }
 
+$all = 'trade_parent_id,trade_id,num_iid,item_title,item_num,price,pay_price,seller_nick,seller_shop_title,commission,commission_rate,unid,create_time,earning_time,tk_status,tk3rd_type,tk3rd_pub_id,order_type,income_rate,pub_share_pre_fee,subsidy_rate,subsidy_type,terminal_type,auction_category,site_idString,site_name,adzone_id,adzone_name,alipay_total_price,total_commission_rate,total_commission_fee,subsidy_fee,relation_id,special_id,click_time';
 
 $requ = [
     'session' => SESSION,
-    'fields' => 'tb_trade_parent_id,tb_trade_id,site_id,adzone_id,alipay_total_price,income_rate,pub_share_pre_fee,num_iid,item_title,item_num,create_time,tk_status',
+    //'fields' => 'tb_trade_parent_id,tb_trade_id,site_id,adzone_id,alipay_total_price,income_rate,pub_share_pre_fee,num_iid,item_title,item_num,create_time,tk_status',
+    'fields' => $all,
     'span' => '1200',//秒
     'page_size' => '100',
-    'order_query_type' => 'create_time',
-    'tk_status' => '1',
+    'order_query_type' => 'settle_time',
+    'tk_status' => '3',
 ];
 
 $dbh = dsn();
-for ($start = $yesterday; $start < $today; $start += 1200) {
+for ($start = $start_time; $start < $end_time; $start += 1200) {
     $requ['start_time'] = date('Y-m-d H:i:s', $start);
-
     $page = 1;
     while (true) {
         $requ['page'] = $page;
@@ -58,13 +58,17 @@ for ($start = $yesterday; $start < $today; $start += 1200) {
                         'rebate' => sprintf("%.2f", $val['pub_share_pre_fee'] * ConfigModel::REBATE),//订单返利
                         'pub_share_pre_fee' => $val['pub_share_pre_fee'],
                         'tk_status' => $val['tk_status'],
+                        'earning_time' => $val['earning_time'],//结算时间
+                        'is_final' => 1,//淘宝结算
                         'updated_at' => time()
                     ];
 
-                    $select_sql = "select id,tk_status from tb_order where trade_id={$val['trade_id']}";
+
+
+                    $select_sql = "select id,tk_status,is_final from tb_order where trade_id={$val['trade_id']}";
                     $order = $dbh->query($select_sql)->fetch(PDO::FETCH_ASSOC);
                     if ($order) {
-                        if($order['tk_status'] == $val['tk_status']){
+                        if($order['is_final'] == 1){
                             continue;
                         }
                         $update_sql = 'update tb_order set ';
@@ -75,7 +79,7 @@ for ($start = $yesterday; $start < $today; $start += 1200) {
                         insertOrderLog($dbh, $val);
                         $dbh->exec($update_sql);
                     } else {
-                        hdk_log(date('Y-m-d H:i:s') . ' [每日获取订单丢单]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
+                        hdk_log(date('Y-m-d H:i:s') . ' [每天获取结算丢单]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
 
                         #订单关联用户
                         $select_sql = "select uid from user_pid where site_id={$val['site_id']} and adzone_id={$val['adzone_id']}";
@@ -119,11 +123,13 @@ for ($start = $yesterday; $start < $today; $start += 1200) {
                 break 1;
             }
         } else {
-            hdk_log(date('Y-m-d H:i:s') . ' [每日获取订单 api error]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
+            hdk_log(date('Y-m-d H:i:s') . ' [每天获取结算订单 api error]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
             return 'error';
         }
     }
 }
+
+
 
 echo 'over';die;
 
