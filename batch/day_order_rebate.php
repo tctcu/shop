@@ -22,8 +22,8 @@ Tip:
 3、订单失效：表示下了单但关闭订单等情形。
  * */
 
-$start_time = strtotime(date('Y-m-d 00:00:00', strtotime("-15 day")));
-$end_time = strtotime(date('Y-m-d 00:00:00', strtotime("-14 day")));
+$start_time = strtotime(date('Y-m-d 00:00:00', strtotime("-16 day")));
+$end_time = strtotime(date('Y-m-d 00:00:00', strtotime("-15 day")));
 
 if ($end_time - $start_time <> 86400) {
     return 'error';

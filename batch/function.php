@@ -42,18 +42,18 @@ function get_curl($url){
 
 #获取订单
 function getOrder($request){
-    $s = rand(4,7);
+    $s = rand(5,8);
     sleep($s);
     $shmid = shmop_open(ftok(__FILE__,'h'), 'c', 0644, 1024);
 
     while(true){
         //获取最新请求时间
         $old_time = shmop_read($shmid, 0, 10);
-        if(time()-$old_time > 3){
+        if(time()-$old_time > 4){
             break;
         }
         echo 'busy';
-        sleep(2);
+        sleep(3);
     }
     //记录最新请求时间
     shmop_write($shmid, time(), 0);
