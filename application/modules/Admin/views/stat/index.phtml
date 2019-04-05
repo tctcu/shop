@@ -42,7 +42,7 @@
             </div>
             <div class="panel-body">
                 <table class="table table-bordered table-striped">
-                    <tr><td>标题</td><td>UID</td><td>状态</td><td>支付</td><td>佣金</td><td>返利</td><td>下单时间</td></tr>
+                    <tr><td>标题</td><td>UID</td><td>状态</td><td>支付</td><td>佣金</td><td>返利</td><td>下单时间</td><td>结算时间</td></tr>
                     <?php foreach ($show_list as $row){ ?>
                         <tr>
                             <td><a href="https://detail.tmall.com/item.htm?id=<?php echo $row['num_iid']?>" target="_blank"><?php echo $row['item_title'];?></a></td>
@@ -52,6 +52,7 @@
                             <td><?php echo $row['pub_share_pre_fee'];?></td>
                             <td><?php echo $row['rebate'];?></td>
                             <td><?php echo $row['create_time'];?></td>
+                            <td><?php echo $row['earning_time'];?></td>
                         </tr>
                     <?php } ?>
                 </table>

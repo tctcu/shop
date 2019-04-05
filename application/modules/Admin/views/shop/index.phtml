@@ -3,6 +3,34 @@
         <?php include(dirname(dirname(__FILE__)).'/admin_left_menu.phtml');?>
     </div>
     <div class="col-md-9">
+        <style>
+            .form-div{display:inline-block; min-width:400px;margin-bottom:15px;}
+            .form-div label{width:100px;}
+        </style>
+        <form class="form-inline" role="form" action = "/admin/shop/index" method = "GET">
+            <div class="form-div" >
+                <label>淘宝ID：</label>
+                <input type="text"  name="itemid" value="<?php if(!empty($params['itemid'])){ echo $params['itemid']; } ?>"/>
+            </div>
+            <div class="form-div" >
+                <label>商品标题：</label>
+                <input type="text"  name="itemshorttitle" value="<?php if(!empty($params['itemshorttitle'])){ echo $params['itemshorttitle']; } ?>"/>
+            </div>
+            <br/>
+            <div class="form-div" >
+                <label>分类：</label>
+                <select name="fqcat">
+                    <option value="0" <?php if(!isset($params['fqcat']) || $params['fqcat'] == '0' ){ echo "selected"; } ?>><?php echo '全部';?></option>
+                    <?php foreach(array_column(TbModel::CATEGORY, 'name', 'cid')as $k=>$v){ ?>
+                        <option value="<?php echo $k;?>" <?php if(isset($params['fqcat']) && $params['fqcat'] == $k ){ echo "selected"; } ?>><?php echo $v;?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-default">搜索</button>
+            <br/><br/>
+        </form>
+
         <div class="panel panel-default">
             <div class="panel-heading">
                 <span class="app-panel-title" >商品列表</span>
