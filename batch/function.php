@@ -42,21 +42,21 @@ function get_curl($url){
 
 #获取订单
 function getOrder($request){
-    $s = rand(5,8);
+    $s = rand(4,7);
     sleep($s);
     $shmid = shmop_open(ftok(__FILE__,'h'), 'c', 0644, 1024);
 
     while(true){
         //获取最新请求时间
         $old_time = shmop_read($shmid, 0, 10);
-        if(time()-$old_time > 4){
+        if(time()-$old_time > 3){
             break;
         }
         echo 'busy';
-        sleep(3);
+        sleep(2);
     }
     //记录最新请求时间
-    shmop_write($shmid, time(), 0);
+    shmop_write($shmid, time().'', 0);
     $url = 'http://gateway.kouss.com/tbpub/orderGet';
     return post_json_curl($url,$request);
 }

@@ -38,8 +38,8 @@ $requ = [
     'order_query_type' => 'settle_time',
     'tk_status' => '3',
 ];
-$url = 'http://gateway.kouss.com/tbpub/orderGet';
 
+hdk_log(date('Y-m-d H:i:s') . ' [每月结算订单]:start');
 $dbh = dsn();
 for ($start = $start_time; $start < $end_time; $start += 1200) {
     $requ['start_time'] = date('Y-m-d H:i:s', $start);
@@ -47,9 +47,8 @@ for ($start = $start_time; $start < $end_time; $start += 1200) {
     echo $requ['start_time']."\n";
     $page = 1;
     while (true) {
-        sleep(3);
         $requ['page'] = $page;
-        $resp = post_json_curl($url, $requ);
+        $resp = getOrder($requ);
         if (isset($resp['tbk_sc_order_get_response']['results'])) {
             if (isset($resp['tbk_sc_order_get_response']['results']['n_tbk_order']) && !empty($resp['tbk_sc_order_get_response']['results']['n_tbk_order'])) {
                 $order_list = $resp['tbk_sc_order_get_response']['results']['n_tbk_order'];
@@ -65,13 +64,6 @@ for ($start = $start_time; $start < $end_time; $start += 1200) {
                         'updated_at' => time()
                     ];
 
-                    #订单关联用户
-                    $select_sql = "select uid from user_pid where site_id={$val['site_id']} and adzone_id={$val['adzone_id']}";
-                    $user_pid = $dbh->query($select_sql)->fetch(PDO::FETCH_ASSOC);
-                    if($user_pid['uid']){
-                        $data['uid'] = $user_pid['uid'];
-                    }
-
                     $select_sql = "select id,tk_status,is_final from tb_order where trade_id={$val['trade_id']}";
                     $order = $dbh->query($select_sql)->fetch(PDO::FETCH_ASSOC);
                     if ($order) {
@@ -86,7 +78,14 @@ for ($start = $start_time; $start < $end_time; $start += 1200) {
                         insertOrderLog($dbh, $val);
                         $dbh->exec($update_sql);
                     } else {
-                        hdk_log(date('Y-m-d H:i:s') . ' [每月获取订单丢单]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
+                        hdk_log(date('Y-m-d H:i:s') . ' [每月结算订单丢单]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
+
+                        #订单关联用户
+                        $select_sql = "select uid from user_pid where site_id={$val['site_id']} and adzone_id={$val['adzone_id']}";
+                        $user_pid = $dbh->query($select_sql)->fetch(PDO::FETCH_ASSOC);
+                        if($user_pid['uid']){
+                            $data['uid'] = $user_pid['uid'];
+                        }
 
                         $data['alipay_total_price'] = $val['alipay_total_price'];
                         $data['create_time'] = $val['create_time'];
@@ -123,14 +122,13 @@ for ($start = $start_time; $start < $end_time; $start += 1200) {
                 break 1;
             }
         } else {
-            hdk_log(date('Y-m-d H:i:s') . ' [每月获取订单 api error]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
+            hdk_log(date('Y-m-d H:i:s') . ' [每月结算订单 api error]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
             return 'error';
         }
     }
 }
 
-
-
+hdk_log(date('Y-m-d H:i:s') . ' [每月结算订单]:end');
 echo 'over';die;
 
 

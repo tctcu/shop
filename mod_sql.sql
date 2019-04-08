@@ -340,6 +340,6 @@ update `user` set `use` = '18.84' where  uid=109;
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='配置字典';
 
 
-
+select * from user_pid where uid not in (SELECT DISTINCT uid from tb_order);
 
 
