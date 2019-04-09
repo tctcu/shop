@@ -68,4 +68,18 @@ class AuthController extends ApiController
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
+    #苹果更新
+    function iosUpdateAction(){
+
+        $data = [
+            "UpdateStatus" => '1',// 1:普通下载 2: 强制更新
+            "VersionName" => "1.1.3", // VersionName
+            "UploadTime" => "2019-04-09 17:28:41", // 更新时间
+            "ModifyContent" => "这是一个很有意义的更新", // 更新描述
+            "DownloadUrl" => 'https://itunes.apple.com/cn/app/id1440226599?mt=8', // 下载链接
+        ];
+
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+    }
+
 }
