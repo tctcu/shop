@@ -340,6 +340,7 @@ update `user` set `use` = '18.84' where  uid=109;
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='配置字典';
 
 
-select * from user_pid where uid not in (SELECT DISTINCT uid from tb_order);
+ alter table user_pid add uid_log varchar(500) NOT NULL DEFAULT '' COMMENT 'uid 记录' AFTER uid;
+update user_pid set uid_log = concat(uid_log, ',', uid),uid = 0 where uid not in (SELECT DISTINCT uid from tb_order);
 
 
