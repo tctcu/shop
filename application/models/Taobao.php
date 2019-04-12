@@ -236,12 +236,17 @@ class TaobaoModel{
 //        $req->setEndTkRate("123");
 //        $req->setPlatform("1");
 //        $req->setPageNo("123");
-//        $req->setPageSize("20");
+        $req->setPageSize("100");
         $resp = $this->apiClient->execute($req);
         $resp = json_decode(json_encode($resp),true);
-
         if(isset($resp['results']['n_tbk_item'][0]) && !empty($resp['results']['n_tbk_item'][0])){
             $retData = $resp['results']['n_tbk_item'][0];
+            foreach($resp['results']['n_tbk_item'] as $val){
+                if($val['title'] == $keyword){
+                    $retData = $val;
+                    break;
+                }
+            }
         } else {
             $retData = array();
         }
