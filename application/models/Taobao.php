@@ -280,11 +280,65 @@ class TaobaoModel{
         return $retData;
     }
 
-    function WirelessShareTpwdQueryRequest(){
 
+
+    #获取订单
+    function TbkOrderGetRequest($start, $page = 1, $pageSize = 100){
+        $req = new TbkOrderGetRequest();
+        $req->setFields("tb_trade_parent_id,tb_trade_id,num_iid,item_title,item_num,price,pay_price,seller_nick,seller_shop_title,commission,commission_rate,unid,create_time,earning_time,tk3rd_pub_id,tk3rd_site_id,tk3rd_adzone_id,relation_id,tb_trade_parent_id,tb_trade_id,num_iid,item_title,item_num,price,pay_price,seller_nick,seller_shop_title,commission,commission_rate,unid,create_time,earning_time,tk3rd_pub_id,tk3rd_site_id,tk3rd_adzone_id,special_id,click_time");
+        $req->setStartTime("$start");
+        $req->setSpan("1200");
+        $req->setPageNo("$page");
+        $req->setPageSize("$pageSize");
+        $req->setTkStatus("1");
+        $req->setOrderQueryType("create_time");
+        $req->setOrderScene("1");
+        //$req->setOrderCountType("1");
+        $resp = $this->apiClient->execute($req);
+        $resp = json_decode(json_encode($resp),true);
+        $retData = [];
+        if (isset($resp['results']['n_tbk_order'])) {
+            $retData = $resp['results']['n_tbk_order'];
+        }
+
+        return $retData;
+    }
+
+    #绑定渠道关系
+    function TbkScPublisherInfoSaveRequest($session){
         $req = new TbkScPublisherInfoSaveRequest;
-        $req->setPasswordContent("【天猫品牌号】，复制这条信息￥sMCl0Yra3Ae￥后打开手机淘宝");
-        $resp = $c->execute($req);
+        $req->setRelationFrom("123");
+        $req->setOfflineScene("4");
+        $req->setOnlineScene("3");
+        $req->setInviterCode("SR3HPL");
+        $req->setInfoType("1");
+        $req->setNote("第一个测试");
+        $resp = $this->apiClient->execute($req, $session);
+        $resp = json_decode(json_encode($resp),true);
+        $retData = [];
+        if (isset($resp['data'])) {
+            $retData = $resp['data'];
+        }
+
+        return $retData;
+    }
+
+    #获取渠道关系
+    function TbkScPublisherInfoGetRequest($page = 1, $pageSize = 10){
+        $session = '61018107b53d03c62f11c11f6544a2f7ac84c24d8ce9e7a418362049';//小麦我的ta
+        $session = '61025141b08ee362da01a719786791352121d5da73d5ae24227738592';//川律
+        $req = new TbkScPublisherInfoGetRequest;
+        $req->setInfoType("1");
+        $req->setPageNo("$page");
+        $req->setPageSize("$pageSize");
+        $req->setRelationApp("common");
+        $resp = $this->apiClient->execute($req, $session);
+        $resp = json_decode(json_encode($resp),true);
+        $retData = [];
+        if (isset($resp['data']['inviter_list']['map_data'])) {
+            $retData = $resp['data']['inviter_list']['map_data'];
+        }
+        return $retData;
     }
 
 

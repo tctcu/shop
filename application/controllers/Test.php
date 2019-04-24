@@ -553,10 +553,24 @@ echo $url;die;
         print_r($res);die;
     }
 
+    function tbTestAction(){
+        $condition = [
+            'text' => '测试淘口令啊',
+            'logo' => 'https://img.alicdn.com/bao/uploaded/TB1w.rKLFXXXXamXVXXSutbFXXX.jpg_310x310.jpg',
+            'url' => 'https://uland.taobao.com/coupon/edetail?e=MT7NENE1XecGQASttHIRqcHreRS1NJG5s3dNgIAkl3MWHjruRgi2Rils9kpvhdqkK6Evp5rblLK9JkisPaY0bn%2F4Vru%2FikDru1%2FL0f5PsU1ekXVC85rMZRemP0hpIIPvjDppvlX%2Bob8NlNJBuapvQ2MDg9t1zp0R8pjV3C9qcwTW47dazMBIXCtZH2qXkQ9h&traceId=0b0837c215467825021641712e&union_lens=lensId:0b0838c1_0bd6_168236bed2c_a471&activityId=9a37d9c20e364ae0a301c326e81ea454&thispid=mm_116356778_18658274_81428000415&src=fklm_hltk&from=tool&sight=fklm',
+        ];
+        $start = '2019-04-24 16:40:00';
+        $session = '610072080f7b7fac6f15268124211c323841bbd2a83bc823297963538';//tctcu
+        $taobao_model = new TaobaoModel(4);
+        $res = $taobao_model->TbkScPublisherInfoGetRequest(1,20);
+        //$res = $taobao_model->TbkOrderGetRequest($start,1,20);
+        print_r($res);die;
+    }
+
 
     function orderAction(){
 
-        $start = '2019-03-26 19:00:00';
+        $start = '2019-03-26 16:40:00';
         $taobao_model = new YuQueModel();
         $res = $taobao_model->orderGet($start);
         print_r($res);die;
