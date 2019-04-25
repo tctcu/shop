@@ -22,8 +22,49 @@ class TestController extends Yaf_Controller_Abstract
 
 
     function testAction(){
+
+
+        $userId = 5;
+        echo $this->createCode($userId);
+        echo '<hr>';
+        echo $this->decode($this->createCode($userId));die;
+
+
         echo file_get_contents("https://douban.uieee.com/v2/movie/in_theaters");die;
 
+    }
+
+    function createCode($user_id) {
+        $source_string = 'gn8FbQqrDT3HY6A5RaE9fhNt47ydGBe';
+        $num = $user_id;
+        $code = '';
+        while ( $num > 0) {
+            $mod = $num % 31;
+            $code = $source_string[$mod].$code;
+            $num = ($num - $mod) / 31;
+        }
+
+        if(empty($code[3])){
+            $code = str_pad($code,4,'k',STR_PAD_LEFT);
+        }
+
+        return $code;
+    }
+
+
+    function decode($code) {
+        $source_string = 'gn8FbQqrDT3HY6A5RaE9fhNt47ydGBe';
+        if (strrpos($code, 'k') !== false){
+            $code = substr($code, strrpos($code, 'k')+1);
+        }
+        $len = strlen($code);
+        $code = strrev($code);
+        $num = 0;
+        for ($i=0; $i < $len; $i++) {
+            $num += strpos($source_string, $code[$i]) * pow(31, $i);
+        }
+
+        return $num;
     }
 
     public function planAction(){
