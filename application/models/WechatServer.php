@@ -39,9 +39,9 @@ class WechatServerModel extends WechatModel
 
     //网页授权
     #用户同意授权，获取code
-    public function code($redirect_uri){
+    public function code($redirect_uri,$state = '0908'){
         $redirect_uri = urlencode($redirect_uri);
-        $request_url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=$this->appid&redirect_uri=$redirect_uri&response_type=code&scope=snsapi_userinfo&state=0908#wechat_redirect";
+        $request_url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=$this->appid&redirect_uri=$redirect_uri&response_type=code&scope=snsapi_userinfo&state=$state#wechat_redirect";
         header("Location:$request_url");exit;
     }
 

@@ -122,7 +122,49 @@ class ServerController extends Yaf_Controller_Abstract{
     }
 
 
+    #授权登录  (服务号)
+    public function registerAction(){
+        $state = $_REQUEST['invite_code'];
+        $redirect_uri ="http://".$_SERVER['HTTP_HOST']."/Server/registerCallback";
+        $this->wechat_model->Code($redirect_uri,$state);
+    }
 
+    #授权登录回调 (服务号)
+    public function registerCallbackAction(){
+        $state = $_GET['state'];
+        $token = $this->wechat_model->authorization_code($_GET['code']);
+
+        $wechat_info = $this->wechat_model->snsapi_userinfo($token['access_token'],$token['openid']);
+
+        $user_model = new UserModel();
+        $user_info = $user_model->getDataByUnionid($wechat_info['unionid']);
+
+        if($user_info){
+            if (empty($user_info['s_openid'])){//关联一下服务号openid
+                $date = ['s_openid' => $token['openid']];
+                $user_model->updateData($date,$user_info['uid']);
+            }
+
+            echo  '<h1>已经注册过券购APP,下载打开体验吧</h1>';exit;
+        }
+        //新用户
+        $up_uid = $user_model->code2uid($state);
+        $insert = [
+            "up_uid" => intval($up_uid),
+            "w_bind" => 1,//服务号授权 默认绑定提现微信
+            "s_openid" => $wechat_info["openid"],
+            "w_nickname" => $wechat_info["nickname"],
+            "w_sex" => $wechat_info["sex"],
+            "w_city" => $wechat_info["city"],
+            "w_province" => $wechat_info["province"],
+            "w_country" => $wechat_info["country"],
+            "w_headimgurl" => $wechat_info["headimgurl"],
+            "w_unionid" => $wechat_info["unionid"]
+        ];
+        $user_model->addData($insert);
+
+        echo  '<h1>恭喜注册成功,下载券购APP开始省钱</h1>';exit;
+    }
 
 
 

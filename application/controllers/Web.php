@@ -92,13 +92,15 @@ class WebController extends Yaf_Controller_Abstract
         echo '邀请码:'.$invite_code;
         echo '<hr>';
         echo "<a href='/web/register?invite_code={$invite_code}'>点击注册</a>";
+        die;
     }
     #app外微信注册
     function registerAction(){
         $invite_code =  trim($_REQUEST['invite_code']);
         $user_model = new UserModel();
         $uid = $user_model->code2uid($invite_code);
-        echo '注册成uid为:'.$uid.'的徒弟';die;
+        echo '注册成uid为:'.$uid.'的徒弟';
+        echo "<a href='/Server/register?invite_code={$invite_code}'>点击注册</a>";die;
     }
 
 
