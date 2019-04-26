@@ -343,4 +343,4 @@ update `user` set `use` = '18.84' where  uid=109;
  alter table user_pid add uid_log varchar(500) NOT NULL DEFAULT '' COMMENT 'uid 记录' AFTER uid;
 update user_pid set uid_log = concat(uid_log, ',', uid),uid = 0 where uid not in (SELECT DISTINCT uid from tb_order);
 
-
+ alter table user add up_uid int(11) unsigned NOT NULL DEFAULT '0'  COMMENT '师傅uid' AFTER uid;
