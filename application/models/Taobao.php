@@ -280,12 +280,128 @@ class TaobaoModel{
         return $retData;
     }
 
-    function WirelessShareTpwdQueryRequest(){
 
-        $req = new TbkScPublisherInfoSaveRequest;
-        $req->setPasswordContent("【天猫品牌号】，复制这条信息￥sMCl0Yra3Ae￥后打开手机淘宝");
-        $resp = $c->execute($req);
+
+    #获取订单
+    function TbkOrderGetRequest($start, $page = 1, $pageSize = 100){
+        $req = new TbkOrderGetRequest();
+        $req->setFields("tb_trade_parent_id,tb_trade_id,num_iid,item_title,item_num,price,pay_price,seller_nick,seller_shop_title,commission,commission_rate,unid,create_time,earning_time,tk3rd_pub_id,tk3rd_site_id,tk3rd_adzone_id,relation_id,tb_trade_parent_id,tb_trade_id,num_iid,item_title,item_num,price,pay_price,seller_nick,seller_shop_title,commission,commission_rate,unid,create_time,earning_time,tk3rd_pub_id,tk3rd_site_id,tk3rd_adzone_id,special_id,click_time");
+        $req->setStartTime("$start");
+        $req->setSpan("1200");
+        $req->setPageNo("$page");
+        $req->setPageSize("$pageSize");
+        $req->setTkStatus("1");
+        $req->setOrderQueryType("create_time");
+        $req->setOrderScene("1");
+        //$req->setOrderCountType("1");
+        $resp = $this->apiClient->execute($req);
+        $resp = json_decode(json_encode($resp),true);
+        $retData = [];
+        if (isset($resp['results']['n_tbk_order'])) {
+            $retData = $resp['results']['n_tbk_order'];
+        }
+
+        return $retData;
     }
+
+    #获取渠道邀请码 川律-SR3HPL
+    function TbkScInvitecodeGetRequest($session){
+        $req = new TbkScInvitecodeGetRequest;
+        $req->setRelationId("11");
+        $req->setRelationApp("common");
+        $req->setCodeType("1");//1-渠道 2-裂变 3-会员
+        $resp = $this->apiClient->execute($req, $session);
+        $resp = json_decode(json_encode($resp),true);
+        $retData = [];
+        if (isset($resp['data'])) {
+            $retData = $resp['data'];
+        }
+
+        return $retData;
+    }
+
+
+    #绑定渠道关系
+    function TbkScPublisherInfoSaveRequest($session){
+        $req = new TbkScPublisherInfoSaveRequest;
+        $req->setRelationFrom("123");
+        $req->setOfflineScene("4");
+        $req->setOnlineScene("3");
+        $req->setInviterCode("SR3HPL");
+        $req->setInfoType("1");
+        $req->setNote("备注");
+        $resp = $this->apiClient->execute($req, $session);
+        $resp = json_decode(json_encode($resp),true);
+        $retData = [];
+        if (isset($resp['data'])) {
+            $retData = $resp['data'];
+        }
+
+        return $retData;
+    }
+
+    #获取渠道关系列表
+    function TbkScPublisherInfoGetRequest($page = 1, $pageSize = 10){
+        $session = '61018107b53d03c62f11c11f6544a2f7ac84c24d8ce9e7a418362049';//小麦我的ta
+        $session = '6101f289408a6ad0cd510ec7423b04005246198251c62a34227738592';//川律
+        $req = new TbkScPublisherInfoGetRequest;
+        $req->setInfoType("1");
+        $req->setPageNo("$page");
+        $req->setPageSize("$pageSize");
+        $req->setRelationApp("common");
+        $resp = $this->apiClient->execute($req, $session);
+        $resp = json_decode(json_encode($resp),true);
+        if (isset($resp['data']['inviter_list']['map_data'])) {
+            $retData = $resp['data']['inviter_list']['map_data'];
+        }
+        return $retData;
+    }
+
+    #h5授权登录换取token 需要https
+    function TopAuthTokenCreateRequest($code){
+        $req = new TopAuthTokenCreateRequest;
+        $req->setCode("$code");
+        //$req->setUuid("abc");
+        $resp = $this->apiClient->execute($req);
+        $resp = json_decode(json_encode($resp),true);
+        echo '<pre>';
+        print_r($resp);die;
+    }
+
+    #code 换取 token
+    function code2token($code){
+        $url = 'https://oauth.taobao.com/token';
+        $postfields = [
+            'grant_type' => 'authorization_code',
+            'client_id' => $this->apiClient->appkey ,
+            'client_secret' => $this->apiClient->secretKey,
+            'code' => $code,
+            'redirect_uri' => 'http://dev.tctcv.com/test/tbredirecttoken'
+        ];
+        $post_data = '';
+
+        foreach($postfields as $key=>$value){
+            $post_data .="$key=".urlencode($value)."&";
+        }
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
+
+        //指定post数据
+        curl_setopt($ch, CURLOPT_POST, true);
+
+        //添加变量
+        curl_setopt($ch, CURLOPT_POSTFIELDS, substr($post_data,0,-1));
+        $output = curl_exec($ch);
+        //状态码
+        //$httpStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        return json_decode($output);
+    }
+
+
 
 
 

@@ -22,8 +22,49 @@ class TestController extends Yaf_Controller_Abstract
 
 
     function testAction(){
+
+
+        $userId = 5;
+        echo $this->createCode($userId);
+        echo '<hr>';
+        echo $this->decode($this->createCode($userId));die;
+
+
         echo file_get_contents("https://douban.uieee.com/v2/movie/in_theaters");die;
 
+    }
+
+    function createCode($user_id) {
+        $source_string = 'gn8FbQqrDT3HY6A5RaE9fhNt47ydGBe';
+        $num = $user_id;
+        $code = '';
+        while ( $num > 0) {
+            $mod = $num % 31;
+            $code = $source_string[$mod].$code;
+            $num = ($num - $mod) / 31;
+        }
+
+        if(empty($code[3])){
+            $code = str_pad($code,4,'k',STR_PAD_LEFT);
+        }
+
+        return $code;
+    }
+
+
+    function decode($code) {
+        $source_string = 'gn8FbQqrDT3HY6A5RaE9fhNt47ydGBe';
+        if (strrpos($code, 'k') !== false){
+            $code = substr($code, strrpos($code, 'k')+1);
+        }
+        $len = strlen($code);
+        $code = strrev($code);
+        $num = 0;
+        for ($i=0; $i < $len; $i++) {
+            $num += strpos($source_string, $code[$i]) * pow(31, $i);
+        }
+
+        return $num;
     }
 
     public function planAction(){
@@ -545,7 +586,7 @@ echo $url;die;
         $condition = [
             'text' => '测试淘口令啊',
             'logo' => 'https://img.alicdn.com/bao/uploaded/TB1w.rKLFXXXXamXVXXSutbFXXX.jpg_310x310.jpg',
-            'url' => 'https://uland.taobao.com/coupon/edetail?e=MT7NENE1XecGQASttHIRqcHreRS1NJG5s3dNgIAkl3MWHjruRgi2Rils9kpvhdqkK6Evp5rblLK9JkisPaY0bn%2F4Vru%2FikDru1%2FL0f5PsU1ekXVC85rMZRemP0hpIIPvjDppvlX%2Bob8NlNJBuapvQ2MDg9t1zp0R8pjV3C9qcwTW47dazMBIXCtZH2qXkQ9h&traceId=0b0837c215467825021641712e&union_lens=lensId:0b0838c1_0bd6_168236bed2c_a471&activityId=9a37d9c20e364ae0a301c326e81ea454&thispid=mm_116356778_18658274_81428000415&src=fklm_hltk&from=tool&sight=fklm',
+            'url' => 'https://oauth.taobao.com/authorize?response_type=code&client_id=25363435&redirect_uri=http://dev.tctcv.com/test/tbredirect&state=1212&view=web',
         ];
 
         $taobao_model = new TaobaoModel(1);
@@ -553,10 +594,53 @@ echo $url;die;
         print_r($res);die;
     }
 
+    function tbredirectAction(){
+        if(empty($_GET['code'])){
+            echo 'empty';die;
+        }
+        $taobao_model = new TaobaoModel(4);
+        $token = $taobao_model->code2token($_GET['code']);
+
+        echo '<pre>';
+        print_r($token);die;
+    }
+
+    function tbredirecttokenAction(){
+        if(empty($_GET['code'])){
+            echo 'empty';die;
+        }
+        echo '<pre>';
+        print_r($_GET);die;
+    }
+
+    function tbTestAction(){
+
+
+        $aaa = $this->get_curl('http://container.open.taobao.com/container?authcode=TOP-1021e4a71fc096c9e466b49e69dc0e0bbfMWuq7NUwJCy1a6khSpEyN4RKULXnUq-END');
+
+        print_r($aaa);die;
+
+
+        $start = '2019-04-24 16:40:00';
+        $session = '6102504e1dc419ca0987260ad16b172f2cc3add998dcc653297963538';//tctcu =>小麦我的ta
+        $session = '61014049898716c7c10e7af67b652bfbd4fc278dc56b1b92200590755065';//小目标 => 川律
+        //$session = '6101f289408a6ad0cd510ec7423b04005246198251c62a34227738592';//川律 => 川律
+        //$session = '61028237d4b5c1cffec649da64ea4b5185ceab0c03fbaf44227738592';//川律 => 川律
+        //$session = '6102225803c7a08b7f097f1ed9955b10f17dbed86db694d418362049';//小麦我的ta => 小麦我的ta
+        $taobao_model = new TaobaoModel(4);
+        //$res = $taobao_model->TbkScInvitecodeGetRequest($session);//获取邀请码
+        //$res = $taobao_model->TbkScPublisherInfoSaveRequest($session);//绑定渠道关系
+        //$res = $taobao_model->TbkScPublisherInfoGetRequest(1,20);
+
+        $res = $taobao_model->TbkOrderGetRequest($start,1,20);
+        echo '<pre>';
+        print_r($res);die;
+    }
+
 
     function orderAction(){
 
-        $start = '2019-03-26 19:00:00';
+        $start = '2019-03-26 16:40:00';
         $taobao_model = new YuQueModel();
         $res = $taobao_model->orderGet($start);
         print_r($res);die;
