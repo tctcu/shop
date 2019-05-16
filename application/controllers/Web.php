@@ -76,6 +76,32 @@ class WebController extends Yaf_Controller_Abstract
 
         $this->_view->tb_info = $data;
     }
+    #邀请好友
+    function inviteAction(){
+        $invite_code =  trim($_REQUEST['invite_code']);
+        $user_model = new UserModel();
+        $uid = $user_model->code2uid($invite_code);
+        if($uid){
+            $user_info = $user_model->getDataByUid($uid);
+            if(empty($user_info)){
+                die(404);
+            }
+        }
+        echo '收入:'.$user_info['total'].'元';
+        echo '<hr>';
+        echo '邀请码:'.$invite_code;
+        echo '<hr>';
+        echo "<a href='/web/register?invite_code={$invite_code}'>点击注册</a>";
+        die;
+    }
+    #app外微信注册
+    function registerAction(){
+        $invite_code =  trim($_REQUEST['invite_code']);
+        $user_model = new UserModel();
+        $uid = $user_model->code2uid($invite_code);
+        echo '注册成uid为:'.$uid.'的徒弟';
+        echo "<a href='/Server/register?invite_code={$invite_code}'>点击注册</a>";die;
+    }
 
 
     #拼多多回调

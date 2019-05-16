@@ -304,6 +304,7 @@ class TaobaoModel{
         return $retData;
     }
 
+<<<<<<< HEAD
     #获取渠道邀请码 川律-SR3HPL
     function TbkScInvitecodeGetRequest($session){
         $req = new TbkScInvitecodeGetRequest;
@@ -321,6 +322,8 @@ class TaobaoModel{
     }
 
 
+=======
+>>>>>>> 92d1660474e903c43cdc28bee604cb9df6b2e537
     #绑定渠道关系
     function TbkScPublisherInfoSaveRequest($session){
         $req = new TbkScPublisherInfoSaveRequest;
@@ -329,7 +332,11 @@ class TaobaoModel{
         $req->setOnlineScene("3");
         $req->setInviterCode("SR3HPL");
         $req->setInfoType("1");
+<<<<<<< HEAD
         $req->setNote("备注");
+=======
+        $req->setNote("第一个测试");
+>>>>>>> 92d1660474e903c43cdc28bee604cb9df6b2e537
         $resp = $this->apiClient->execute($req, $session);
         $resp = json_decode(json_encode($resp),true);
         $retData = [];
@@ -340,10 +347,17 @@ class TaobaoModel{
         return $retData;
     }
 
+<<<<<<< HEAD
     #获取渠道关系列表
     function TbkScPublisherInfoGetRequest($page = 1, $pageSize = 10){
         $session = '61018107b53d03c62f11c11f6544a2f7ac84c24d8ce9e7a418362049';//小麦我的ta
         $session = '6101f289408a6ad0cd510ec7423b04005246198251c62a34227738592';//川律
+=======
+    #获取渠道关系
+    function TbkScPublisherInfoGetRequest($page = 1, $pageSize = 10){
+        $session = '61018107b53d03c62f11c11f6544a2f7ac84c24d8ce9e7a418362049';//小麦我的ta
+        $session = '61025141b08ee362da01a719786791352121d5da73d5ae24227738592';//川律
+>>>>>>> 92d1660474e903c43cdc28bee604cb9df6b2e537
         $req = new TbkScPublisherInfoGetRequest;
         $req->setInfoType("1");
         $req->setPageNo("$page");
@@ -351,6 +365,10 @@ class TaobaoModel{
         $req->setRelationApp("common");
         $resp = $this->apiClient->execute($req, $session);
         $resp = json_decode(json_encode($resp),true);
+<<<<<<< HEAD
+=======
+        $retData = [];
+>>>>>>> 92d1660474e903c43cdc28bee604cb9df6b2e537
         if (isset($resp['data']['inviter_list']['map_data'])) {
             $retData = $resp['data']['inviter_list']['map_data'];
         }

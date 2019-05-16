@@ -594,6 +594,7 @@ echo $url;die;
         print_r($res);die;
     }
 
+
     function tbredirectAction(){
         if(empty($_GET['code'])){
             echo 'empty';die;

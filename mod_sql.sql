@@ -343,4 +343,12 @@ update `user` set `use` = '18.84' where  uid=109;
  alter table user_pid add uid_log varchar(500) NOT NULL DEFAULT '' COMMENT 'uid 记录' AFTER uid;
 update user_pid set uid_log = concat(uid_log, ',', uid),uid = 0 where uid not in (SELECT DISTINCT uid from tb_order);
 
+ alter table user add up_uid int(11) unsigned NOT NULL DEFAULT '0'  COMMENT '师傅uid' AFTER uid;
 
+select concat('mm_',memberid_id,'_',site_id,'_',adzone_id) as pid from user_pid where id<201;
+
+ select lesson_plan_id from jx_lesson_plan_after where operate_period=2 and lesson_plan_id in ();
+ update jx_lesson_plan_after a,lesson_plan b set a.operate_period=0 where  a.lesson_plan_id = b.lesson_plan_id and b.plan_start_time>='2019-05-01' and b.plan_start_time<'2019-05-09' and a.operate_period=2 and a.mark in (4,5,6);
+
+
+ SELECT count(*) from  jx_lesson_plan_after a,lesson_plan b  where  a.lesson_plan_id = b.lesson_plan_id and b.plan_start_time>='2019-05-01' and b.plan_start_time<'2019-05-09' and a.operate_period=2 and a.mark in (4,5,6);
