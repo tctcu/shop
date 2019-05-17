@@ -37,7 +37,8 @@ $today = strtotime(date('Y-m-d 00:00:00'));
 if ($today - $yesterday <> 86400) {
     return 'error';
 }
-
+//$yesterday = strtotime('20180222');
+//$today = strtotime('201805015');
 
 //$requ = [
 //    'session' => SESSION,
@@ -62,12 +63,12 @@ for ($start = $yesterday; $start < $today; $start += 1200) {
     $start_time = date('Y-m-d H:i:s', $start);
     $page = 1;
     while (true) {
+        sleep(1);
         $req->setStartTime("$start_time");
         $req->setPageNo("$page");
         $result = $apiClient->execute($req);
         $result = json_decode(json_encode($result),true);
         $resp['tbk_sc_order_get_response'] = $result;
-
         if (isset($resp['tbk_sc_order_get_response']['results'])) {
             if (isset($resp['tbk_sc_order_get_response']['results']['n_tbk_order']) && !empty($resp['tbk_sc_order_get_response']['results']['n_tbk_order'])) {
                 $order_list = $resp['tbk_sc_order_get_response']['results']['n_tbk_order'];

@@ -50,7 +50,7 @@ $req = new TbkOrderGetRequest();
 $req->setFields("$all");
 $req->setSpan("1200");
 $req->setPageSize("100");
-$req->setTkStatus("1");
+$req->setTkStatus("3");
 $req->setOrderQueryType("create_time");
 $req->setOrderScene("1");//1-常规订单
 
@@ -61,6 +61,7 @@ for ($start = $start_time; $start < $end_time; $start += 1200) {
     echo $start_time."\n";
     $page = 1;
     while (true) {
+        sleep(1);
         $req->setStartTime("$start_time");
         $req->setPageNo("$page");
         $result = $apiClient->execute($req);
@@ -142,7 +143,6 @@ for ($start = $start_time; $start < $end_time; $start += 1200) {
             hdk_log(date('Y-m-d H:i:s') . ' [每月结算订单 api error]:' . $start_time . json_encode($resp, JSON_UNESCAPED_UNICODE));
             return 'error';
         }
-        sleep(1);die;
     }
 }
 
