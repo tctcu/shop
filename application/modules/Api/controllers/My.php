@@ -429,4 +429,48 @@ class MyController extends ApiController
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
+    #邀请好友
+    function inviteAction(){
+        $uid = $this->uid;
+
+        $error = true;
+        $user_model = new UserModel();
+        if($uid){
+            $user_info = $user_model->getDataByUid($uid);
+            if($user_info){
+                $error = false;
+            }
+        }
+        if($error){
+            $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
+        }
+        $total = '0.00';
+        if($friend = $user_model->getListCount(['up_uid' => $uid])){
+            $total = sprintf("%.2f", $user_model->getFriendMoney($uid) * ConfigModel::INVITE);//师傅收益
+        }
+
+        $data = [
+            'total' => $total,
+            'friend' => $friend.'',
+            'code' => $user_model->code2uid($uid),
+            'url' => 'http://' . $_SERVER['HTTP_HOST'] . '/Web/invite?code=' . $user_model->code2uid($uid),
+        ];
+
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+    }
+
+    #好友列表
+    function friendListAction(){
+        $uid = $this->uid;
+        $min_id = intval($_REQUEST['min_id']) ? intval($_REQUEST['min_id']) : 0;
+
+        $user_model = new UserModel();
+        $data = $user_model->getFriendList(10,[
+            'up_uid' => $uid,
+            'min_id' => $min_id
+        ]);
+
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+    }
+
 }

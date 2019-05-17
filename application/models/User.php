@@ -93,6 +93,10 @@ class UserModel extends MysqlModel {
             $sql .= " and uid={$condition['uid']} ";
         }
 
+        if(!empty($condition['up_uid'])){
+            $sql .= " and up_uid={$condition['up_uid']} ";
+        }
+
         if(!empty($condition['mobile'])){
             $sql .= " and mobile={$condition['mobile']} ";
         }
@@ -104,6 +108,38 @@ class UserModel extends MysqlModel {
         }
         return $num;
     }
+
+    #查询好友累计收益
+    function getFriendMoney($up_uid){
+        $sql = " select sum(`total`) as total from {$this->_name} where up_uid = {$up_uid} ";
+
+        $result = $this->_db->fetchRow($sql);
+        $total = 0;
+        if(!empty($result['total'])) {
+            $total = $result['total'];
+        }
+        return $total;
+    }
+
+    #查询好友列表
+    function getFriendList($page_size,$condition = array()){
+        $sql = " select uid,w_nickname,total,created_at from {$this->_name} where up_uid = {$condition['up_uid']} ";
+
+        if(!empty($condition['min_id']) && $condition['min_id']>1){
+            $sql .= " and uid<{$condition['min_id']} ";
+        }
+        $sql .= " order by uid desc ";
+
+        $sql .= " limit $page_size";
+        try{
+            $data = $this->_db->fetchAll($sql);
+        }catch(Exception $ex){
+            $data = array();
+        }
+        return $data;
+    }
+
+
 
 
     function is_email($email)
@@ -165,4 +201,6 @@ class UserModel extends MysqlModel {
 
         return $num;
     }
+
+
 }
