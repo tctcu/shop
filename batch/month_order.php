@@ -51,7 +51,7 @@ $req->setFields("$all");
 $req->setSpan("1200");
 $req->setPageSize("100");
 $req->setTkStatus("3");
-$req->setOrderQueryType("create_time");
+$req->setOrderQueryType("settle_time");
 $req->setOrderScene("1");//1-常规订单
 
 hdk_log(date('Y-m-d H:i:s') . ' [每月结算订单]:start');
