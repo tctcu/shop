@@ -123,7 +123,7 @@ class UserModel extends MysqlModel {
 
     #查询好友列表
     function getFriendList($page_size,$condition = array()){
-        $sql = " select uid,w_nickname,total,created_at from {$this->_name} where up_uid = {$condition['up_uid']} ";
+        $sql = " select uid, w_nickname, w_headimgurl, total, created_at from {$this->_name} where up_uid = {$condition['up_uid']} ";
 
         if(!empty($condition['min_id']) && $condition['min_id']>1){
             $sql .= " and uid<{$condition['min_id']} ";
@@ -132,9 +132,21 @@ class UserModel extends MysqlModel {
 
         $sql .= " limit $page_size";
         try{
-            $data = $this->_db->fetchAll($sql);
+            $data = [];
+            $list = $this->_db->fetchAll($sql);
+            foreach($list as $key=>$val){
+                if(empty($data['min_id']) || $val['uid'] < $data['min_id']){
+                    $data['min_id'] = $val['uid'];
+                }
+                $data['list'][] = [
+                    'nickname' => $val['w_nickname'],
+                    'headimgurl' => $val['w_headimgurl'],
+                    'total' =>  sprintf("%.2f", $val['total'] * ConfigModel::INVITE),//师傅收益
+                    'created_at' => $val['created_at'],
+                ];
+            }
         }catch(Exception $ex){
-            $data = array();
+            $data = [];
         }
         return $data;
     }

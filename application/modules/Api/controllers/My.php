@@ -452,8 +452,8 @@ class MyController extends ApiController
         $data = [
             'total' => $total,
             'friend' => $friend.'',
-            'code' => $user_model->code2uid($uid),
-            'url' => 'http://' . $_SERVER['HTTP_HOST'] . '/Web/invite?code=' . $user_model->code2uid($uid),
+            'code' => $user_model->uid2code($uid),
+            'url' => 'http://' . $_SERVER['HTTP_HOST'] . '/Web/invite?code=' . $user_model->uid2code($uid),
         ];
 
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
