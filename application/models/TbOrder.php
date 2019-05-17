@@ -63,7 +63,7 @@ Tip:
             $sql .= " and id<{$condition['min_id']} ";
         }
 
-        $sql .= " order by id desc ";
+        $sql .= " order by create_time desc ";
 
         $sql .= " limit {$page_size}";
 
@@ -94,7 +94,7 @@ Tip:
             $sql .= " and item_title like '%{$condition['item_title']}%' ";
         }
 
-        $sql .= " order by id desc ";
+        $sql .= " order by create_time desc ";
 
         $start = ($page -1 ) * $page_size;
         $sql .= " limit {$start}, {$page_size}";
