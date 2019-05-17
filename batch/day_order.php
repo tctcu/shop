@@ -74,6 +74,9 @@ for ($start = $yesterday; $start < $today; $start += 1200) {
                         'tk_status' => $val['tk_status'],
                         'updated_at' => time()
                     ];
+                    if($val['tk_status'] == 3){
+                        $val['tk_status'] = 14;//3-联盟和卖家结算 因为有15天结算脚本 故 这里转为待结算
+                    }
 
                     $select_sql = "select id,tk_status from tb_order where trade_id={$val['trade_id']}";
                     $order = $dbh->query($select_sql)->fetch(PDO::FETCH_ASSOC);
