@@ -139,9 +139,10 @@ for ($start = $start_time; $start < $end_time; $start += 1200) {
                 break 1;
             }
         } else {
-            hdk_log(date('Y-m-d H:i:s') . ' [每月结算订单 api error]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
+            hdk_log(date('Y-m-d H:i:s') . ' [每月结算订单 api error]:' . $start_time . json_encode($resp, JSON_UNESCAPED_UNICODE));
             return 'error';
         }
+        sleep(1);die;
     }
 }
 
