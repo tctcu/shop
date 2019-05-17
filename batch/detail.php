@@ -5,8 +5,8 @@ require(dirname(dirname(__FILE__)) . '/application/library/taobao-sdk/TopSdk.php
 date_default_timezone_set('Asia/Shanghai');
 $apiClient = new TopClient;
 
-$apiClient->appkey = APPKEY;
-$apiClient->secretKey = SECRETKEY;
+$apiClient->appkey = APPKEY_FREE;
+$apiClient->secretKey = SECRETKEY_FREE;
 $apiClient->format = 'json';
 
 
