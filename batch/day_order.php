@@ -37,17 +37,9 @@ $today = strtotime(date('Y-m-d 00:00:00'));
 if ($today - $yesterday <> 86400) {
     return 'error';
 }
-//$yesterday = strtotime('20180222');
-//$today = strtotime('201805015');
+//$yesterday = strtotime('2019-01-18');
+//$today = strtotime('2019-02-22');
 
-//$requ = [
-//    'session' => SESSION,
-//    'fields' => 'tb_trade_parent_id,tb_trade_id,site_id,adzone_id,alipay_total_price,income_rate,pub_share_pre_fee,num_iid,item_title,item_num,create_time,tk_status',
-//    'span' => '1200',//秒
-//    'page_size' => '100',
-//    'order_query_type' => 'create_time',
-//    'tk_status' => '1',
-//];
 $req = new TbkOrderGetRequest();
 $req->setFields("tb_trade_parent_id,tb_trade_id,site_id,adzone_id,alipay_total_price,income_rate,pub_share_pre_fee,num_iid,item_title,item_num,create_time,tk_status");
 $req->setSpan("1200");
@@ -61,6 +53,7 @@ $dbh = dsn();
 hdk_log(date('Y-m-d H:i:s') . ' [每日获取订单]:start');
 for ($start = $yesterday; $start < $today; $start += 1200) {
     $start_time = date('Y-m-d H:i:s', $start);
+    echo $start_time."\n";
     $page = 1;
     while (true) {
         sleep(1);
@@ -96,7 +89,7 @@ for ($start = $yesterday; $start < $today; $start += 1200) {
                         insertOrderLog($dbh, $val);
                         $dbh->exec($update_sql);
                     } else {
-                        hdk_log(date('Y-m-d H:i:s') . ' [每日获取订单丢单]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
+                        hdk_log(date('Y-m-d H:i:s') . ' [每日获取订单丢单]:' . $start_time . json_encode($resp, JSON_UNESCAPED_UNICODE));
 
                         #订单关联用户
                         $select_sql = "select uid from user_pid where site_id={$val['site_id']} and adzone_id={$val['adzone_id']}";

@@ -97,7 +97,7 @@ for ($start = $start_time; $start < $end_time; $start += 1200) {
                         insertOrderLog($dbh, $val);
                         $dbh->exec($update_sql);
                     } else {
-                        hdk_log(date('Y-m-d H:i:s') . ' [每天获取结算丢单]:' . $requ['start_time'] . json_encode($resp, JSON_UNESCAPED_UNICODE));
+                        hdk_log(date('Y-m-d H:i:s') . ' [每天获取结算丢单]:' . $start_time . json_encode($resp, JSON_UNESCAPED_UNICODE));
 
                         #订单关联用户
                         $select_sql = "select uid from user_pid where site_id={$val['site_id']} and adzone_id={$val['adzone_id']}";
