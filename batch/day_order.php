@@ -64,7 +64,7 @@ for ($start = $yesterday; $start < $today; $start += 1200) {
     while (true) {
         $req->setStartTime("$start_time");
         $req->setPageNo("$page");
-        $result = $this->apiClient->execute($req);
+        $result = $apiClient->execute($req);
         $result = json_decode(json_encode($result),true);
         $resp['tbk_sc_order_get_response'] = $result;
 
