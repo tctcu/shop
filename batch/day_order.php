@@ -71,7 +71,6 @@ for ($start = $yesterday; $start < $today; $start += 1200) {
         if (isset($resp['tbk_sc_order_get_response']['results'])) {
             if (isset($resp['tbk_sc_order_get_response']['results']['n_tbk_order']) && !empty($resp['tbk_sc_order_get_response']['results']['n_tbk_order'])) {
                 $order_list = $resp['tbk_sc_order_get_response']['results']['n_tbk_order'];
-                print_r($order_list);die;
                 foreach ($order_list as $val) {
                     $data = [
                         'adzone_id' => $val['adzone_id'],
