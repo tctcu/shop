@@ -8,6 +8,13 @@ include('Common_func.php');
 include('function.php');
 require(dirname(dirname(__FILE__)) . '/application/models/Config.php'); //加载配置
 
+require(dirname(dirname(__FILE__)) . '/application/library/taobao-sdk/TopSdk.php'); // 加载淘宝sdk
+date_default_timezone_set('Asia/Shanghai');
+$apiClient = new TopClient;
+
+$apiClient->appkey = APPKEY;
+$apiClient->secretKey = SECRETKEY;
+$apiClient->format = 'json';
 
 /*
     订单状态值，分别有：1: 全部订单（默认值），3：订单结算，12：订单付款， 13：订单失效，14：订单成功；注意：若订单查询类型参数order_query_type为“结算时间 settle_time”时，则本值只能查订单结算状态（即值为3）
@@ -29,26 +36,36 @@ $end_time = strtotime($end_day);
 
 $all = 'trade_parent_id,trade_id,num_iid,item_title,item_num,price,pay_price,seller_nick,seller_shop_title,commission,commission_rate,unid,create_time,earning_time,tk_status,tk3rd_type,tk3rd_pub_id,order_type,income_rate,pub_share_pre_fee,subsidy_rate,subsidy_type,terminal_type,auction_category,site_idString,site_name,adzone_id,adzone_name,alipay_total_price,total_commission_rate,total_commission_fee,subsidy_fee,relation_id,special_id,click_time';
 
-$requ = [
-    'session' => SESSION,
-    //'fields' => 'tb_trade_parent_id,tb_trade_id,site_id,adzone_id,alipay_total_price,income_rate,pub_share_pre_fee,num_iid,item_title,item_num,create_time,tk_status',
-    'fields' => $all,
-    'span' => '1200',//秒
-    'page_size' => '100',
-    'order_query_type' => 'settle_time',
-    'tk_status' => '3',
-];
+//$requ = [
+//    'session' => SESSION,
+//    //'fields' => 'tb_trade_parent_id,tb_trade_id,site_id,adzone_id,alipay_total_price,income_rate,pub_share_pre_fee,num_iid,item_title,item_num,create_time,tk_status',
+//    'fields' => $all,
+//    'span' => '1200',//秒
+//    'page_size' => '100',
+//    'order_query_type' => 'settle_time',
+//    'tk_status' => '3',
+//];
+
+$req = new TbkOrderGetRequest();
+$req->setFields("$all");
+$req->setSpan("1200");
+$req->setPageSize("100");
+$req->setTkStatus("1");
+$req->setOrderQueryType("create_time");
+$req->setOrderScene("1");//1-常规订单
 
 hdk_log(date('Y-m-d H:i:s') . ' [每月结算订单]:start');
 $dbh = dsn();
 for ($start = $start_time; $start < $end_time; $start += 1200) {
-    $requ['start_time'] = date('Y-m-d H:i:s', $start);
-
-    echo $requ['start_time']."\n";
+    $start_time = date('Y-m-d H:i:s', $start);
+    echo $start_time."\n";
     $page = 1;
     while (true) {
-        $requ['page'] = $page;
-        $resp = getOrder($requ);
+        $req->setStartTime("$start_time");
+        $req->setPageNo("$page");
+        $result = $apiClient->execute($req);
+        $result = json_decode(json_encode($result),true);
+        $resp['tbk_sc_order_get_response'] = $result;
         if (isset($resp['tbk_sc_order_get_response']['results'])) {
             if (isset($resp['tbk_sc_order_get_response']['results']['n_tbk_order']) && !empty($resp['tbk_sc_order_get_response']['results']['n_tbk_order'])) {
                 $order_list = $resp['tbk_sc_order_get_response']['results']['n_tbk_order'];
