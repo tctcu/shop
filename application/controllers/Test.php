@@ -223,12 +223,13 @@ echo $url;die;
     }
 
     function tbTestAction(){
-
-
-        $aaa = $this->get_curl('http://container.open.taobao.com/container?authcode=TOP-1021e4a71fc096c9e466b49e69dc0e0bbfMWuq7NUwJCy1a6khSpEyN4RKULXnUq-END');
-
-        print_r($aaa);die;
-
+//        $yuque_model = new YuQueModel();
+        $itemid = 590585384795;
+//        $condition = [
+//            'item_id' => $itemid
+//        ];
+//        $url_info = $yuque_model->privilegeGet($condition);
+//        print_r($url_info);die;
 
         $start = '2019-04-24 16:40:00';
         $session = '6102504e1dc419ca0987260ad16b172f2cc3add998dcc653297963538';//tctcu =>小麦我的ta
@@ -240,8 +241,9 @@ echo $url;die;
         //$res = $taobao_model->TbkScInvitecodeGetRequest($session);//获取邀请码
         //$res = $taobao_model->TbkScPublisherInfoSaveRequest($session);//绑定渠道关系
         //$res = $taobao_model->TbkScPublisherInfoGetRequest(1,20);
-
-        $res = $taobao_model->TbkOrderGetRequest($start,1,20);
+        //$res = $taobao_model->TbkOrderGetRequest($start,1,20);//订单
+        //$res = $taobao_model->TbkTpwdConvertRequest('￥Gw4sY2VcCwH￥');
+        $res = $taobao_model->TbkItemConvertRequest($itemid);
         echo '<pre>';
         print_r($res);die;
     }
