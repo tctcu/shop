@@ -229,7 +229,7 @@ class GoodsController extends ApiController
             $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
         }
 
-        $taobao_model = new TaobaoModel();
+        $taobao_model = new TaobaoModel(4);
         $yuque_model = new YuQueModel();
         $itemid = $this->quid($content);//链接
         if(empty($itemid)) {
