@@ -229,15 +229,17 @@ class GoodsController extends ApiController
             $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
         }
 
-        $taobao_model = new TaobaoModel();
+        $taobao_model = new TaobaoModel(4);
         $yuque_model = new YuQueModel();
         $itemid = $this->quid($content);//链接
         if(empty($itemid)) {
             if (preg_match('#\x{ffe5}([a-zA-Z0-9]{11})\x{ffe5}#isu', $content, $m)) {//淘口令
-                $condition = [
-                    'password_content' => $m[0]
-                ];
-                $itemid = $yuque_model->tpwdConvert($condition);
+                $itemid = $taobao_model->TbkTpwdConvertRequest($m[0]);
+                //暂时淘汰语雀识别淘口令
+//                $condition = [
+//                    'password_content' => $m[0]
+//                ];
+//                $itemid = $yuque_model->tpwdConvert($condition);
             } else if(mb_strlen($content)>10){//标题
                 $condition = [
                     'keyword' => $content

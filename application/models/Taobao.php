@@ -281,6 +281,43 @@ class TaobaoModel{
     }
 
 
+    #淘口令转链
+    function TbkTpwdConvertRequest($tpwd){
+        //$adzone_id = '65740777';//小麦我的ta
+        $adzone_id = '59195850301';//券购
+
+        $req = new TbkTpwdConvertRequest;
+        $req->setPasswordContent("$tpwd");
+        $req->setAdzoneId("$adzone_id");
+        //$req->setDx("1");//优先定向
+
+        $resp = $this->apiClient->execute($req);
+        $resp = json_decode(json_encode($resp),true);
+        $retData = [];
+        if (isset($resp['data']['num_iid'])) {
+            $retData = $resp['data']['num_iid'];
+        }
+
+        return $retData;
+    }
+
+    #链接转换
+    function TbkItemConvertRequest($numIids){
+        $adzone_id = '59195850301';//券购
+        $req = new TbkItemConvertRequest;
+        $req->setFields("num_iid,click_url");
+        $req->setNumIids("$numIids");
+        $req->setAdzoneId("$adzone_id");
+        //$req->setPlatform("123");
+        //$req->setUnid("demo");
+        //$req->setDx("1");
+        $resp = $this->apiClient->execute($req);
+        $resp = json_decode(json_encode($resp),true);
+        echo '<pre>';
+        print_r($resp);die;
+    }
+
+
 
     #获取订单
     function TbkOrderGetRequest($start, $page = 1, $pageSize = 100){
