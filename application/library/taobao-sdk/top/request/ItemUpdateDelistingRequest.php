@@ -3,7 +3,7 @@
  * TOP API: taobao.item.update.delisting request
  * 
  * @author auto create
- * @since 1.0, 2018.05.08
+ * @since 1.0, 2019.04.03
  */
 class ItemUpdateDelistingRequest
 {

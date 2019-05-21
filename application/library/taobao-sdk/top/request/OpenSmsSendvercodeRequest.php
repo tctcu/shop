@@ -3,7 +3,7 @@
  * TOP API: taobao.open.sms.sendvercode request
  * 
  * @author auto create
- * @since 1.0, 2015.12.25
+ * @since 1.0, 2018.07.26
  */
 class OpenSmsSendvercodeRequest
 {

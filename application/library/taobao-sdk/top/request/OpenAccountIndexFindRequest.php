@@ -3,7 +3,7 @@
  * TOP API: taobao.open.account.index.find request
  * 
  * @author auto create
- * @since 1.0, 2016.09.28
+ * @since 1.0, 2018.07.26
  */
 class OpenAccountIndexFindRequest
 {

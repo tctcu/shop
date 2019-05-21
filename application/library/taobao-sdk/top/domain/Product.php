@@ -18,9 +18,7 @@ class Product
 	public $binds;
 	
 	/** 
-	 * 产品的非关键属性字符串列表.格式同props_str(<strong>注：</strong><font color="red">属性名称中的冒号":"被转换为："#cln#";  
-分号";"被转换为："#scln#"
-</font>)
+	 * 产品的非关键属性字符串列表.格式同props_str(<strong>注：</strong><font color="red">属性名称中的冒号&quot;:&quot;被转换为：&quot;#cln#&quot;;  分号&quot;;&quot;被转换为：&quot;#scln#&quot;</font>)
 	 **/
 	public $binds_str;
 	
@@ -50,15 +48,12 @@ class Product
 	public $created;
 	
 	/** 
-	 * 标识是否为达尔文体系下的产品 。
-如果为空表示是非达尔文体系下的产品
-如果cspu:0 表示是达尔文体系下的产品，有cspu正在待小二审核，但不能发布商品。
-如果cspu:1 表示是达尔文体系下的产品，且有小二确认的cspu，能发布商品
+	 * 标识是否为达尔文体系下的产品 。如果为空表示是非达尔文体系下的产品如果cspu:0 表示是达尔文体系下的产品，有cspu正在待小二审核，但不能发布商品。如果cspu:1 表示是达尔文体系下的产品，且有小二确认的cspu，能发布商品
 	 **/
 	public $cspu_feature;
 	
 	/** 
-	 * 用户自定义属性,结构：pid1:value1;pid2:value2 例如：“20000:优衣库”，表示“品牌:优衣库”
+	 * 用户自定义属性,结构：pid1:value1;pid2:value2 例如：&ldquo;20000:优衣库&rdquo;，表示&ldquo;品牌:优衣库&rdquo;
 	 **/
 	public $customer_props;
 	
@@ -123,8 +118,7 @@ class Product
 	public $product_imgs;
 	
 	/** 
-	 * 产品的属性图片.比如说黄色对应的产品图片,绿色对应的产品图片。fields中设置为product_prop_imgs.id、 
-product_prop_imgs.props、product_prop_imgs.url、product_prop_imgs.position等形式就会返回相应的字段
+	 * 产品的属性图片.比如说黄色对应的产品图片,绿色对应的产品图片。fields中设置为product_prop_imgs.id、 product_prop_imgs.props、product_prop_imgs.url、product_prop_imgs.position等形式就会返回相应的字段
 	 **/
 	public $product_prop_imgs;
 	
@@ -139,9 +133,7 @@ product_prop_imgs.props、product_prop_imgs.url、product_prop_imgs.position等�
 	public $props;
 	
 	/** 
-	 * 产品的关键属性字符串列表.比如:品牌:诺基亚;型号:N73(<strong>注：</strong><font color="red">属性名称中的冒号":"被转换为："#cln#";  
-分号";"被转换为："#scln#"
-</font>)
+	 * 产品的关键属性字符串列表.比如:品牌:诺基亚;型号:N73(<strong>注：</strong><font color="red">属性名称中的冒号&quot;:&quot;被转换为：&quot;#cln#&quot;;  分号&quot;;&quot;被转换为：&quot;#scln#&quot;</font>)
 	 **/
 	public $props_str;
 	
@@ -161,9 +153,7 @@ product_prop_imgs.props、product_prop_imgs.url、product_prop_imgs.position等�
 	public $sale_props;
 	
 	/** 
-	 * 产品的销售属性字符串列表.格式同props_str(<strong>注：</strong><font color="red">属性名称中的冒号":"被转换为："#cln#";  
-分号";"被转换为："#scln#"
-</font>)
+	 * 产品的销售属性字符串列表.格式同props_str(<strong>注：</strong><font color="red">属性名称中的冒号&quot;:&quot;被转换为：&quot;#cln#&quot;;  分号&quot;;&quot;被转换为：&quot;#scln#&quot;</font>)
 	 **/
 	public $sale_props_str;
 	

@@ -23,17 +23,17 @@ class TopApiAfOrderOption
 	public $punish_status;
 	
 	/** 
-	 * 渠道管理id, 父订单号/子订单号/relation_id/special_id 至少传一个
+	 * 渠道管理id
 	 **/
 	public $relation_id;
 	
 	/** 
-	 * 查询时间跨度，不超过1小时，单位是秒
+	 * 查询时间跨度，单位是秒，最大不超过1800秒。建议作为必选参数传入。
 	 **/
 	public $span;
 	
 	/** 
-	 * 会员运营id,父订单号/子订单号/relation_id/special_id 至少传一个
+	 * 会员运营id
 	 **/
 	public $special_id;
 	
@@ -43,12 +43,12 @@ class TopApiAfOrderOption
 	public $start_time;
 	
 	/** 
-	 * 子订单号,父订单号/子订单号/relation_id/special_id 至少传一个
+	 * 子订单号
 	 **/
 	public $tb_trade_id;
 	
 	/** 
-	 * 父订单号,父订单号/子订单号/relation_id/special_id 至少传一个
+	 * 父订单号
 	 **/
 	public $tb_trade_parent_id;
 	

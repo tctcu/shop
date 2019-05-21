@@ -3,7 +3,7 @@
  * TOP API: taobao.open.sms.checkvercode request
  * 
  * @author auto create
- * @since 1.0, 2015.08.28
+ * @since 1.0, 2018.07.26
  */
 class OpenSmsCheckvercodeRequest
 {

@@ -8,18 +8,23 @@ class Result
 {
 	
 	/** 
-	 * 返回代码
+	 * model
 	 **/
-	public $code;
+	public $model;
 	
 	/** 
-	 * 返回数据
+	 * msgCode
 	 **/
-	public $datas;
+	public $msg_code;
 	
 	/** 
-	 * 返回信息
+	 * msgInfo
 	 **/
-	public $message;	
+	public $msg_info;
+	
+	/** 
+	 * 是否成功
+	 **/
+	public $success;	
 }
 ?>

@@ -3,7 +3,7 @@
  * TOP API: alibaba.baichuan.appevent.batchupload request
  * 
  * @author auto create
- * @since 1.0, 2016.05.12
+ * @since 1.0, 2018.07.26
  */
 class AlibabaBaichuanAppeventBatchuploadRequest
 {

@@ -3,7 +3,7 @@
  * TOP API: taobao.media.category.update request
  * 
  * @author auto create
- * @since 1.0, 2016.03.10
+ * @since 1.0, 2019.01.21
  */
 class MediaCategoryUpdateRequest
 {

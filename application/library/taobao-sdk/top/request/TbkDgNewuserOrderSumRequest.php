@@ -3,12 +3,12 @@
  * TOP API: taobao.tbk.dg.newuser.order.sum request
  * 
  * @author auto create
- * @since 1.0, 2018.04.28
+ * @since 1.0, 2019.04.23
  */
 class TbkDgNewuserOrderSumRequest
 {
 	/** 
-	 * 活动ID
+	 * 活动id， 活动名称与活动ID列表，请参见https://tbk.bbs.taobao.com/detail.html?appId=45301&postId=8599277
 	 **/
 	private $activityId;
 	
@@ -26,6 +26,11 @@ class TbkDgNewuserOrderSumRequest
 	 * 页大小，默认20，1~100
 	 **/
 	private $pageSize;
+	
+	/** 
+	 * 结算月份
+	 **/
+	private $settleMonth;
 	
 	/** 
 	 * mm_xxx_xxx_xxx的第二位
@@ -76,6 +81,17 @@ class TbkDgNewuserOrderSumRequest
 	public function getPageSize()
 	{
 		return $this->pageSize;
+	}
+
+	public function setSettleMonth($settleMonth)
+	{
+		$this->settleMonth = $settleMonth;
+		$this->apiParas["settle_month"] = $settleMonth;
+	}
+
+	public function getSettleMonth()
+	{
+		return $this->settleMonth;
 	}
 
 	public function setSiteId($siteId)

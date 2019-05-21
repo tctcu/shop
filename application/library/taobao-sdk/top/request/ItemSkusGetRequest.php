@@ -3,7 +3,7 @@
  * TOP API: taobao.item.skus.get request
  * 
  * @author auto create
- * @since 1.0, 2017.12.12
+ * @since 1.0, 2019.04.08
  */
 class ItemSkusGetRequest
 {
@@ -55,6 +55,7 @@ class ItemSkusGetRequest
 	{
 		
 		RequestCheckUtil::checkNotNull($this->fields,"fields");
+		RequestCheckUtil::checkMaxListSize($this->fields,20,"fields");
 		RequestCheckUtil::checkNotNull($this->numIids,"numIids");
 	}
 	

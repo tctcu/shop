@@ -3,7 +3,7 @@
  * TOP API: taobao.tbk.dg.item.coupon.get request
  * 
  * @author auto create
- * @since 1.0, 2018.04.11
+ * @since 1.0, 2018.11.08
  */
 class TbkDgItemCouponGetRequest
 {

@@ -3,12 +3,12 @@
  * TOP API: taobao.tbk.dg.newuser.order.get request
  * 
  * @author auto create
- * @since 1.0, 2018.05.10
+ * @since 1.0, 2019.03.28
  */
 class TbkDgNewuserOrderGetRequest
 {
 	/** 
-	 * 活动id， 现有活动id包括： 2月手淘拉新：119013_2；3月手淘拉新：119013_3；4月手淘拉新：119013_4；5月手淘拉新：119013_5 ；拉手机支付宝新用户_赚赏金：200000_5；拉天猫新人_你拿奖励：119106_5
+	 * 活动id， 活动名称与活动ID列表，请参见https://tbk.bbs.taobao.com/detail.html?appId=45301&postId=8599277
 	 **/
 	private $activityId;
 	

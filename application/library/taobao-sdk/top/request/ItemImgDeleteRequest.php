@@ -3,12 +3,12 @@
  * TOP API: taobao.item.img.delete request
  * 
  * @author auto create
- * @since 1.0, 2015.05.08
+ * @since 1.0, 2019.03.29
  */
 class ItemImgDeleteRequest
 {
 	/** 
-	 * 商品图片ID
+	 * 商品图片ID；如果是竖图，请将id的值设置为1
 	 **/
 	private $id;
 	

@@ -3,7 +3,7 @@
  * TOP API: taobao.product.update request
  * 
  * @author auto create
- * @since 1.0, 2013.07.05
+ * @since 1.0, 2019.03.25
  */
 class ProductUpdateRequest
 {
@@ -18,11 +18,6 @@ class ProductUpdateRequest
 	private $desc;
 	
 	/** 
-	 * 存放产品扩展信息，由List(ProductExtraInfo)转化成jsonArray存入.
-	 **/
-	private $extraInfo;
-	
-	/** 
 	 * 产品主图.最大500K,目前仅支持GIF,JPG
 	 **/
 	private $image;
@@ -31,12 +26,6 @@ class ProductUpdateRequest
 	 * 是否是主图
 	 **/
 	private $major;
-	
-	/** 
-	 * 市场ID，1为更新C2C市场的产品信息， 2为更新B2C市场的产品信息。
-不填写此值则C用户更新B2C市场的产品信息，B用户更新B2C市场的产品信息。
-	 **/
-	private $marketId;
 	
 	/** 
 	 * 产品名称.最大不超过30个字符
@@ -54,11 +43,6 @@ class ProductUpdateRequest
 	private $outerId;
 	
 	/** 
-	 * 保证清单。
-	 **/
-	private $packingList;
-	
-	/** 
 	 * 产品市场价.精确到2位小数;单位为元.如:200.07
 	 **/
 	private $price;
@@ -72,11 +56,6 @@ class ProductUpdateRequest
 	 * 销售属性.调用taobao.itemprops.get获取pid,调用taobao.itempropvalues.get获取vid;格式:pid:vid;pid:vid
 	 **/
 	private $saleProps;
-	
-	/** 
-	 * 产品卖点描述，最长40个字节
-	 **/
-	private $sellPt;
 	
 	private $apiParas = array();
 	
@@ -102,17 +81,6 @@ class ProductUpdateRequest
 		return $this->desc;
 	}
 
-	public function setExtraInfo($extraInfo)
-	{
-		$this->extraInfo = $extraInfo;
-		$this->apiParas["extra_info"] = $extraInfo;
-	}
-
-	public function getExtraInfo()
-	{
-		return $this->extraInfo;
-	}
-
 	public function setImage($image)
 	{
 		$this->image = $image;
@@ -133,17 +101,6 @@ class ProductUpdateRequest
 	public function getMajor()
 	{
 		return $this->major;
-	}
-
-	public function setMarketId($marketId)
-	{
-		$this->marketId = $marketId;
-		$this->apiParas["market_id"] = $marketId;
-	}
-
-	public function getMarketId()
-	{
-		return $this->marketId;
 	}
 
 	public function setName($name)
@@ -179,17 +136,6 @@ class ProductUpdateRequest
 		return $this->outerId;
 	}
 
-	public function setPackingList($packingList)
-	{
-		$this->packingList = $packingList;
-		$this->apiParas["packing_list"] = $packingList;
-	}
-
-	public function getPackingList()
-	{
-		return $this->packingList;
-	}
-
 	public function setPrice($price)
 	{
 		$this->price = $price;
@@ -223,17 +169,6 @@ class ProductUpdateRequest
 		return $this->saleProps;
 	}
 
-	public function setSellPt($sellPt)
-	{
-		$this->sellPt = $sellPt;
-		$this->apiParas["sell_pt"] = $sellPt;
-	}
-
-	public function getSellPt()
-	{
-		return $this->sellPt;
-	}
-
 	public function getApiMethodName()
 	{
 		return "taobao.product.update";
@@ -247,7 +182,6 @@ class ProductUpdateRequest
 	public function check()
 	{
 		
-		RequestCheckUtil::checkMaxLength($this->extraInfo,25000,"extraInfo");
 		RequestCheckUtil::checkNotNull($this->productId,"productId");
 	}
 	

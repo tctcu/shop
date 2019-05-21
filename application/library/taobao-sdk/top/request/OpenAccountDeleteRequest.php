@@ -3,7 +3,7 @@
  * TOP API: taobao.open.account.delete request
  * 
  * @author auto create
- * @since 1.0, 2015.04.20
+ * @since 1.0, 2018.07.26
  */
 class OpenAccountDeleteRequest
 {

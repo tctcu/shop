@@ -3,7 +3,7 @@
  * TOP API: taobao.delivery.send request
  * 
  * @author auto create
- * @since 1.0, 2015.08.06
+ * @since 1.0, 2018.07.25
  */
 class DeliverySendRequest
 {

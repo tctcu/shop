@@ -3,7 +3,7 @@
  * TOP API: taobao.item.add request
  * 
  * @author auto create
- * @since 1.0, 2018.03.02
+ * @since 1.0, 2019.05.15
  */
 class ItemAddRequest
 {
@@ -36,6 +36,16 @@ class ItemAddRequest
 	 * 商品条形码
 	 **/
 	private $barcode;
+	
+	/** 
+	 * 业务身份编码。淘小铺编码为"taobao-taoxiaopu"
+	 **/
+	private $bizCode;
+	
+	/** 
+	 * 仅淘小铺卖家需要。佣金比例(15.3对应的佣金比例为15.3%).只支持小数点后1位。多余的位数四舍五入(15.32会保存为15.3%
+	 **/
+	private $brokerage;
 	
 	/** 
 	 * 基础色数据
@@ -188,7 +198,7 @@ class ItemAddRequest
 	private $freightPayer;
 	
 	/** 
-	 * 全球购商品采购地（地区/国家）,默认值只在全球购商品采购地（库存类型选择情况生效），地区国家值为（美国, 香港, 日本, 英国, 新西兰, 德国, 韩国, 荷兰, 澳洲, 法国, 意大利, 台湾, 澳门, 加拿大, 瑞士, 西班牙, 泰国, 新加坡, 马来西亚, 菲律宾, 其他）
+	 * 全球购商品采购地（地区/国家）,默认值只在全球购商品采购地（库存类型选择情况生效），地区国家值请填写法定的国家名称，类如（美国, 香港, 日本, 英国, 新西兰, 德国, 韩国, 荷兰, 法国, 意大利, 台湾, 澳门, 加拿大, 瑞士, 西班牙, 泰国, 新加坡, 马来西亚, 菲律宾），不要使用其他
 	 **/
 	private $globalStockCountry;
 	
@@ -236,6 +246,11 @@ class ItemAddRequest
 	 * 商品主图片。类型:JPG,GIF;最大长度:3M。（推荐使用pic_path字段，先把图片上传到卖家图片空间）
 	 **/
 	private $image;
+	
+	/** 
+	 * 商品主图，多张主图用该字段。使用该字段时。pic_path,image必须为空.
+	 **/
+	private $imageUrls;
 	
 	/** 
 	 * 加价(降价)幅度。如果为0，代表系统代理幅度。对于增价拍和荷兰拍来说是加价幅度，对于降价拍来说是降价幅度。
@@ -306,6 +321,11 @@ class ItemAddRequest
 	 * 商品文字的字符集。繁体传入"zh_HK"，简体传入"zh_CN"，不传默认为简体
 	 **/
 	private $lang;
+	
+	/** 
+	 * 租赁扩展信息
+	 **/
+	private $leaseExtendsInfo;
 	
 	/** 
 	 * 定时上架时间。(时间格式：yyyy-MM-dd HH:mm:ss)
@@ -473,7 +493,7 @@ class ItemAddRequest
 	private $productId;
 	
 	/** 
-	 * 属性值别名。如pid:vid:别名;pid1:vid1:别名1 ，其中：pid是属性id vid是属性值id。总长度不超过512字节
+	 * 属性值别名。如pid:vid:别名;pid1:vid1:别名1 ，其中：pid是属性id vid是属性值id。总长度不超过800个字符，如"123:333:你好"，引号内的是10个字符。
 	 **/
 	private $propertyAlias;
 	
@@ -528,7 +548,7 @@ class ItemAddRequest
 	private $skuDeliveryTimes;
 	
 	/** 
-	 * 家装建材类目，商品SKU的高度，单位为cm，部分类目必选。天猫商家专用。 可选值为："0-15", "15-25", "25-50", "50-60", "60-80", "80-120", "120-160", "160-200"。 数据和SKU一一对应，用,分隔，如：15-25,25-50,25-50
+	 * 家装建材类目，商品SKU的高度，单位为cm，部分类目必选。 天猫和淘宝格式不同。天猫：可选值为："0-15", "15-25", "25-50", "50-60", "60-80", "80-120", "120-160", "160-200"。 数据和SKU一一对应，用,分隔，格式如：15-25,25-50,25-50。 淘宝：正整数，单位为cm,格式如：20,30,30
 	 **/
 	private $skuHdHeight;
 	
@@ -538,7 +558,7 @@ class ItemAddRequest
 	private $skuHdLampQuantity;
 	
 	/** 
-	 * 家装建材类目，商品SKU的长度，正整数，单位为cm，部分类目必选。天猫商家专用。 数据和SKU一一对应，用,分隔，如：20,30,30
+	 * 家装建材类目，商品SKU的长度，正整数，单位为cm，部分类目必选。 数据和SKU一一对应，用,分隔，如：20,30,30
 	 **/
 	private $skuHdLength;
 	
@@ -683,6 +703,28 @@ class ItemAddRequest
 	public function getBarcode()
 	{
 		return $this->barcode;
+	}
+
+	public function setBizCode($bizCode)
+	{
+		$this->bizCode = $bizCode;
+		$this->apiParas["biz_code"] = $bizCode;
+	}
+
+	public function getBizCode()
+	{
+		return $this->bizCode;
+	}
+
+	public function setBrokerage($brokerage)
+	{
+		$this->brokerage = $brokerage;
+		$this->apiParas["brokerage"] = $brokerage;
+	}
+
+	public function getBrokerage()
+	{
+		return $this->brokerage;
 	}
 
 	public function setChangeProp($changeProp)
@@ -1125,6 +1167,17 @@ class ItemAddRequest
 		return $this->image;
 	}
 
+	public function setImageUrls($imageUrls)
+	{
+		$this->imageUrls = $imageUrls;
+		$this->apiParas["image_urls"] = $imageUrls;
+	}
+
+	public function getImageUrls()
+	{
+		return $this->imageUrls;
+	}
+
 	public function setIncrement($increment)
 	{
 		$this->increment = $increment;
@@ -1277,6 +1330,17 @@ class ItemAddRequest
 	public function getLang()
 	{
 		return $this->lang;
+	}
+
+	public function setLeaseExtendsInfo($leaseExtendsInfo)
+	{
+		$this->leaseExtendsInfo = $leaseExtendsInfo;
+		$this->apiParas["lease_extends_info"] = $leaseExtendsInfo;
+	}
+
+	public function getLeaseExtendsInfo()
+	{
+		return $this->leaseExtendsInfo;
 	}
 
 	public function setListTime($listTime)
@@ -1980,6 +2044,7 @@ class ItemAddRequest
 		RequestCheckUtil::checkMaxLength($this->desc,200000,"desc");
 		RequestCheckUtil::checkMaxLength($this->features,4000,"features");
 		RequestCheckUtil::checkMaxLength($this->globalStockCountry,30,"globalStockCountry");
+		RequestCheckUtil::checkMaxListSize($this->imageUrls,5,"imageUrls");
 		RequestCheckUtil::checkNotNull($this->locationCity,"locationCity");
 		RequestCheckUtil::checkNotNull($this->locationState,"locationState");
 		RequestCheckUtil::checkNotNull($this->num,"num");

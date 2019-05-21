@@ -3,7 +3,7 @@
  * TOP API: taobao.item.img.upload request
  * 
  * @author auto create
- * @since 1.0, 2018.03.20
+ * @since 1.0, 2019.04.10
  */
 class ItemImgUploadRequest
 {

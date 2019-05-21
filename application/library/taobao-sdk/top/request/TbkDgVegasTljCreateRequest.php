@@ -3,7 +3,7 @@
  * TOP API: taobao.tbk.dg.vegas.tlj.create request
  * 
  * @author auto create
- * @since 1.0, 2018.11.10
+ * @since 1.0, 2019.04.16
  */
 class TbkDgVegasTljCreateRequest
 {
@@ -28,7 +28,7 @@ class TbkDgVegasTljCreateRequest
 	private $name;
 	
 	/** 
-	 * 单个淘礼金面额，单位元
+	 * 单个淘礼金面额，支持两位小数，单位元
 	 **/
 	private $perFace;
 	
@@ -36,6 +36,11 @@ class TbkDgVegasTljCreateRequest
 	 * 安全开关
 	 **/
 	private $securitySwitch;
+	
+	/** 
+	 * 发放截止时间
+	 **/
+	private $sendEndTime;
 	
 	/** 
 	 * 发放开始时间
@@ -46,6 +51,21 @@ class TbkDgVegasTljCreateRequest
 	 * 淘礼金总个数
 	 **/
 	private $totalNum;
+	
+	/** 
+	 * 使用结束日期。如果是结束时间模式为相对时间，时间格式为1-7直接的整数, 例如，1（相对领取时间1天）； 如果是绝对时间，格式为yyyy-MM-dd，例如，2019-01-29，表示到2019-01-29 23:59:59结束
+	 **/
+	private $useEndTime;
+	
+	/** 
+	 * 结束日期的模式,1:相对时间，2:绝对时间
+	 **/
+	private $useEndTimeMode;
+	
+	/** 
+	 * 使用开始日期。相对时间，无需填写，以用户领取时间作为使用开始时间。绝对时间，格式 yyyy-MM-dd，例如，2019-01-29，表示从2019-01-29 00:00:00 开始
+	 **/
+	private $useStartTime;
 	
 	/** 
 	 * 单用户累计中奖次数上限
@@ -120,6 +140,17 @@ class TbkDgVegasTljCreateRequest
 		return $this->securitySwitch;
 	}
 
+	public function setSendEndTime($sendEndTime)
+	{
+		$this->sendEndTime = $sendEndTime;
+		$this->apiParas["send_end_time"] = $sendEndTime;
+	}
+
+	public function getSendEndTime()
+	{
+		return $this->sendEndTime;
+	}
+
 	public function setSendStartTime($sendStartTime)
 	{
 		$this->sendStartTime = $sendStartTime;
@@ -140,6 +171,39 @@ class TbkDgVegasTljCreateRequest
 	public function getTotalNum()
 	{
 		return $this->totalNum;
+	}
+
+	public function setUseEndTime($useEndTime)
+	{
+		$this->useEndTime = $useEndTime;
+		$this->apiParas["use_end_time"] = $useEndTime;
+	}
+
+	public function getUseEndTime()
+	{
+		return $this->useEndTime;
+	}
+
+	public function setUseEndTimeMode($useEndTimeMode)
+	{
+		$this->useEndTimeMode = $useEndTimeMode;
+		$this->apiParas["use_end_time_mode"] = $useEndTimeMode;
+	}
+
+	public function getUseEndTimeMode()
+	{
+		return $this->useEndTimeMode;
+	}
+
+	public function setUseStartTime($useStartTime)
+	{
+		$this->useStartTime = $useStartTime;
+		$this->apiParas["use_start_time"] = $useStartTime;
+	}
+
+	public function getUseStartTime()
+	{
+		return $this->useStartTime;
 	}
 
 	public function setUserTotalWinNumLimit($userTotalWinNumLimit)

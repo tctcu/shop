@@ -3,7 +3,7 @@
  * TOP API: taobao.products.search request
  * 
  * @author auto create
- * @since 1.0, 2015.04.21
+ * @since 1.0, 2019.03.25
  */
 class ProductsSearchRequest
 {
@@ -28,8 +28,7 @@ class ProductsSearchRequest
 	private $fields;
 	
 	/** 
-	 * 市场ID，1为取C2C市场的产品信息， 2为取B2C市场的产品信息。
-不填写此值则默认取C2C的产品信息。
+	 * 市场ID，1为取C2C市场的产品信息， 2为取B2C市场的产品信息。  不填写此值则默认取C2C的产品信息。
 	 **/
 	private $marketId;
 	
@@ -217,6 +216,7 @@ class ProductsSearchRequest
 	{
 		
 		RequestCheckUtil::checkNotNull($this->fields,"fields");
+		RequestCheckUtil::checkMaxListSize($this->fields,20,"fields");
 		RequestCheckUtil::checkMaxLength($this->status,20,"status");
 		RequestCheckUtil::checkMinValue($this->verticalMarket,0,"verticalMarket");
 	}

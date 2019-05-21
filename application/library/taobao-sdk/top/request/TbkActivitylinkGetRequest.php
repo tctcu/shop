@@ -3,7 +3,7 @@
  * TOP API: taobao.tbk.activitylink.get request
  * 
  * @author auto create
- * @since 1.0, 2019.03.06
+ * @since 1.0, 2019.05.16
  */
 class TbkActivitylinkGetRequest
 {

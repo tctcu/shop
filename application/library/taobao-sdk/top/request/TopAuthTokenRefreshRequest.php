@@ -3,7 +3,7 @@
  * TOP API: taobao.top.auth.token.refresh request
  * 
  * @author auto create
- * @since 1.0, 2015.08.20
+ * @since 1.0, 2018.07.25
  */
 class TopAuthTokenRefreshRequest
 {

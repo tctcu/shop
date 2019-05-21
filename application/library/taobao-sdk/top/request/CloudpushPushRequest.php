@@ -3,7 +3,7 @@
  * TOP API: taobao.cloudpush.push request
  * 
  * @author auto create
- * @since 1.0, 2015.11.16
+ * @since 1.0, 2018.07.26
  */
 class CloudpushPushRequest
 {

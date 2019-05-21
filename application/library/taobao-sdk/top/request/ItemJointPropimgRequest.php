@@ -3,7 +3,7 @@
  * TOP API: taobao.item.joint.propimg request
  * 
  * @author auto create
- * @since 1.0, 2017.05.22
+ * @since 1.0, 2019.04.10
  */
 class ItemJointPropimgRequest
 {

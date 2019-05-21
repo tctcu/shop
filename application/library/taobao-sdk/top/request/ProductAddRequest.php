@@ -3,7 +3,7 @@
  * TOP API: taobao.product.add request
  * 
  * @author auto create
- * @since 1.0, 2014.03.25
+ * @since 1.0, 2019.03.25
  */
 class ProductAddRequest
 {
@@ -31,30 +31,14 @@ class ProductAddRequest
 	private $desc;
 	
 	/** 
-	 * 存放产品扩展信息，由List(ProductExtraInfo)转化成jsonArray存入.
-	 **/
-	private $extraInfo;
-	
-	/** 
 	 * 产品主图片.最大1M,目前仅支持GIF,JPG.
 	 **/
 	private $image;
 	
 	/** 
-	 * 是否发布套装产品，和suite_items_str配合使用，is_pub_suite=true走套装SPU发布逻辑，达尔文体系下不需要再走tmall.product.spec.add发布产品规格
-	 **/
-	private $isPubSuite;
-	
-	/** 
 	 * 是不是主图
 	 **/
 	private $major;
-	
-	/** 
-	 * 市场ID，1为新增C2C市场的产品信息， 2为新增B2C市场的产品信息。
-不填写此值则C用户新增B2C市场的产品信息，B用户新增B2C市场的产品信息。
-	 **/
-	private $marketId;
 	
 	/** 
 	 * 上市时间。目前只支持鞋城类目传入此参数
@@ -67,16 +51,14 @@ class ProductAddRequest
 	private $name;
 	
 	/** 
+	 * native_unkeyprops
+	 **/
+	private $nativeUnkeyprops;
+	
+	/** 
 	 * 外部产品ID
 	 **/
 	private $outerId;
-	
-	/** 
-	 * 包装清单。注意，在管控类目下，包装清单不能为空，同时保证清单的格式为：
-名称:数字;名称:数字;
-其中，名称不能违禁、不能超过60字符，数字不能超过999
-	 **/
-	private $packingList;
 	
 	/** 
 	 * 产品市场价.精确到2位小数;单位为元.如：200.07
@@ -97,21 +79,6 @@ class ProductAddRequest
 	 * 销售属性结构:pid:vid;pid:vid.调用taobao.itemprops.get获取is_sale_prop＝true的pid,调用taobao.itempropvalues.get获取vid.
 	 **/
 	private $saleProps;
-	
-	/** 
-	 * 商品卖点描述，长度限制为20个汉字
-	 **/
-	private $sellPt;
-	
-	/** 
-	 * 发布套装产品时，套装关联的产品规格+数量的字符串，格式：specsId:number。
-	 **/
-	private $suiteItemsStr;
-	
-	/** 
-	 * 在天猫，无关键属性发布产品，必须指定模板ID,模板ID通过tmall.product.template.get获取
-	 **/
-	private $templateId;
 	
 	/** 
 	 * 加入垂直市场，目前只支持以鞋城卖家身份加入名鞋馆(暂时此字段还不起作用，不对外开放)
@@ -164,17 +131,6 @@ class ProductAddRequest
 		return $this->desc;
 	}
 
-	public function setExtraInfo($extraInfo)
-	{
-		$this->extraInfo = $extraInfo;
-		$this->apiParas["extra_info"] = $extraInfo;
-	}
-
-	public function getExtraInfo()
-	{
-		return $this->extraInfo;
-	}
-
 	public function setImage($image)
 	{
 		$this->image = $image;
@@ -186,17 +142,6 @@ class ProductAddRequest
 		return $this->image;
 	}
 
-	public function setIsPubSuite($isPubSuite)
-	{
-		$this->isPubSuite = $isPubSuite;
-		$this->apiParas["is_pub_suite"] = $isPubSuite;
-	}
-
-	public function getIsPubSuite()
-	{
-		return $this->isPubSuite;
-	}
-
 	public function setMajor($major)
 	{
 		$this->major = $major;
@@ -206,17 +151,6 @@ class ProductAddRequest
 	public function getMajor()
 	{
 		return $this->major;
-	}
-
-	public function setMarketId($marketId)
-	{
-		$this->marketId = $marketId;
-		$this->apiParas["market_id"] = $marketId;
-	}
-
-	public function getMarketId()
-	{
-		return $this->marketId;
 	}
 
 	public function setMarketTime($marketTime)
@@ -241,6 +175,17 @@ class ProductAddRequest
 		return $this->name;
 	}
 
+	public function setNativeUnkeyprops($nativeUnkeyprops)
+	{
+		$this->nativeUnkeyprops = $nativeUnkeyprops;
+		$this->apiParas["native_unkeyprops"] = $nativeUnkeyprops;
+	}
+
+	public function getNativeUnkeyprops()
+	{
+		return $this->nativeUnkeyprops;
+	}
+
 	public function setOuterId($outerId)
 	{
 		$this->outerId = $outerId;
@@ -250,17 +195,6 @@ class ProductAddRequest
 	public function getOuterId()
 	{
 		return $this->outerId;
-	}
-
-	public function setPackingList($packingList)
-	{
-		$this->packingList = $packingList;
-		$this->apiParas["packing_list"] = $packingList;
-	}
-
-	public function getPackingList()
-	{
-		return $this->packingList;
 	}
 
 	public function setPrice($price)
@@ -307,39 +241,6 @@ class ProductAddRequest
 		return $this->saleProps;
 	}
 
-	public function setSellPt($sellPt)
-	{
-		$this->sellPt = $sellPt;
-		$this->apiParas["sell_pt"] = $sellPt;
-	}
-
-	public function getSellPt()
-	{
-		return $this->sellPt;
-	}
-
-	public function setSuiteItemsStr($suiteItemsStr)
-	{
-		$this->suiteItemsStr = $suiteItemsStr;
-		$this->apiParas["suite_items_str"] = $suiteItemsStr;
-	}
-
-	public function getSuiteItemsStr()
-	{
-		return $this->suiteItemsStr;
-	}
-
-	public function setTemplateId($templateId)
-	{
-		$this->templateId = $templateId;
-		$this->apiParas["template_id"] = $templateId;
-	}
-
-	public function getTemplateId()
-	{
-		return $this->templateId;
-	}
-
 	public function setVerticalMarket($verticalMarket)
 	{
 		$this->verticalMarket = $verticalMarket;
@@ -366,7 +267,6 @@ class ProductAddRequest
 		
 		RequestCheckUtil::checkMaxLength($this->binds,512,"binds");
 		RequestCheckUtil::checkNotNull($this->cid,"cid");
-		RequestCheckUtil::checkMaxLength($this->extraInfo,25000,"extraInfo");
 		RequestCheckUtil::checkNotNull($this->image,"image");
 	}
 	

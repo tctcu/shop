@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 商品信息
+ * Item(商品)结构
  * @author auto create
  */
 class Item
@@ -13,22 +13,17 @@ class Item
 	public $after_sale_id;
 	
 	/** 
-	 * 应用AppKey
-	 **/
-	public $appkey;
-	
-	/** 
 	 * 商品上传后的状态。onsale出售中，instock库中
 	 **/
 	public $approve_status;
 	
 	/** 
-	 * 商品的积分返点比例。如:5,表示:返点比例0.5%
+	 * 返点比例
 	 **/
 	public $auction_point;
 	
 	/** 
-	 * 代充商品类型。在代充商品的类目下，不传表示不标记商品类型（交易搜索中就不能通过标记搜到相关的交易了）。可选类型： no_mark(不做类型标记) time_card(点卡软件代充) fee_card(话费软件代充)
+	 * 代充商品类型。只有少数类目下的商品可以标记上此字段，具体哪些类目可以上传可以通过taobao.itemcat.features.get获得。在代充商品的类目下，不传表示不标记商品类型（交易搜索中就不能通过标记搜到相关的交易了）。可选类型：time_card(点卡软件代充)fee_card(话费软件代充)
 	 **/
 	public $auto_fill;
 	
@@ -43,11 +38,6 @@ class Item
 	public $barcode;
 	
 	/** 
-	 * 应用回调地址
-	 **/
-	public $callback_url;
-	
-	/** 
 	 * 基础色数据
 	 **/
 	public $change_prop;
@@ -56,6 +46,11 @@ class Item
 	 * 天猫超市扩展字段，天猫超市专用。
 	 **/
 	public $chaoshi_extends_info;
+	
+	/** 
+	 * 支持3期、6期、12期免息
+	 **/
+	public $charge_free_list;
 	
 	/** 
 	 * 商品所属的叶子类目 id
@@ -68,9 +63,19 @@ class Item
 	public $cod_postage_id;
 	
 	/** 
+	 * 属性值的备注，格式：pid:vid:备注信息1;pid2:vid2:备注信息2;
+	 **/
+	public $cpv_memo;
+	
+	/** 
 	 * Item的发布时间，目前仅供taobao.item.add和taobao.item.get可用
 	 **/
 	public $created;
+	
+	/** 
+	 * 村淘特有商品级数据结构
+	 **/
+	public $cuntao_item_specific;
 	
 	/** 
 	 * 定制工具Id
@@ -88,7 +93,7 @@ class Item
 	public $delivery_time;
 	
 	/** 
-	 * 商品描述, 字数要大于5个字符，小于25000个字符
+	 * 商品描述, 字数要大于5个字节，小于25000个字节
 	 **/
 	public $desc;
 	
@@ -103,7 +108,7 @@ class Item
 	public $desc_modules;
 	
 	/** 
-	 * 商品地址
+	 * 商品url
 	 **/
 	public $detail_url;
 	
@@ -173,6 +178,11 @@ class Item
 	public $has_warranty;
 	
 	/** 
+	 * 商品id(注意：iid近期即将废弃，请用num_iid参数)
+	 **/
+	public $iid;
+	
+	/** 
 	 * 加价幅度。如果为0，代表系统代理幅度。在竞拍中，为了超越上一个出价，会员需要在当前出价上增加金额，这个金额就是加价幅度。卖家在发布宝贝的时候可以自定义加价幅度，也可以让系统自动代理加价。系统自动代理加价的加价幅度随着当前出价金额的增加而增加，我们建议会员使用系统自动代理加价，并请买家在出价前看清楚加价幅度的具体金额。另外需要注意是，此功能只适用于拍卖的商品。以下是系统自动代理加价幅度表：当前价（加价幅度 ）1-40（ 1 ）、41-100（ 2 ）、101-200（5 ）、201-500 （10）、501-1001（15）、001-2000（25）、2001-5000（50）、5001-10000（100）10001以上         200
 	 **/
 	public $increment;
@@ -181,6 +191,11 @@ class Item
 	 * 用户内店宝贝装修模板id
 	 **/
 	public $inner_shop_auction_template_id;
+	
+	/** 
+	 * 针对当前商品的自定义属性值
+	 **/
+	public $input_custom_cpv;
 	
 	/** 
 	 * 用户自行输入的类目属性ID串。结构：&quot;pid1,pid2,pid3&quot;，如：&quot;20000&quot;（表示品牌） 注：通常一个类目下用户可输入的关键属性不超过1个。
@@ -223,11 +238,6 @@ class Item
 	public $is_lightning_consignment;
 	
 	/** 
-	 * 是否是线下商品。1：线上商品（默认值）；2：线上或线下商品；3：线下商品。
-	 **/
-	public $is_offline;
-	
-	/** 
 	 * 商品是否为先行赔付taobao.items.search和taobao.items.vip.search专用
 	 **/
 	public $is_prepay;
@@ -258,6 +268,11 @@ class Item
 	public $item_imgs;
 	
 	/** 
+	 * itemRectangleImgs
+	 **/
+	public $item_rectangle_imgs;
+	
+	/** 
 	 * 表示商品的体积，用于按体积计费的运费模板。该值的单位为立方米（m3）。该值支持两种格式的设置：格式1：bulk:3,单位为立方米(m3),表示直接设置为商品的体积。格式2：weight:10;breadth:10;height:10，单位为米（m）
 	 **/
 	public $item_size;
@@ -266,6 +281,16 @@ class Item
 	 * 商品的重量，用于按重量计费的运费模板。注意：单位为kg
 	 **/
 	public $item_weight;
+	
+	/** 
+	 * 商品无线主图
+	 **/
+	public $item_wireless_imgs;
+	
+	/** 
+	 * 门店大屏图
+	 **/
+	public $large_screen_image_url;
 	
 	/** 
 	 * 上架时间（格式：yyyy-MM-dd HH:mm:ss）
@@ -293,6 +318,11 @@ class Item
 	public $mpic_video;
 	
 	/** 
+	 * 家装分阶段价格数据结构
+	 **/
+	public $ms_payment;
+	
+	/** 
 	 * 是否为新消保法中的7天无理由退货
 	 **/
 	public $newprepay;
@@ -313,17 +343,17 @@ class Item
 	public $num_iid;
 	
 	/** 
+	 * 是否绑定o2o
+	 **/
+	public $o2o_bind_service;
+	
+	/** 
 	 * 是否淘1站商品
 	 **/
 	public $one_station;
 	
 	/** 
-	 * open_iid
-	 **/
-	public $open_iid;
-	
-	/** 
-	 * 商家外部编码(可与商家外部系统对接)。需要授权才能获取。
+	 * 商家外部编码(可与商家外部系统对接)
 	 **/
 	public $outer_id;
 	
@@ -378,7 +408,7 @@ class Item
 	public $prop_imgs;
 	
 	/** 
-	 * 属性值别名,比如颜色的自定义名称
+	 * 属性值别名
 	 **/
 	public $property_alias;
 	
@@ -408,11 +438,6 @@ class Item
 	public $second_kill;
 	
 	/** 
-	 * 达尔文数据挂接，第二步保存结果
-	 **/
-	public $second_result;
-	
-	/** 
 	 * 商品卖点信息，天猫商家使用字段，最长150个字符。
 	 **/
 	public $sell_point;
@@ -428,12 +453,7 @@ class Item
 	public $seller_cids;
 	
 	/** 
-	 * 店铺类型，B：天猫店铺，C：淘宝店铺
-	 **/
-	public $shop_type;
-	
-	/** 
-	 * <a href="http://open.taobao.com/dev/index.php/Sku">Sku</a>列表。fields中只设置sku可以返回Sku结构体中所有字段，如果设置为sku.sku_id、sku.properties、sku.quantity等形式就只会返回相应的字段
+	 * Sku列表。fields中只设置sku可以返回Sku结构体中所有字段，如果设置为sku.sku_id、sku.properties、sku.quantity等形式就只会返回相应的字段
 	 **/
 	public $skus;
 	
@@ -441,6 +461,11 @@ class Item
 	 * 商品销量
 	 **/
 	public $sold_quantity;
+	
+	/** 
+	 * 手机类目spu 确认信息字段
+	 **/
+	public $spu_confirm;
 	
 	/** 
 	 * 商品新旧程度(全新:new，闲置:unused，二手：second)
@@ -453,9 +478,9 @@ class Item
 	public $sub_stock;
 	
 	/** 
-	 * 商品的子标题，给商品增加卖点等描述
+	 * 是否支持分期免息
 	 **/
-	public $sub_title;
+	public $support_charge_free;
 	
 	/** 
 	 * 页面模板id
@@ -473,9 +498,14 @@ class Item
 	public $type;
 	
 	/** 
-	 * 有效期,7或者14（默认是7天）
+	 * 有效期,7或者14（默认是14天）
 	 **/
 	public $valid_thru;
+	
+	/** 
+	 * 商品竖图
+	 **/
+	public $vertical_imgs;
 	
 	/** 
 	 * 该字段废弃，请勿使用。
@@ -493,7 +523,7 @@ class Item
 	public $violation;
 	
 	/** 
-	 * 对应搜索商品列表页的最近成交量,只有调用商品搜索:taobao.items.get和taobao.items.search的时候才能返回
+	 * 商品30天交易量，只有调用商品搜索:taobao.items.get和taobao.items.search的时候才能返回
 	 **/
 	public $volume;
 	
@@ -506,6 +536,11 @@ class Item
 	 * 适合wap应用的商品详情url ，该字段只在taobao.item.get接口中返回
 	 **/
 	public $wap_detail_url;
+	
+	/** 
+	 * 白底图URL
+	 **/
+	public $white_bg_image;
 	
 	/** 
 	 * 无线的宝贝描述

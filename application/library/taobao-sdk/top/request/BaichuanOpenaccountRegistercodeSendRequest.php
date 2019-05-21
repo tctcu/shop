@@ -3,7 +3,7 @@
  * TOP API: taobao.baichuan.openaccount.registercode.send request
  * 
  * @author auto create
- * @since 1.0, 2015.06.10
+ * @since 1.0, 2018.07.26
  */
 class BaichuanOpenaccountRegistercodeSendRequest
 {
