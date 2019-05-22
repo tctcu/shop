@@ -238,14 +238,16 @@ echo $url;die;
         //$session = '6101f289408a6ad0cd510ec7423b04005246198251c62a34227738592';//川律 => 川律
         //$session = '61028237d4b5c1cffec649da64ea4b5185ceab0c03fbaf44227738592';//川律 => 川律
         //$session = '6102225803c7a08b7f097f1ed9955b10f17dbed86db694d418362049';//小麦我的ta => 小麦我的ta
-        $taobao_model = new TaobaoModel(6);
+        $taobao_model = new TaobaoModel(4);
         //$res = $taobao_model->TbkScInvitecodeGetRequest($session);//获取邀请码
         //$res = $taobao_model->TbkScPublisherInfoSaveRequest($session);//绑定渠道关系
         //$res = $taobao_model->TbkScPublisherInfoGetRequest(1,20);
         //$res = $taobao_model->TbkOrderGetRequest($start,1,20);//订单
         //$res = $taobao_model->TbkTpwdConvertRequest('￥Gw4sY2VcCwH￥');
-        $res = $taobao_model->TbkOrderDetailsGetRequest($start, $end, $page = 1, $pageSize = 100);
+        //$res = $taobao_model->TbkOrderDetailsGetRequest($start, $end, $page = 1, $pageSize = 100);//sdk - 6
         //$res = $taobao_model->TbkItemConvertRequest($itemid);
+        $itemid = 589123348070;
+        $res = $taobao_model->TbkDgVegasTljCreateRequest($itemid);
         echo '<pre>';
         print_r($res);die;
     }

@@ -422,6 +422,29 @@ class TaobaoModel{
         return $retData;
     }
 
+    #淘礼金
+    function TbkDgVegasTljCreateRequest($itemId){
+        $req = new TbkDgVegasTljCreateRequest;
+        $req->setCampaignType("MKT");//定向：DX；鹊桥：LINK_EVENT；营销：MKT
+        $req->setAdzoneId("73240000099");//banner4
+        $req->setItemId("$itemId");//589123348070
+        $req->setTotalNum("1");
+        $req->setName("券购福利");
+        $req->setUserTotalWinNumLimit("1");
+        $req->setSecuritySwitch("true");//启用安全
+        $req->setPerFace("1");
+        $req->setSendStartTime("2018-05-20 00:00:00");
+        $req->setSendEndTime("2019-05-24 00:00:00");
+        $req->setUseEndTime("1");
+        $req->setUseEndTimeMode("1");
+        $req->setUseStartTime("2019-05-22");
+        $resp = $this->apiClient->execute($req);
+        $resp = json_decode(json_encode($resp),true);
+        echo '<pre>';
+        print_r($resp);die;
+    }
+
+
     #h5授权登录换取token 需要https
     function TopAuthTokenCreateRequest($code){
         $req = new TopAuthTokenCreateRequest;
