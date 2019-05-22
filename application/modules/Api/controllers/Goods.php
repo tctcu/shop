@@ -339,7 +339,7 @@ class GoodsController extends ApiController
         );
         $type = $type_arr[$type];
         if(empty($type)){
-            $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG)
+            $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
         }
 
         $url = "http://api.dataoke.com/index.php?r=Port/index&type=$type&appkey=x5csvdqfvt&v=2";
