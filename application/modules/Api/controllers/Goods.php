@@ -329,7 +329,54 @@ class GoodsController extends ApiController
     }
 
 
+    function topListAction(){
+        $type = !empty($_REQUEST['type']) ? intval($_REQUEST['type']) : 0;
 
+        $type_arr = array(
+            'top100',
+            'paoliang',
+            //'total',
+        );
+        $type = $type_arr[$type];
+        if(empty($type)){
+            $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG)
+        }
+
+        $url = "http://api.dataoke.com/index.php?r=Port/index&type=$type&appkey=x5csvdqfvt&v=2";
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_ENCODING,'gzip,deflate');
+        curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+        $output = curl_exec($ch);
+        curl_close($ch);
+
+        $result = json_decode($output,true);
+        foreach($result['result'] as &$item){
+            $item = [
+                'itemid' => $item['GoodsID'],
+                'itemshorttitle' => $item['D_title'],
+                'itemdesc' => $item['Introduce'],
+                'itemprice' => $item['Org_Price'],
+                'itemsale' => $item['Sales_num'],
+                'itempic' => $item['Pic'],
+                'itemendprice' => $item['Price'].'',
+                'url' => 'http://uland.taobao.com/coupon/edetail?activityId=' . $item['Quan_id'] . '&itemId=' . $item['GoodsID'] . '&src=qmmf_sqrb&mt=1&pid=' . $this->pid,
+                'coupon_type' => '1',//优惠券状态 0-没有券 好单库的都有券
+                'couponmoney' => $item['Quan_price'],
+                'couponexplain' => '单笔满'.$item['Quan_condition'].'元可用',
+                'couponstarttime' => strtotime(date('Y-m-d')).'',
+                'couponendtime' => strtotime($item['Quan_time']).'',
+                'shoptype' => $item['IsTmall'] == 1 ? 'B' : 'C',
+                'rebate' => sprintf("%.2f",$item['Commission'] * ConfigModel::RATE * $item['Price'] * ConfigModel::REBATE)
+            ];
+        }
+
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $result['result']);
+    }
 
 
     #格式化列表数据

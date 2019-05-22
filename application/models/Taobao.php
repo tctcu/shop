@@ -341,6 +341,31 @@ class TaobaoModel{
         return $retData;
     }
 
+    #新获取订单
+    function TbkOrderDetailsGetRequest($start, $end, $page = 1, $pageSize = 100){
+        $req = new TbkOrderDetailsGetRequest;
+        $req->setQueryType("1");//1：按照订单淘客创建时间查询，2:按照订单淘客付款时间查询，3:按照订单淘客结算时间查询
+        //$req->setPositionIndex("2222_334666");//位点，除第一页之外，都需要传递；前端原样返回。
+        $req->setPageSize("$pageSize");
+        //$req->setMemberType("2");//2:二方，3:三方，不传，表示所有角色
+        //$req->setTkStatus("12");//12-付款，13-关闭，14-确认收货，15-结算成功;不传，表示所有状态
+        $req->setStartTime("$start");
+        $req->setEndTime("$end");
+        $req->setJumpType("1");//跳转类型，当向前或者向后翻页必须提供,-1: 向前翻页,1：向后翻页
+        $req->setPageNo("$page");
+        $req->setOrderScene("1");//1:常规订单，2:渠道订单，3:会员运营订单，默认为1
+        $resp = $this->apiClient->execute($req);
+        $resp = json_decode(json_encode($resp),true);
+        echo '<pre>';
+        print_r($resp);die;
+        $retData = [];
+        if (isset($resp['results']['n_tbk_order'])) {
+            $retData = $resp['results']['n_tbk_order'];
+        }
+
+        return $retData;
+    }
+
 
     #获取渠道邀请码 川律-SR3HPL
     function TbkScInvitecodeGetRequest($session){

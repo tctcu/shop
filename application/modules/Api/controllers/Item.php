@@ -13,11 +13,13 @@ class ItemController extends ApiController
     {
         $cid = intval($_REQUEST['cid']) ? intval($_REQUEST['cid']) : 0;
         $min_id = intval($_REQUEST['min_id']) ? intval($_REQUEST['min_id']) : 1;
+        $max_price = intval($_REQUEST['max_price']) ? intval($_REQUEST['max_price']) : 0;
         $pageSize = intval($_REQUEST['pageSize']) ? intval($_REQUEST['pageSize']) : 20;
 
         $condition = [
             'status' => 1,
             'fqcat' => $cid,
+            'max_price' => $max_price,
             'min_id' => $min_id,
         ];
 
