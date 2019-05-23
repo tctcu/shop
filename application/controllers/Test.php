@@ -231,11 +231,12 @@ echo $url;die;
 //        $url_info = $yuque_model->privilegeGet($condition);
 //        print_r($url_info);die;
 
-        $start = '2019-04-24 16:40:00';
+        $start = '2019-05-23 16:10:00';
         $end = '2019-05-24 16:40:00';
         $session = '6102504e1dc419ca0987260ad16b172f2cc3add998dcc653297963538';//tctcu =>小麦我的ta
-        $session = '61014049898716c7c10e7af67b652bfbd4fc278dc56b1b92200590755065';//小目标 => 川律
-        //$session = '6101f289408a6ad0cd510ec7423b04005246198251c62a34227738592';//川律 => 川律
+        //$session = '6101a0139154c29fc84459d97aec2b336d1df2875c490af2200590755065';//小目标 => 川律
+        //$session = '61023115441118ffb26126aba8c70423f53cc39c0474e7b418362049';//小麦我的ta => 川律
+        $session = '6101411c0a6bba868871dd0df830249bb18e112a383c22d3297963538';//tctcu => 川律
         //$session = '61028237d4b5c1cffec649da64ea4b5185ceab0c03fbaf44227738592';//川律 => 川律
         //$session = '6102225803c7a08b7f097f1ed9955b10f17dbed86db694d418362049';//小麦我的ta => 小麦我的ta
         $taobao_model = new TaobaoModel(4);
@@ -244,10 +245,11 @@ echo $url;die;
         //$res = $taobao_model->TbkScPublisherInfoGetRequest(1,20);
         //$res = $taobao_model->TbkOrderGetRequest($start,1,20);//订单
         //$res = $taobao_model->TbkTpwdConvertRequest('￥Gw4sY2VcCwH￥');
-        //$res = $taobao_model->TbkOrderDetailsGetRequest($start, $end, $page = 1, $pageSize = 100);//sdk - 6
+        $res = $taobao_model->TbkOrderGetRequest($start,$page = 1, $pageSize = 100);
+        //$res = $taobao_model->TbkOrderDetailsGetRequest($start, $end, $page = 1, $pageSize = 100);
         //$res = $taobao_model->TbkItemConvertRequest($itemid);
         $itemid = 589123348070;
-        $res = $taobao_model->TbkDgVegasTljCreateRequest($itemid);
+        //$res = $taobao_model->TbkDgVegasTljCreateRequest($itemid);
         echo '<pre>';
         print_r($res);die;
     }

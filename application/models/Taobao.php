@@ -329,7 +329,7 @@ class TaobaoModel{
         $req->setPageSize("$pageSize");
         $req->setTkStatus("1");
         $req->setOrderQueryType("create_time");
-        $req->setOrderScene("1");
+        $req->setOrderScene("3");//1:常规订单，2:渠道订单，3:会员运营订单
         //$req->setOrderCountType("1");
         $resp = $this->apiClient->execute($req);
         $resp = json_decode(json_encode($resp),true);
@@ -367,14 +367,16 @@ class TaobaoModel{
     }
 
 
-    #获取渠道邀请码 川律-SR3HPL
+    #获取渠道邀请码 川律渠道-SR3HPL 川律会员-DK8CHM
     function TbkScInvitecodeGetRequest($session){
         $req = new TbkScInvitecodeGetRequest;
         $req->setRelationId("11");
         $req->setRelationApp("common");
-        $req->setCodeType("1");//1-渠道 2-裂变 3-会员
+        $req->setCodeType("3");//1-渠道 2-裂变 3-会员
         $resp = $this->apiClient->execute($req, $session);
         $resp = json_decode(json_encode($resp),true);
+        echo '<pre>';
+        print_r($resp);die;
         $retData = [];
         if (isset($resp['data'])) {
             $retData = $resp['data'];
@@ -390,11 +392,13 @@ class TaobaoModel{
         $req->setRelationFrom("123");
         $req->setOfflineScene("4");
         $req->setOnlineScene("3");
-        $req->setInviterCode("SR3HPL");
+        $req->setInviterCode("DK8CHM");// 川律渠道-SR3HPL 川律会员-DK8CHM
         $req->setInfoType("1");
         $req->setNote("备注");
         $resp = $this->apiClient->execute($req, $session);
         $resp = json_decode(json_encode($resp),true);
+        echo '<pre>';
+        print_r($resp);die;
         $retData = [];
         if (isset($resp['data'])) {
             $retData = $resp['data'];
@@ -406,10 +410,9 @@ class TaobaoModel{
 
     #获取渠道关系列表
     function TbkScPublisherInfoGetRequest($page = 1, $pageSize = 10){
-        $session = '61018107b53d03c62f11c11f6544a2f7ac84c24d8ce9e7a418362049';//小麦我的ta
         $session = '6101f289408a6ad0cd510ec7423b04005246198251c62a34227738592';//川律
         $req = new TbkScPublisherInfoGetRequest;
-        $req->setInfoType("1");
+        $req->setInfoType("2");//1-渠道 2-会员
         $req->setPageNo("$page");
         $req->setPageSize("$pageSize");
         $req->setRelationApp("common");
@@ -438,6 +441,16 @@ class TaobaoModel{
         $req->setUseEndTime("1");
         $req->setUseEndTimeMode("1");
         $req->setUseStartTime("2019-05-22");
+        $resp = $this->apiClient->execute($req);
+        $resp = json_decode(json_encode($resp),true);
+        echo '<pre>';
+        print_r($resp);die;
+    }
+
+    #淘礼金查询
+    function TbkDgVegasTljInstanceReportRequest($rightsId){
+        $req = new TbkDgVegasTljInstanceReportRequest;
+        $req->setRightsId("$rightsId");
         $resp = $this->apiClient->execute($req);
         $resp = json_decode(json_encode($resp),true);
         echo '<pre>';
