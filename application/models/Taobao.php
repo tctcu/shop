@@ -190,7 +190,7 @@ class TaobaoModel{
             return [];
         }
         $req = new TbkItemInfoGetRequest;
-        $req->setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url");
+        //$req->setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url");
         $req->setPlatform("2");
         $req->setNumIids("".implode(',',$num_iids)."");
         $resp = $this->apiClient->execute($req);
