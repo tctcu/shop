@@ -245,11 +245,13 @@ echo $url;die;
         //$res = $taobao_model->TbkScPublisherInfoGetRequest(1,20);
         //$res = $taobao_model->TbkOrderGetRequest($start,1,20);//订单
         //$res = $taobao_model->TbkTpwdConvertRequest('￥Gw4sY2VcCwH￥');
-        $res = $taobao_model->TbkOrderGetRequest($start,$page = 1, $pageSize = 100);
+        //$res = $taobao_model->TbkOrderGetRequest($start,$page = 1, $pageSize = 100);
         //$res = $taobao_model->TbkOrderDetailsGetRequest($start, $end, $page = 1, $pageSize = 100);
         //$res = $taobao_model->TbkItemConvertRequest($itemid);
-        $itemid = 589123348070;
+        $itemid = 568127651115;//589123348070;
         //$res = $taobao_model->TbkDgVegasTljCreateRequest($itemid);
+        $rightsId = 'om1NH6rCWmhHhq%2BT8Je4cqJ7%2BkHL3AEW';
+        $res = $taobao_model->TbkDgVegasTljInstanceReportRequest($rightsId);
         echo '<pre>';
         print_r($res);die;
     }
