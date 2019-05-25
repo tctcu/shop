@@ -205,6 +205,9 @@ class UserModel extends MysqlModel {
             $code = substr($code, strrpos($code, 'k')+1);
         }
         $len = strlen($code);
+        if($len>4){//暂定4位邀请码 uid 923520
+            return 0;
+        }
         $code = strrev($code);
         $num = 0;
         for ($i=0; $i < $len; $i++) {

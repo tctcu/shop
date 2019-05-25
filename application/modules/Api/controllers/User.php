@@ -149,7 +149,11 @@ class UserController extends ApiController
         $user_model = new UserModel();
         $user_info = $user_model->getDataByUnionid($user_data["unionid"]);
         if(empty($user_info)){ //注册
+            //绑定师傅
+            $invite_code = trim($_REQUEST['invite_code']);
+            $up_uid = $user_model->code2uid($invite_code);
             $insert = [
+                "up_uid" => intval($up_uid),
                 "w_openid" => $user_data["openid"],
                 "w_nickname" => $user_data["nickname"],
                 "w_sex" => $user_data["sex"],

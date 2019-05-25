@@ -24,10 +24,10 @@ class TestController extends Yaf_Controller_Abstract
     function testAction(){
 
         $model = new UserModel();
-        $userId = 5;
+        $userId = 923520;
         echo $model->uid2code($userId);
         echo '<hr>';
-        echo $model->code2uid($model->uid2code($userId));die;
+        echo $model->code2uid('eeee');die;
 
 
         echo file_get_contents("https://douban.uieee.com/v2/movie/in_theaters");die;
@@ -248,9 +248,9 @@ echo $url;die;
         //$res = $taobao_model->TbkOrderGetRequest($start,$page = 1, $pageSize = 100);
         //$res = $taobao_model->TbkOrderDetailsGetRequest($start, $end, $page = 1, $pageSize = 100);
         //$res = $taobao_model->TbkItemConvertRequest($itemid);
-        $itemid = 568127651115;//589123348070;
+        $itemid = 594539807516;//594413180913;//568127651115;//589123348070;
         //$res = $taobao_model->TbkDgVegasTljCreateRequest($itemid);
-        $rightsId = 'om1NH6rCWmhHhq%2BT8Je4cqJ7%2BkHL3AEW';
+        $rightsId = 'JKfITYvryQjsilCPCq9i%2BaJ7%2BkHL3AEW';//'om1NH6rCWmhHhq%2BT8Je4cqJ7%2BkHL3AEW';
         $res = $taobao_model->TbkDgVegasTljInstanceReportRequest($rightsId);
         echo '<pre>';
         print_r($res);die;
