@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html, body{
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            min-width: 320px;
+        }
+        div{
+            box-sizing: border-box;
+            margin: 0; padding: 0;
+        }
+        .wrapper{
+            height: 100%;
+            width: 100vw;
+        }
+        .bg{
+            width: 100vw;
+            height: 100%;
+            background: url('/img/web/invite/invite1_bg.png') no-repeat;
+            background-position: center;
+            background-size: cover;
+            padding-top: 20px;
+        }
+        .title{
+            display: flex;
+            height: 10vh;
+            width: 100vw;
+            justify-content: center;
+        }
+        .title img{
+            height: 100%;
+            width: 90vw;
+        }
+        .container{
+            margin-top: 20px;
+            width: 100vw;
+        }
+        .banner{
+            position: relative;
+            width: 91vw;
+            height: 61vh;
+            margin: 0 auto;
+            /* background: url('/img/web/invite/invite1_hongbao.png') no-repeat center;
+            background-size: contain; */
+        }
+        .banner .banner-bg{
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+        }
+        .info-filed{
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .info-name{
+            display: flex;
+            margin-top: 38px;
+        }
+        .icon{
+            width: 13vw;
+            height: 13vw;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1px solid #999;
+        }
+        .icon img{
+            width: 100%;
+            height: 100%;
+        }
+        .friend-name{
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #A07A7A;
+            margin-left: 15px;
+        }
+        .filed-info p{
+            color: #A07A7A;
+            font-size: 17px;
+        }
+        .money-num{
+            margin: 0 5px;
+            color: #F41515;
+            font-size: 22px;
+        }
+        .brand{
+            position: absolute;
+            top: 26vh;
+            display: flex;
+            width: 100%;
+            justify-content: center;
+        }
+        .brand img{
+            width: 22vw;
+            height: 22vw;
+        }
+        .operate-line{
+            position: absolute;
+            bottom: 5vh;
+            display: flex;
+            width: 100%;
+            margin-top: 3vh;
+            align-items: center;
+            justify-content: center;
+        }
+        .operate-label{
+            position: relative;
+            display: flex;
+            width: 78vw;
+            height: 12vh;
+            justify-content: center;
+            align-items: center;
+            padding: 22px 0 26px 0;
+            font-size: 22px;
+            color: #F15136;
+        }
+        .operate-label img{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .operate-text{
+            position: relative;
+        }
+        .press{
+            position: absolute;
+            width: 16vw;
+            height: 16vw;
+            right: 18px;
+            bottom: -14px;
+        }
+        .press img{
+            width: 100%;
+            height: 100%;
+        }
+        .bottom{
+            padding: 0 5vw;
+            margin-top: 2vh;
+        }
+        .invite-code-line{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #FEF7E0;
+            font-size: 12px;
+        }
+        .invite-code-label{
+            font-size: 14px;
+        }
+        .invite-code{
+            color: #FBE641;
+            font-size: 30px;
+            margin-right: 5px;
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
+        .bottom-desc{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #FEF7E0;
+        }
+        .download-span{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20vw;
+            height: 4vh;
+            font-size: 16px;
+            border: 2px solid #fff;
+            border-radius: 3px;
+            margin-left: 2vw;
+        }
+        .rule-line{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+        }
+        .rule-line a{
+            color: #FFE3D1;
+        }
+        @media screen and (min-width: 350px) {
+            html, body{
+                width: 350px;
+            }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="bg">
+        <div class="title">
+            <img src="/img/web/invite/invite1_title.png" alt="title">
+        </div>
+        <div class="container">
+            <div class="banner">
+                <img class="banner-bg" src="/img/web/invite/invite1_hongbao.png" alt="hongbao">
+                <div class="info-filed">
+                    <div class="info-name">
+                        <div class="icon"><img src="<?php echo $user_info['w_headimgurl']?>" alt=""></div>
+                        <div class="friend-name">你的好友 <br> <?php echo $user_info['w_nickname']?></div>
+                    </div>
+                    <div class="filed-info">
+                        <p>已通过券购获得<span class="money-num"><?php echo $user_info['total'] ?>元</span>收益</p>
+                    </div>
+                </div>
+                <div class="brand">
+                    <img src="/img/web/invite/invite1_logo.png" alt="logo">
+                </div>
+                <div class="operate-line">
+                    <div class="operate-label">
+                        <img src="/img/web/invite/invite1_download.png" alt="download">
+                        <div class="operate-text">快捷授权下载</div>
+                        <div class="press">
+                            <img src="/img/web/invite/invite1_press.png" alt="press">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="invite-code-line">
+                <span class="invite-code-label">邀请码：</span><span class="invite-code"><?php echo $user_info['invite_code'] ?></span>(长按复制)
+            </div>
+            <p class="bottom-desc">或可复制邀请码下载APP后填写<span class="download-span">立即下载</span></p>
+            <div class="rule-line"><a href="javascript:;">活动规则</a></div>
+        </div>
+    </div>
+</div>
+<!--    <script>-->
+<!--      var viewport = document.querySelector('meta[name=viewport]');-->
+<!--      var w = window.innerWidth;-->
+<!--      if (w < 350) {-->
+<!--          viewport.setAttribute('content', 'width=350');-->
+<!--      }-->
+<!--    </script>-->
+</body>
+</html>

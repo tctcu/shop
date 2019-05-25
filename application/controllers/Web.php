@@ -78,21 +78,18 @@ class WebController extends Yaf_Controller_Abstract
     }
     #邀请好友
     function inviteAction(){
-        $invite_code =  trim($_REQUEST['invite_code']);
+        $invite_code = trim($_REQUEST['invite_code']);
         $user_model = new UserModel();
         $uid = $user_model->code2uid($invite_code);
-        if($uid){
-            $user_info = $user_model->getDataByUid($uid);
-            if(empty($user_info)){
-                die(404);
-            }
+        if(empty($uid)){
+            die(404);
         }
-        echo '收入:'.$user_info['total'].'元';
-        echo '<hr>';
-        echo '邀请码:'.$invite_code;
-        echo '<hr>';
-        echo "<a href='/web/register?invite_code={$invite_code}'>点击注册</a>";
-        die;
+        $user_info = $user_model->getDataByUid($uid);
+        if(empty($user_info)){
+            die(404);
+        }
+        $user_info['invite_code'] = $invite_code;
+        $this->_view->user_info = $user_info;
     }
     #app外微信注册
     function registerAction(){
