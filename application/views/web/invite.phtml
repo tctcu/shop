@@ -17,6 +17,10 @@
             box-sizing: border-box;
             margin: 0; padding: 0;
         }
+        a{
+            text-decoration:none;
+            color: #A07A7A;
+        }
         .wrapper{
             height: 100%;
             width: 100vw;
@@ -226,12 +230,12 @@
                     <img src="/img/web/invite/invite1_logo.png" alt="logo">
                 </div>
                 <div class="operate-line">
-                    <div class="operate-label">
+                    <a href="<?php echo $user_info['accredit_url'] ?>"><div class="operate-label">
                         <img src="/img/web/invite/invite1_download.png" alt="download">
                         <div class="operate-text">快捷授权下载</div>
                         <div class="press">
                             <img src="/img/web/invite/invite1_press.png" alt="press">
-                        </div>
+                        </div></a>
                     </div>
                 </div>
             </div>

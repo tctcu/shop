@@ -89,15 +89,57 @@ class WebController extends Yaf_Controller_Abstract
             die(404);
         }
         $user_info['invite_code'] = $invite_code;
+
+        $user_info['accredit_url'] = "http://".$_SERVER['HTTP_HOST']."/web/register?invite_code=".$invite_code;
         $this->_view->user_info = $user_info;
     }
+
     #app外微信注册
     function registerAction(){
         $invite_code =  trim($_REQUEST['invite_code']);
+        $wechat_model = new WechatServerModel();
+        $redirect_uri ="http://".$_SERVER['HTTP_HOST']."/web/callback";
+        $wechat_model->Code($redirect_uri,$invite_code);
+    }
+
+    #微信注册授权回调
+    function callbackAction(){
+        $wechat_model = new WechatServerModel();
+        $token = $wechat_model->authorization_code($_GET['code']);
+        $invite_code = $_GET['state'];
         $user_model = new UserModel();
-        $uid = $user_model->code2uid($invite_code);
-        echo '注册成uid为:'.$uid.'的徒弟';
-        echo "<a href='/Server/register?invite_code={$invite_code}'>点击注册</a>";die;
+        $up_uid = $user_model->code2uid($invite_code);
+        $user_data = $wechat_model->snsapi_userinfo($token['access_token'],$token['openid']);
+
+        $user_info = $user_model->getDataByUnionid($user_data['unionid']);
+        if(empty($user_info)){//注册
+            $insert = [
+                "up_uid" => intval($up_uid),
+                "w_openid" => $user_data["openid"],
+                "w_nickname" => $user_data["nickname"],
+                "w_sex" => $user_data["sex"],
+                "w_city" => $user_data["city"],
+                "w_province" => $user_data["province"],
+                "w_country" => $user_data["country"],
+                "w_headimgurl" => $user_data["headimgurl"],
+                "w_unionid" => $user_data["unionid"]
+            ];
+            $user_model->addData($insert);
+            echo '注册';
+        } else {
+            //更新信息
+            $update = [
+                "w_nickname" => $user_data["nickname"],
+                "w_sex" => $user_data["sex"],
+                "w_city" => $user_data["city"],
+                "w_province" => $user_data["province"],
+                "w_country" => $user_data["country"],
+                "w_headimgurl" => $user_data["headimgurl"],
+            ];
+            $user_model->updateData($update,$user_info['uid']);
+            echo '登录';
+        }
+        die;
     }
 
 
