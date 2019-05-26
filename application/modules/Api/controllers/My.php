@@ -463,9 +463,10 @@ class MyController extends ApiController
     function friendListAction(){
         $uid = $this->uid;
         $min_id = intval($_REQUEST['min_id']) ? intval($_REQUEST['min_id']) : 0;
+        $pageSize = intval($_REQUEST['pageSize']) ? intval($_REQUEST['pageSize']) : 10;
 
         $user_model = new UserModel();
-        $data = $user_model->getFriendList(10,[
+        $data = $user_model->getFriendList($pageSize,[
             'up_uid' => $uid,
             'min_id' => $min_id
         ]);
