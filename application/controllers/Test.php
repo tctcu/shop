@@ -250,7 +250,7 @@ echo $url;die;
         //$res = $taobao_model->TbkItemConvertRequest($itemid);
         $itemid = 566569778934;//594539807516;//594413180913;//568127651115;//589123348070;
         //$res = $taobao_model->TbkDgVegasTljCreateRequest($itemid);
-        $rightsId = 'xToGS9oNSOLq6vWhYPq0yKJ7%2BkHL3AEW';//'JKfITYvryQjsilCPCq9i%2BaJ7%2BkHL3AEW';//'om1NH6rCWmhHhq%2BT8Je4cqJ7%2BkHL3AEW';
+        $rightsId ='om1NH6rCWmhHhq%2BT8Je4cqJ7%2BkHL3AEW';// 'xToGS9oNSOLq6vWhYPq0yKJ7%2BkHL3AEW';//'JKfITYvryQjsilCPCq9i%2BaJ7%2BkHL3AEW';//'om1NH6rCWmhHhq%2BT8Je4cqJ7%2BkHL3AEW';
         $res = $taobao_model->TbkDgVegasTljInstanceReportRequest($rightsId);
         echo '<pre>';
         print_r($res);die;

@@ -457,6 +457,8 @@ class TaobaoModel{
         $req = new TbkDgVegasTljInstanceReportRequest;
         $req->setRightsId("$rightsId");
         $resp = $this->apiClient->execute($req);
+        echo '<pre>';
+        print_r($resp);die;
         $resp = json_decode(json_encode($resp),true);
         $retData = [];
         if (isset($resp['result'])) {
