@@ -431,18 +431,20 @@ class TaobaoModel{
         $req->setCampaignType("MKT");//定向：DX；鹊桥：LINK_EVENT；营销：MKT
         $req->setAdzoneId("73240000099");//banner4
         $req->setItemId("$itemId");//589123348070 568127651115
-        $req->setTotalNum("30");
+        $req->setTotalNum("20");
         $req->setName("券购APP专属福利");
         $req->setUserTotalWinNumLimit("1");
         $req->setSecuritySwitch("true");//启用安全
-        $req->setPerFace("1.8");//现阶段单个红包面额必须大于或等于1元，小于49999元，可支持2位小数点
-        $req->setSendStartTime("2018-05-25 00:00:00");
-        $req->setSendEndTime("2019-05-27 00:00:00");
+        $req->setPerFace("2.8");//现阶段单个红包面额必须大于或等于1元，小于49999元，可支持2位小数点
+        $req->setSendStartTime("2018-05-27 00:00:00");
+        $req->setSendEndTime("2019-05-29 00:00:00");
         $req->setUseEndTime("1");
         $req->setUseEndTimeMode("1");
-        $req->setUseStartTime("2019-05-25");
+        $req->setUseStartTime("2019-05-27");
         $resp = $this->apiClient->execute($req);
         $resp = json_decode(json_encode($resp),true);
+        echo '<pre>';
+        print_r($resp);die;
         $retData = [];
         if (isset($resp['result']['model'])) {
             $retData = $resp['result']['model'];
@@ -456,8 +458,6 @@ class TaobaoModel{
         $req->setRightsId("$rightsId");
         $resp = $this->apiClient->execute($req);
         $resp = json_decode(json_encode($resp),true);
-//        echo '<pre>';
-//        print_r($resp);die;
         $retData = [];
         if (isset($resp['result'])) {
             $retData = $resp['result'];
