@@ -23,6 +23,7 @@
                     <label for="name">位置:</label>
                     <select name="position">
                         <option value="banner" <?php if($info['position']=='banner'){ echo 'selected';}?> >banner</option>
+                        <option value="ad" <?php if($info['position']=='ad'){ echo 'selected';}?> >首页广告</option>
                     </select>
                     <span class="help-block error"></span>
                 </div>
@@ -31,6 +32,7 @@
                     <label for="name">类型:</label>
                     <select name="type">
                         <option value="1" <?php if($info['type']=='1'){ echo 'selected';}?> >链接</option>
+                        <option value="2" <?php if($info['type']=='2'){ echo 'selected';}?> >淘宝详情页</option>
                     </select>
                     <span class="help-block error"></span>
                 </div>

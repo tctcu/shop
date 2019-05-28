@@ -52,6 +52,9 @@ class BannerModel extends MysqlModel {
         if(!empty($condition['id'])){
             $sql .= " and id={$condition['id']} ";
         }
+        if(!empty($condition['position'])){
+            $sql .= " and position='{$condition['position']}' ";
+        }
 
         $sql .= " order by id desc ";
 

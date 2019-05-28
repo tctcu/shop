@@ -43,8 +43,21 @@ class AuthController extends ApiController
                 'goto' => $val['goto'],
             ];
         }
+        $condition = [
+            'position' => 'ad',
+        ];
+        $show_list = $banner_model->getListData($page,$page_size,$condition);
+        $ad = [];
+        foreach($show_list as $val){
+            $ad[] = [
+                'pic' => CommonModel::IMAGE_URL . $val['pic'],
+                'type' => $val['type'],
+                'goto' => $val['goto'],
+            ];
+        }
         $data = [
             'banner' => $banner,
+            'ad' => $ad,
         ];
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
