@@ -71,7 +71,7 @@ class TestController extends Yaf_Controller_Abstract
     }
 
     #淘宝详情页
-    function tbAction(){
+    function tbDetailAction(){
         $item_id = 571503809371;
         $taobao_model = new TaobaoModel(2);
         $condition = [
@@ -262,6 +262,15 @@ echo $url;die;
         //$res = $taobao_model->TbkDgVegasTljCreateRequest($itemid);
         $rightsId ='om1NH6rCWmhHhq%2BT8Je4cqJ7%2BkHL3AEW';// 'xToGS9oNSOLq6vWhYPq0yKJ7%2BkHL3AEW';//'JKfITYvryQjsilCPCq9i%2BaJ7%2BkHL3AEW';//'om1NH6rCWmhHhq%2BT8Je4cqJ7%2BkHL3AEW';
        // $res = $taobao_model->TbkDgVegasTljInstanceReportRequest($rightsId);
+        echo '<pre>';
+        print_r($res);die;
+    }
+
+    function tbAction(){
+
+        $taobao_model = new TaobaoModel(4);
+        $refreshToken = '';
+        $res = $taobao_model->TopAuthTokenRefreshRequest($refreshToken);//绑定渠道关系
         echo '<pre>';
         print_r($res);die;
     }

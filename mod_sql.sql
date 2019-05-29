@@ -354,4 +354,24 @@ select concat('mm_',memberid_id,'_',site_id,'_',adzone_id) as pid from user_pid 
  SELECT count(*) from  jx_lesson_plan_after a,lesson_plan b  where  a.lesson_plan_id = b.lesson_plan_id and b.plan_start_time>='2019-05-01' and b.plan_start_time<'2019-05-09' and a.operate_period=2 and a.mark in (4,5,6);
 
 
+ CREATE TABLE `tb_user` (
+   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+   `uid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '用户uid',
+   `taobao_open_uid` varchar(50) NOT NULL DEFAULT '' COMMENT '淘宝用户openId',
+   `taobao_user_nick` varchar(50) NOT NULL DEFAULT '' COMMENT '淘宝用户昵称',
+   `taobao_user_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '淘宝用户id',
+   `access_token` varchar(100) NOT NULL DEFAULT '' COMMENT 'token',
+   `refresh_token` varchar(100) NOT NULL DEFAULT '' COMMENT '刷新token',
+   `expires_time` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'access_token过期时间',
+   `refresh_token_valid_time` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'refresh_token过期时间',
+   `r1_valid` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'r1级别过期时间',
+   `r2_valid` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'r2级别过期时间',
+   `w1_valid` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'w1级别过期时间',
+   `w2_valid` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'w2级别过期时间',
+   `created_at` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间戳',
+   `updated_at` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间戳',
+   PRIMARY KEY (`id`),
+   UNIQUE KEY `uid` (`uid`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='配置字典';
+
 

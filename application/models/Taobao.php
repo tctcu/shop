@@ -301,23 +301,7 @@ class TaobaoModel{
         return $retData;
     }
 
-    function OpenuidChangeRequest($openUid){
 
-        $req = new OpenuidChangeRequest;
-        $req->setOpenUid($openUid);
-        $req->setTargetAppKey("25363435");
-        $resp = $this->apiClient->execute($req);
-        $resp = json_decode(json_encode($resp),true);
-        echo '<pre>';
-        print_r($resp);die;
-    }
-    function OpenuidGetRequest($sessionKey){
-        $req = new OpenuidGetRequest;
-        $resp = $this->apiClient->execute($req,$sessionKey);
-        $resp = json_decode(json_encode($resp),true);
-        echo '<pre>';
-        print_r($resp);die;
-    }
 
     #链接转换
     function TbkItemConvertRequest($numIids){
@@ -486,11 +470,41 @@ class TaobaoModel{
     }
 
 
+    #账号间uid切换
+    function OpenuidChangeRequest($openUid){
+        $req = new OpenuidChangeRequest;
+        $req->setOpenUid($openUid);
+        $req->setTargetAppKey("25363435");
+        $resp = $this->apiClient->execute($req);
+        $resp = json_decode(json_encode($resp),true);
+        echo '<pre>';
+        print_r($resp);die;
+    }
+
+    #当前登录UID
+    function OpenuidGetRequest($sessionKey){
+        $req = new OpenuidGetRequest;
+        $resp = $this->apiClient->execute($req,$sessionKey);
+        $resp = json_decode(json_encode($resp),true);
+        echo '<pre>';
+        print_r($resp);die;
+    }
+
     #h5授权登录换取token 需要https
     function TopAuthTokenCreateRequest($code){
         $req = new TopAuthTokenCreateRequest;
         $req->setCode("$code");
         //$req->setUuid("abc");
+        $resp = $this->apiClient->execute($req);
+        $resp = json_decode(json_encode($resp),true);
+        echo '<pre>';
+        print_r($resp);die;
+    }
+
+    #刷新token
+    function TopAuthTokenRefreshRequest($refreshToken){
+        $req = new TopAuthTokenRefreshRequest;
+        $req->setRefreshToken("$refreshToken");
         $resp = $this->apiClient->execute($req);
         $resp = json_decode(json_encode($resp),true);
         echo '<pre>';
