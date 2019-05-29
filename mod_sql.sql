@@ -364,14 +364,14 @@ select concat('mm_',memberid_id,'_',site_id,'_',adzone_id) as pid from user_pid 
    `refresh_token` varchar(100) NOT NULL DEFAULT '' COMMENT '刷新token',
    `expires_time` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'access_token过期时间',
    `refresh_token_valid_time` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'refresh_token过期时间',
-   `r1_valid` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'r1级别过期时间',
    `r2_valid` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'r2级别过期时间',
-   `w1_valid` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'w1级别过期时间',
-   `w2_valid` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'w2级别过期时间',
    `created_at` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间戳',
    `updated_at` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间戳',
    PRIMARY KEY (`id`),
    UNIQUE KEY `uid` (`uid`)
- ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='配置字典';
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='淘宝信息表';
+
+ alter table user add relation_id  bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '渠道id' AFTER total,
+ add special_id  bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '会员id' AFTER total;
 
 
