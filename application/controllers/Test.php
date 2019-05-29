@@ -239,9 +239,19 @@ echo $url;die;
         $session = '6101411c0a6bba868871dd0df830249bb18e112a383c22d3297963538';//tctcu => 川律
         //$session = '61028237d4b5c1cffec649da64ea4b5185ceab0c03fbaf44227738592';//川律 => 川律
         //$session = '6102225803c7a08b7f097f1ed9955b10f17dbed86db694d418362049';//小麦我的ta => 小麦我的ta
+        //$session = '630260330abc950fcdf86fb217f6fff398953cd63c41499199894851';//小郭
+        $session = '6200408e2bce0590ZZb25348a6084424d8d351a9253e273199894851';//小郭
+        //$session = '63002035f34cc929e29e07b527c76461669e725c3b5c6f7199894851';//小郭
+        $session = $_REQUEST['session'];
+        if(empty($session)){
+            echo 'empty session';die;
+        }
         $taobao_model = new TaobaoModel(4);
         //$res = $taobao_model->TbkScInvitecodeGetRequest($session);//获取邀请码
-        //$res = $taobao_model->TbkScPublisherInfoSaveRequest($session);//绑定渠道关系
+        //$res = $taobao_model->code2token('Ma8Q3uPfNsPuadl12nLnC1vT23966469');//code 换取 token
+        //$res = $taobao_model->OpenuidGetRequest($session);//
+        //$res = $taobao_model->OpenuidChangeRequest('AAFp5TOdAHQC8b-5uEwNYFdX');//
+        $res = $taobao_model->TbkScPublisherInfoSaveRequest($session);//绑定渠道关系
         //$res = $taobao_model->TbkScPublisherInfoGetRequest(1,20);
         //$res = $taobao_model->TbkOrderGetRequest($start,1,20);//订单
         //$res = $taobao_model->TbkTpwdConvertRequest('￥Gw4sY2VcCwH￥');
@@ -251,7 +261,7 @@ echo $url;die;
         $itemid = 566569778934;//594539807516;//594413180913;//568127651115;//589123348070;
         //$res = $taobao_model->TbkDgVegasTljCreateRequest($itemid);
         $rightsId ='om1NH6rCWmhHhq%2BT8Je4cqJ7%2BkHL3AEW';// 'xToGS9oNSOLq6vWhYPq0yKJ7%2BkHL3AEW';//'JKfITYvryQjsilCPCq9i%2BaJ7%2BkHL3AEW';//'om1NH6rCWmhHhq%2BT8Je4cqJ7%2BkHL3AEW';
-        $res = $taobao_model->TbkDgVegasTljInstanceReportRequest($rightsId);
+       // $res = $taobao_model->TbkDgVegasTljInstanceReportRequest($rightsId);
         echo '<pre>';
         print_r($res);die;
     }
