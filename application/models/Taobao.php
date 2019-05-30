@@ -410,9 +410,19 @@ class TaobaoModel{
     }
 
 
+    function TbkDgMaterialOptionalRequest(){
+        $req = new TbkDgMaterialOptionalRequest;
+        $req->setAdzoneId("65740777");
+        $resp = $this->apiClient->execute($req);
+        $resp = json_decode(json_encode($resp),true);
+        echo '<pre>';
+        print_r($resp);die;
+    }
+
     #获取渠道关系列表
     function TbkScPublisherInfoGetRequest($page = 1, $pageSize = 10){
         $session = '6101f289408a6ad0cd510ec7423b04005246198251c62a34227738592';//川律
+        $session = '6100f26bebe5a239598b4eccb2b6020c0512fe1e7844090418362049';//小麦
         $req = new TbkScPublisherInfoGetRequest;
         $req->setInfoType("2");//1-渠道 2-会员
         $req->setPageNo("$page");
@@ -420,6 +430,9 @@ class TaobaoModel{
         $req->setRelationApp("common");
         $resp = $this->apiClient->execute($req, $session);
         $resp = json_decode(json_encode($resp),true);
+        echo json_encode($resp);die;
+        echo '<pre>';
+        print_r($resp);die;
         $retData = [];
         if (isset($resp['data']['inviter_list']['map_data'])) {
             $retData = $resp['data']['inviter_list']['map_data'];

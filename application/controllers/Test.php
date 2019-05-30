@@ -268,9 +268,12 @@ echo $url;die;
 
     function tbAction(){
 
-        $taobao_model = new TaobaoModel(4);
+        $taobao_model = new TaobaoModel(5);
         $refreshToken = '';
-        $res = $taobao_model->TopAuthTokenRefreshRequest($refreshToken);//绑定渠道关系
+        $start = '2019-05-30 14:40:00';
+        $res = $taobao_model->TbkOrderGetRequest($start,1,20);
+        //$res = $taobao_model->TbkDgMaterialOptionalRequest();
+        //$res = $taobao_model->TbkScPublisherInfoGetRequest(1,20);
         echo '<pre>';
         print_r($res);die;
     }
