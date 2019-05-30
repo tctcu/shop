@@ -139,7 +139,8 @@ class WebController extends Yaf_Controller_Abstract
             $user_model->updateData($update,$user_info['uid']);
             echo '登录';
         }
-        die;
+        sleep(1);
+        header("Location:https://a.app.qq.com/o/simple.jsp?pkgname=com.jinchuan.ec&fromcase=40003");exit;
     }
 
 
