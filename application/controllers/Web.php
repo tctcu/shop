@@ -125,7 +125,6 @@ class WebController extends Yaf_Controller_Abstract
                 "w_unionid" => $user_data["unionid"]
             ];
             $user_model->addData($insert);
-            echo '注册';
         } else {
             //更新信息
             $update = [
@@ -137,9 +136,7 @@ class WebController extends Yaf_Controller_Abstract
                 "w_headimgurl" => $user_data["headimgurl"],
             ];
             $user_model->updateData($update,$user_info['uid']);
-            echo '登录';
         }
-        sleep(1);
         header("Location:https://a.app.qq.com/o/simple.jsp?pkgname=com.jinchuan.ec&fromcase=40003");exit;
     }
 
