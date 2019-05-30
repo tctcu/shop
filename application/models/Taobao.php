@@ -412,7 +412,8 @@ class TaobaoModel{
 
     function TbkDgMaterialOptionalRequest(){
         $req = new TbkDgMaterialOptionalRequest;
-        $req->setAdzoneId("65740777");
+        $req->setQ("手机壳");
+        $req->setAdzoneId("108937250396");
         $resp = $this->apiClient->execute($req);
         $resp = json_decode(json_encode($resp),true);
         echo '<pre>';
