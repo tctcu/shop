@@ -324,7 +324,7 @@ class TaobaoModel{
     #获取订单
     function TbkOrderGetRequest($start, $page = 1, $pageSize = 100){
         $req = new TbkOrderGetRequest();
-        $req->setFields("tb_trade_parent_id,tb_trade_id,num_iid,item_title,item_num,price,pay_price,seller_nick,seller_shop_title,commission,commission_rate,unid,create_time,earning_time,tk3rd_pub_id,tk3rd_site_id,tk3rd_adzone_id,relation_id,tb_trade_parent_id,tb_trade_id,num_iid,item_title,item_num,price,pay_price,seller_nick,seller_shop_title,commission,commission_rate,unid,create_time,earning_time,tk3rd_pub_id,tk3rd_site_id,tk3rd_adzone_id,special_id,click_time");
+        $req->setFields("trade_parent_id,trade_id,num_iid,item_title,item_num,price,pay_price,seller_nick,seller_shop_title,commission,commission_rate,unid,create_time,earning_time,tk_status,tk3rd_type,tk3rd_pub_id,order_type,income_rate,pub_share_pre_fee,subsidy_rate,subsidy_type,terminal_type,auction_category,site_idString,site_name,adzone_id,adzone_name,alipay_total_price,total_commission_rate,total_commission_fee,subsidy_fee,relation_id,special_id,click_time");
         $req->setStartTime("$start");
         $req->setSpan("1200");
         $req->setPageNo("$page");
@@ -416,8 +416,7 @@ class TaobaoModel{
         $req->setAdzoneId("108937250396");
         $resp = $this->apiClient->execute($req);
         $resp = json_decode(json_encode($resp),true);
-        echo '<pre>';
-        print_r($resp);die;
+        return $resp;
     }
 
     #获取渠道关系列表
@@ -431,9 +430,6 @@ class TaobaoModel{
         $req->setRelationApp("common");
         $resp = $this->apiClient->execute($req, $session);
         $resp = json_decode(json_encode($resp),true);
-        echo json_encode($resp);die;
-        echo '<pre>';
-        print_r($resp);die;
         $retData = [];
         if (isset($resp['data']['inviter_list']['map_data'])) {
             $retData = $resp['data']['inviter_list']['map_data'];
