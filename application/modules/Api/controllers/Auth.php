@@ -29,44 +29,34 @@ class AuthController extends ApiController
     #banner 广告位
     function bannerAction(){
         $banner_model = new BannerModel();
-        $page =1;
-        $page_size =20;
-        $condition = [
-            'position' => 'banner',
+        $page = 1;
+        $page_size = 20;
+        $position = [
+            'banner',
+            'ad',
+            'homepage',
         ];
-        $show_list = $banner_model->getListData($page,$page_size,$condition);
-        $banner = [];
-        foreach($show_list as $val){
-            $banner[] = [
-                'pic' => CommonModel::IMAGE_URL . $val['pic'],
-                'type' => $val['type'],
-                'goto' => $val['goto'],
+        $data = [];
+        foreach($position as $val){
+            $condition = [
+                'position' => $val,
             ];
+            $show_list = $banner_model->getListData($page,$page_size,$condition);
+            foreach($show_list as $v){
+                $data[$val][] = [
+                    'pic' => CommonModel::IMAGE_URL . $v['pic'],
+                    'type' => $v['type'],
+                    'goto' => $v['goto'],
+                ];
+            }
         }
-        $condition = [
-            'position' => 'ad',
-        ];
-        $show_list = $banner_model->getListData($page,$page_size,$condition);
-        $ad = [];
-        foreach($show_list as $val){
-            $ad[] = [
-                'pic' => CommonModel::IMAGE_URL . $val['pic'],
-                'type' => $val['type'],
-                'goto' => $val['goto'],
-            ];
-        }
-        $data = [
-            'banner' => $banner,
-            'ad' => $ad,
-        ];
+
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
     #安卓更新
     function androidUpdateAction(){
-
         //小米渠道，审核中：返回空给客户端（因为审核中时不能有提示）
-
         $data = [
             "UpdateStatus" => '1',// 1:普通下载 2: 强制更新
             "VersionCode" => '1',  // VersionCode
