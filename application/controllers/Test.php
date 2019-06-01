@@ -275,6 +275,7 @@ echo $url;die;
     }
 
     function success(){
+        echo '<a href="javascript:;" onclick="NativeInterface.authTaobaoSuccess()">授权成功</a>';die;
         echo "<script type='text/javascript'>
             alert('授权成功');
             setTimeout('close()',10);
@@ -285,6 +286,7 @@ echo $url;die;
     }
 
     function error($msg){
+        echo '<a href="javascript:;" onclick="NativeInterface.authTaobaoFail()">授权失败 '.$msg.'</a>';die;
         echo "<script type='text/javascript'>
             alert('授权失败 ".$msg."');
             setTimeout('close()',10);
