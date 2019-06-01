@@ -474,4 +474,31 @@ class MyController extends ApiController
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
 
+
+    #第三方授权信息
+    function getAuthInfoAction(){
+        $uid = $this->uid;
+
+        $error = true;
+        $user_model = new UserModel();
+        if($uid){
+            $user_info = $user_model->getDataByUid($uid);
+            if($user_info){
+                $error = false;
+            }
+        }
+        if($error){
+            $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
+        }
+
+        $data = [
+            'taobao' =>[
+                'status' => '1',
+                'auth_url' => "https://oauth.taobao.com/authorize?response_type=code&client_id=25363435&redirect_uri=http://dev.tctcv.com/test/tbredirect&state={$user_info['uid']}&view=wap",
+            ]
+        ];
+
+        $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
+    }
+
 }

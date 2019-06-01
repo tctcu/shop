@@ -207,6 +207,7 @@ echo $url;die;
         if(empty($_GET['code'])){
             echo 'empty';die;
         }
+        echo $_GET['state'];
         $taobao_model = new TaobaoModel(4);
         $token = $taobao_model->code2token($_GET['code']);
 
