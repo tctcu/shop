@@ -275,12 +275,12 @@ echo $url;die;
     }
 
     function success(){
-        echo "<script type='text/javascript'> alert('授权成功'); window.location.href='javascript:NativeInterface.authTaobaoSuccess()';</script>";
+        echo "<script type='text/javascript'> alert('授权成功'); var a = Native.authTaobaoSuccess(); //window.location.href='javascript:NativeInterface.authTaobaoSuccess()';</script>";
         exit;
     }
 
     function error($msg){
-        echo "<script type='text/javascript'> alert('授权失败 ".$msg."'); window.location.href='javascript:NativeInterface.authTaobaoFail';</script>";
+        echo "<script type='text/javascript'> alert('授权失败 ".$msg."'); var a = Native.authTaobaoFail(); //window.location.href='javascript:NativeInterface.authTaobaoFail()';</script>";
         exit;
 
     }
