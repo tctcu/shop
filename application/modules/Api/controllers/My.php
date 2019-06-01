@@ -494,7 +494,7 @@ class MyController extends ApiController
         $data = [
             'taobao' =>[
                 'status' => $user_info['special_id'] ? 1 : 2,//1-已授权 2-未授权
-                'auth_url' => "https://oauth.taobao.com/authorize?response_type=code&client_id=25363435&redirect_uri=http://dev.tctcv.com/test/tbredirect&state={$user_info['uid']}&view=wap",
+                'auth_url' => "https://oauth.taobao.com/authorize?response_type=code&client_id=25363435&redirect_uri=http://shop.clhuo.com/test/tbredirect&state={$user_info['uid']}&view=wap",
             ]
         ];
 
