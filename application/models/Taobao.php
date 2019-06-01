@@ -531,7 +531,7 @@ class TaobaoModel{
             'client_id' => $this->apiClient->appkey ,
             'client_secret' => $this->apiClient->secretKey,
             'code' => $code,
-            'redirect_uri' => 'http://dev.tctcv.com/test/tbredirecttoken'
+            'redirect_uri' => 'http://shop.clhuo.com/test/tbredirecttoken'
         ];
         $post_data = '';
 
