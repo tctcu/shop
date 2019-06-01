@@ -65,6 +65,19 @@ class UserModel extends MysqlModel {
         return false;
     }
 
+    #淘宝会员运营specialId查找单条信息
+    function getDataBySpecialId($specialId = ''){
+        if(empty($specialId)){
+            return false;
+        }
+        $where = $this->_db->quoteInto('special_id = ?',$specialId);
+        $data = $this->fetchRow($where);
+        if(!empty($data)){
+            return $data->toArray();
+        }
+        return false;
+    }
+
     function getListData($page = 1,$page_size =  20,$condition = array()){
         $sql = " select * from {$this->_name} where 1 ";
         if(!empty($condition['uid'])){

@@ -205,23 +205,87 @@ echo $url;die;
 
     function tbredirectAction(){
         if(empty($_GET['code'])){
-            echo 'empty';die;
+            $this->error('授权发起失败');
         }
-        echo $_GET['state'];
+
         $taobao_model = new TaobaoModel(4);
-        $token = $taobao_model->code2token($_GET['code']);
-
-        echo '<pre>';
-        print_r($token);die;
-    }
-
-    function tbredirecttokenAction(){
-        if(empty($_GET['code'])){
-            echo 'empty';die;
+        $tb_info = $taobao_model->code2token($_GET['code']);
+        if(empty($tb_info['access_token'])){
+            $this->error('授权回调失败');
         }
-        echo '<pre>';
-        print_r($_GET);die;
+        $uid = $_GET['state'];
+        $special = $taobao_model->TbkScPublisherInfoSaveRequest($tb_info['access_token'],3,$uid);
+        if(empty($special['special_id'])){
+            $this->error('会员绑定失败');
+        }
+        $relation = $taobao_model->TbkScPublisherInfoSaveRequest($tb_info['access_token'],2,$uid);
+        $tb_user = [
+            'taobao_open_uid' => $tb_info['taobao_open_uid'],
+            'taobao_user_nick' => $tb_info['taobao_user_nick'],
+            'taobao_user_id' => $tb_info['taobao_user_id'],
+            'access_token' => $tb_info['access_token'],
+            'refresh_token' => $tb_info['refresh_token'],
+            'expire_time' => $tb_info['expire_time'],
+            'refresh_token_valid_time' => $tb_info['refresh_token_valid_time'],
+            'r2_valid' => $tb_info['r2_valid'],
+        ];
+
+        $user_model = new UserModel();
+        $tb_user_model = new TbUserModel();
+        $user_info = $user_model->getDataByUid($uid);
+        if($user_info['special_id']){
+            if($special['special_id'] <> $user_info['special_id']){
+                $this->error('该账号已经绑定过淘宝XXX');
+            } else {//再次授权
+                if($relation['relation_id'] <> $user_info['relation_id']){
+                    //更新用户渠道关系
+                    $user_model->updateData( [
+                        'relation_id' => intval($relation['relation_id'])
+                    ],$uid);
+                }
+                //更新授权信息
+                $tb_user_info = $tb_user_model->getDataByUid($uid);
+                if($tb_user_info){
+                    $tb_user_model->updateData($tb_user,$uid);
+                } else {//补录记录
+                    $tb_user['uid'] = $uid;
+                    $tb_user['reamrk'] = '授权补录';
+                    $tb_user_model->addData($tb_user);
+                }
+
+                $this->success();
+            }
+        }
+        $user_special_info = $user_model->getDataBySpecialId($special['special_id']);
+        if($user_special_info['uid'] && $user_special_info['uid']<>$uid){
+            $this->error('该淘宝号已被其他用户XXX绑定');
+        }
+        if(empty($user_info)) {
+            $this->error('授权关联失败');
+        }
+        //更新用户会员渠道关系
+        $user_model->updateData( [
+            'special_id' => $special['special_id'],
+            'relation_id' => intval($relation['relation_id'])
+        ],$uid);
+        //记录用户淘宝授权信息
+        $tb_user['uid'] = $uid;
+        $tb_user_model->addData($tb_user);
+        $this->success();
     }
+
+    function success(){
+        echo "<script type='text/javascript'> alert('授权成功'); window.location.href='native.authTaobaoSuccess()';</script>";
+        exit;
+    }
+
+    function error($msg){
+        echo "<script type='text/javascript'> alert('授权失败 ".$msg."'); window.location.href='native.authTaobaoFail()';</script>";
+        exit;
+
+    }
+
+
 
     function tbTestAction(){
 //        $yuque_model = new YuQueModel();
@@ -243,7 +307,7 @@ echo $url;die;
         //$session = '630260330abc950fcdf86fb217f6fff398953cd63c41499199894851';//小郭
         $session = '6200408e2bce0590ZZb25348a6084424d8d351a9253e273199894851';//小郭
         //$session = '63002035f34cc929e29e07b527c76461669e725c3b5c6f7199894851';//小郭
-        $session = $_REQUEST['session'];
+        //$session = $_REQUEST['session'];
         if(empty($session)){
             echo 'empty session';die;
         }
@@ -252,7 +316,7 @@ echo $url;die;
         //$res = $taobao_model->code2token('Ma8Q3uPfNsPuadl12nLnC1vT23966469');//code 换取 token
         //$res = $taobao_model->OpenuidGetRequest($session);//
         //$res = $taobao_model->OpenuidChangeRequest('AAFp5TOdAHQC8b-5uEwNYFdX');//
-        $res = $taobao_model->TbkScPublisherInfoSaveRequest($session);//绑定渠道关系
+        $res = $taobao_model->TbkScPublisherInfoSaveRequest($session,2);//绑定渠道关系
         //$res = $taobao_model->TbkScPublisherInfoGetRequest(1,20);
         //$res = $taobao_model->TbkOrderGetRequest($start,1,20);//订单
         //$res = $taobao_model->TbkTpwdConvertRequest('￥Gw4sY2VcCwH￥');

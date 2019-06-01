@@ -389,18 +389,20 @@ class TaobaoModel{
 
 
     #绑定渠道关系
-    function TbkScPublisherInfoSaveRequest($session){
+    function TbkScPublisherInfoSaveRequest($session,$scene=3,$note='备注'){
+        $scene_map = [
+            '2' =>'SR3HPL',//川律渠道
+            '3' =>'DK8CHM',//川律会员
+        ];
         $req = new TbkScPublisherInfoSaveRequest;
-        $req->setRelationFrom("123");
-        $req->setOfflineScene("4");
-        $req->setOnlineScene("3");
-        $req->setInviterCode("DK8CHM");// 川律渠道-SR3HPL 川律会员-DK8CHM
+        //$req->setRelationFrom("123");
+        //$req->setOfflineScene("4");
+        //$req->setOnlineScene("$scene");
+        $req->setInviterCode($scene_map[$scene]);// 川律渠道-SR3HPL 川律会员-DK8CHM
         $req->setInfoType("1");
-        $req->setNote("备注");
+        $req->setNote($note);
         $resp = $this->apiClient->execute($req, $session);
         $resp = json_decode(json_encode($resp),true);
-        echo '<pre>';
-        print_r($resp);die;
         $retData = [];
         if (isset($resp['data'])) {
             $retData = $resp['data'];
@@ -551,7 +553,7 @@ class TaobaoModel{
         //状态码
         //$httpStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-        return json_decode($output);
+        return json_decode($output,true);
     }
 
 
