@@ -183,6 +183,12 @@ class UserController extends ApiController
                 "w_country" => $user_data["country"],
                 "w_headimgurl" => $user_data["headimgurl"],
             ];
+            if(empty($user_info['device_type'])){
+                $update['device_type'] = $device_type;
+            }
+            if(empty($user_info['device'])){
+                $update['device'] = $device;
+            }
             $user_model->updateData($update,$user_info['uid']);
             $data = [
                 'mobile' => $user_info['mobile'] ? substr_replace($user_info['mobile'], '****', 3, 4) : '',
