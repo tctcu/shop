@@ -141,8 +141,8 @@ class TbModel extends MysqlModel {
                 $sql .= " and itemendprice <= 2 ";
             } elseif($condition['max_price'] == 5){
                 $sql .= " and itemendprice > 2 and itemendprice <= 5";
-            } elseif($condition['max_price'] == 9.9){
-                $sql .= " and itemendprice > 5 and itemendprice <= 9.9";
+            } elseif($condition['max_price'] == 10){
+                $sql .= " and itemendprice > 5 and itemendprice <= 10";
             }
         }
         if(!empty($condition['min_id']) && $condition['min_id']>1){
