@@ -280,7 +280,7 @@ echo $url;die;
     }
 
     function error($msg){
-        echo "<script type='text/javascript'> setTimeout(close(),10);function close(){ NativeInterface.authTaobaoFail(); }</script>";
+        echo "<script type='text/javascript'> alert('".$msg."'); setTimeout(close(),10);function close(){ NativeInterface.authTaobaoFail(); }</script>";
         exit;
     }
 
