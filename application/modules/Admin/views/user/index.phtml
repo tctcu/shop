@@ -35,7 +35,13 @@
                             <td><?php echo $row['w_nickname']?></td>
                             <td><img src="<?php echo $row['w_headimgurl']?>" width="150" height="150"> </td>
                             <td><?php echo $row['mobile']?></td>
-                            <td><?php echo $row['device_type'] == 1 ? 'IOS': '安卓'; ?></td>
+                            <td><?php if($row['device_type'] == 1){
+                                    echo 'IOS';
+                                } elseif($row['device_type'] == 2){
+                                    echo '安卓';
+                                } else {
+                                    echo '授权';
+                                } ?></td>
                             <td><?php echo $row['use']?></td>
                             <td><?php echo $row['total']?></td>
                             <td><?php echo date('Y-m-d H:i',$row['created_at']);?></td>
