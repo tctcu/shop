@@ -13,6 +13,8 @@ class WebController extends Yaf_Controller_Abstract
     function courseAction(){}
     #返利规则
     function rebateRuleAction(){}
+    #邀请规则
+    function inviteRuleAction(){}
     #淘宝分享详情
     function shareDetailAction(){
         $itemid =  intval($_REQUEST['itemid']);
