@@ -275,12 +275,12 @@ echo $url;die;
     }
 
     function success(){
-        echo "<script type='text/javascript'> setTimeout(close(),10);function close(){ NativeInterface.authTaobaoSuccess(); }</script>";
+        echo "<script type='text/javascript'> function close(){ NativeInterface.authTaobaoSuccess(); setTimeout(close(),10);}</script>";
         exit;
     }
 
     function error($msg){
-        echo "<script type='text/javascript'> alert('".$msg."'); setTimeout(close(),10);function close(){ NativeInterface.authTaobaoFail(); }</script>";
+        echo "<script type='text/javascript'> alert('".$msg."'); function close(){ NativeInterface.authTaobaoFail(); setTimeout(close(),10);}</script>";
         exit;
     }
 
