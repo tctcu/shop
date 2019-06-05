@@ -275,11 +275,45 @@ echo $url;die;
     }
 
     function success(){
+        echo '<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <script>
+        function loadAction() {
+            setTimeout(close, 100)
+        }
+        function close() {
+            NativeInterface.authTaobaoSuccess();
+        }
+        </script>
+    </head>
+    <body onload="loadAction()">
+        <h3>绑定成功！</h3>
+    </body>
+</html>';die;
         echo "<script type='text/javascript'> function close(){ NativeInterface.authTaobaoSuccess(); setTimeout(close(),10);}</script>";
         exit;
     }
 
     function error($msg){
+        echo '<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <script>
+        function loadAction() {
+            setTimeout(close, 100)
+        }
+        function close() {
+            NativeInterface.authTaobaoFail();
+        }
+        </script>
+    </head>
+    <body onload="loadAction()">
+        <h3>绑定失败！'.$msg.'</h3>
+    </body>
+</html>';die;
         echo "<script type='text/javascript'> alert('".$msg."'); function close(){ NativeInterface.authTaobaoFail(); setTimeout(close(),10);}</script>";
         exit;
     }
