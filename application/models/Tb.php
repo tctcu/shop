@@ -2,13 +2,6 @@
 #商品表
 class TbModel extends MysqlModel {
     protected $_name = 'tb';
-    private $pid = 'mm_116356778_18618211_65740777';//'mm_234440039_166200410_57891600477';
-    const RATE = '0.01';//换算佣金比例%
-    const REBATE = '0.5';//返利比例
-    const MEMBER = [//对应config
-        '234440039' => 1,
-        '116356778' => 2,
-    ];
 
     const CATEGORY = [
         [
@@ -236,7 +229,7 @@ class TbModel extends MysqlModel {
             'itemdesc' => $item['itemdesc'],
             'itemprice' => $item['itemprice'],
             'itemsale' => $item['itemsale'],
-            'itempic' => $item['itempic'] . '_600x600q90.jpg',
+            'itempic' => $item['itempic'] . ConfigModel::IMG,
             'itemendprice' => $item['itemendprice'],
             'url' => 'http://uland.taobao.com/coupon/edetail?activityId=' . $item['activityid'] . '&itemId=' . $item['itemid'] . '&src=qmmf_sqrb&mt=1&pid=' . $this->pid,
             'coupon_type' => '1',//优惠券状态 0-没有券 好单库的都有券

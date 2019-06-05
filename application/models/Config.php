@@ -5,6 +5,7 @@ class ConfigModel{
     const RATE = '0.01';//换算佣金比例%
     const REBATE = '0.5';//返利比例
     const INVITE = '0.1';//师傅提成返利比例
+    const IMG = '_400x400.jpg';//列表图压缩
     const MEMBER = [//对应config
         '234440039' => 1,
         '116356778' => 2,

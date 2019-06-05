@@ -44,7 +44,7 @@ class TbDetailModel extends MysqlModel
             'itemshorttitle' => $info['itemshorttitle'],
             'itemprice' => $info['itemprice'],
             'itemsale' => $info['itemsale'],
-            'itempic' => $info['itempic'] . '_310x310q90.jpg',
+            'itempic' => $info['itempic'] . ConfigModel::IMG,
             'itemendprice' => $info['itemendprice'],
             'coupon_type' => $info['coupon_type'] ? $info['coupon_type'] : '0',//优惠券状态 0-没有券
             'couponmoney' => $info['couponmoney'],
