@@ -236,7 +236,7 @@ class TbModel extends MysqlModel {
             'itemdesc' => $item['itemdesc'],
             'itemprice' => $item['itemprice'],
             'itemsale' => $item['itemsale'],
-            'itempic' => $item['itempic'] . '_310x310q90.jpg',
+            'itempic' => $item['itempic'] . '600x600q90.jpg',
             'itemendprice' => $item['itemendprice'],
             'url' => 'http://uland.taobao.com/coupon/edetail?activityId=' . $item['activityid'] . '&itemId=' . $item['itemid'] . '&src=qmmf_sqrb&mt=1&pid=' . $this->pid,
             'coupon_type' => '1',//优惠券状态 0-没有券 好单库的都有券
