@@ -165,7 +165,7 @@ class GoodsController extends ApiController
                 'itemdesc' => $val['itemdesc'],
                 'itemprice' => $val['itemprice'],
                 'itemsale' => $val['itemsale'],
-                'itempic' => $val['itempic'],
+                'itempic' => $val['itempic'] . '_310x310q90.jpg',
                 'itemendprice' => $val['itemendprice'],
                 'url' => 'http://uland.taobao.com/coupon/edetail?activityId=' . $params['activityId'] . '&itemId=' . $val['itemid'] . '&src=qmmf_sqrb&mt=1&pid=' . $this->pid,
                 'couponmoney' => $val['couponmoney'],
@@ -362,7 +362,7 @@ class GoodsController extends ApiController
                 'itemdesc' => $item['Introduce'],
                 'itemprice' => $item['Org_Price'],
                 'itemsale' => $item['Sales_num'],
-                'itempic' => $item['Pic'],
+                'itempic' => $item['Pic'] . '_310x310q90.jpg',
                 'itemendprice' => $item['Price'].'',
                 'url' => 'http://uland.taobao.com/coupon/edetail?activityId=' . $item['Quan_id'] . '&itemId=' . $item['GoodsID'] . '&src=qmmf_sqrb&mt=1&pid=' . $this->pid,
                 'coupon_type' => '1',//优惠券状态 0-没有券 好单库的都有券

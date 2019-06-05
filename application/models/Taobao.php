@@ -573,7 +573,7 @@ class TaobaoModel{
             'itemdesc' => $item_info['title'],
             'itemprice' => $item_info['zk_final_price'].'',
             'itemsale' => $item_info['volume'].'',
-            'itempic' => $item_info['pict_url'],
+            'itempic' => $item_info['pict_url'] . '_310x310q90.jpg',
             'itemendprice' => $item_info['zk_final_price'],
             'url' => $url_info['item_url'],
             'coupon_type' => '0',//券状态
