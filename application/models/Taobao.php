@@ -553,7 +553,11 @@ class TaobaoModel{
         //状态码
         //$httpStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-        return json_decode($output,true);
+        $tb_info = json_decode($output,true);
+        foreach($tb_info as $key=>$value){
+            $tb_info[$key] = urldecode($value);
+        }
+        return $tb_info;
     }
 
 
