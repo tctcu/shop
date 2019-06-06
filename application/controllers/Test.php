@@ -281,7 +281,7 @@ echo $url;die;
                 <title></title>
                 <script>
                 function loadAction() {
-                    setTimeout(close, 100)
+                    setTimeout(close, 10)
                 }
                 function close() {
                     NativeInterface.authTaobaoSuccess();
@@ -300,14 +300,15 @@ echo $url;die;
                 <title></title>
                 <script>
                 function loadAction() {
-                    setTimeout(close, 100)
+                    setTimeout(close, 10)
                 }
                 function close() {
-                    NativeInterface.authTaobaoFail('.$msg.');
+                    NativeInterface.authTaobaoFail();
                 }
                 </script>
             </head>
             <body onload="loadAction()">
+            <h1>'.$msg.'</h1>
             </body>
         </html>';exit;
     }
