@@ -129,6 +129,9 @@ class TbModel extends MysqlModel {
         if(!empty($condition['fqcat'])){
             $sql .= " and fqcat={$condition['fqcat']} ";
         }
+        if(!empty($condition['shopname'])){
+            $sql .= " and shopname='{$condition['shopname']}' ";
+        }
         if(!empty($condition['max_price'])){
             if($condition['max_price'] == 2){
                 $sql .= " and itemendprice <= 2 ";

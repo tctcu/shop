@@ -22,6 +22,10 @@ class ItemController extends ApiController
             'max_price' => $max_price,
             'min_id' => $min_id,
         ];
+        if($cid<0){
+            $condition['shopname'] = '天猫超市';
+            unset($condition['fqcat']);
+        }
 
         $tb_model = new TbModel();
         $tb_list = $tb_model->getList($pageSize,$condition);

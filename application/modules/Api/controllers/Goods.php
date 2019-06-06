@@ -17,6 +17,9 @@ class GoodsController extends ApiController
         $cid = intval($_REQUEST['cid']) ? intval($_REQUEST['cid']) : 0;
         $min_id = intval($_REQUEST['min_id']) ? intval($_REQUEST['min_id']) : 1;
         $pageSize = intval($_REQUEST['pageSize']) ? intval($_REQUEST['pageSize']) : 20;
+        if($cid<0){
+            $cid = 0;
+        }
         $url = "http://v2.api.haodanku.com/itemlist/apikey/allfree/nav/3/cid/" . $cid . "/back/" . $pageSize . "/min_id/" . $min_id . "/sort/" . $sort;
         $json = file_get_contents($url);
         $ret_data = json_decode($json, true);

@@ -21,6 +21,11 @@ class AuthController extends ApiController
                 'name' => 'quangoushengqian'
             ]
         );
+        //首页增加天猫超市
+        array_splice( $data['category'], 1, 0, [[
+            'cid' => '-1',
+            'name' => '天猫超市'
+        ]]);
 
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
     }
