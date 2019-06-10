@@ -114,10 +114,12 @@ class ItemController extends ApiController
         $taobao_detail = [];
         if($itemid && $detail_arr['data']['pcDescContent']){
             $arr = explode('<img',$detail_arr['data']['pcDescContent']);
-            $reg = '/[\s\S]*?src\s*=\s*[\"|\'](.*?jpg)[\"|\'][\s\S]*?[\s\S]*?size\s*=\s*[\"|\'](\d+)x(\d+)[\"|\'][\s\S]*?/';
+            $reg_1 = '/[\s\S]*?src\s*=\s*[\"|\'](.*?jpg)[\"|\'][\s\S]*?[\s\S]*?size\s*=\s*[\"|\'](\d+)x(\d+)[\"|\'][\s\S]*?/';
+            $reg_2 = '/[\s\S]*?src\s*=\s*[\"|\'](.*?jpg)[\"|\'][\s\S]*?[\s\S]*?width\s*=\s*[\"|\'](\d+)[\"|\'][\s\S]*?height\s*=\s*[\"|\'](\d+)[\"|\'][\s\S]*?/';
+
             foreach($arr as $val) {
                 $matches = [];
-                preg_match_all($reg, $val, $matches);
+                preg_match_all($reg_1, $val, $matches);
                 if ($matches[1] && $matches[2] && $matches[3]) {
                     $taobao_detail[] = [
                         'url' => 'https:' . $matches[1][0] . '_q90.jpg',
@@ -126,6 +128,19 @@ class ItemController extends ApiController
                             'h' => $matches[3][0]
                         ]
                     ];
+
+                } else {
+                    preg_match_all($reg_2, $val, $matches);
+                    if ($matches[1] && $matches[2] && $matches[3]) {
+                        $taobao_detail[] = [
+                            'url' => 'https:' . $matches[1][0] . '_q90.jpg',
+                            'size' => [
+                                'w' => $matches[2][0],
+                                'h' => $matches[3][0]
+                            ]
+                        ];
+                    }
+
                 }
             }
 
