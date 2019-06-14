@@ -317,7 +317,7 @@ echo $url;die;
 
     function tbTestAction(){
 //        $yuque_model = new YuQueModel();
-        $itemid = 590585384795;
+        $itemid = 592323308258;
 //        $condition = [
 //            'item_id' => $itemid
 //        ];
@@ -344,15 +344,15 @@ echo $url;die;
         //$res = $taobao_model->code2token('Ma8Q3uPfNsPuadl12nLnC1vT23966469');//code 换取 token
         //$res = $taobao_model->OpenuidGetRequest($session);//
         //$res = $taobao_model->OpenuidChangeRequest('AAFp5TOdAHQC8b-5uEwNYFdX');//
-        $res = $taobao_model->TbkScPublisherInfoSaveRequest($session,2);//绑定渠道关系
+        //$res = $taobao_model->TbkScPublisherInfoSaveRequest($session,2);//绑定渠道关系
         //$res = $taobao_model->TbkScPublisherInfoGetRequest(1,20);
         //$res = $taobao_model->TbkOrderGetRequest($start,1,20);//订单
         //$res = $taobao_model->TbkTpwdConvertRequest('￥Gw4sY2VcCwH￥');
         //$res = $taobao_model->TbkOrderGetRequest($start,$page = 1, $pageSize = 100);
         //$res = $taobao_model->TbkOrderDetailsGetRequest($start, $end, $page = 1, $pageSize = 100);
         //$res = $taobao_model->TbkItemConvertRequest($itemid);
-        $itemid = 566569778934;//594539807516;//594413180913;//568127651115;//589123348070;
-        //$res = $taobao_model->TbkDgVegasTljCreateRequest($itemid);
+        $itemid = 596492665151;//566569778934;//594539807516;//594413180913;//568127651115;//589123348070;
+        $res = $taobao_model->TbkDgVegasTljCreateRequest($itemid);
         $rightsId ='om1NH6rCWmhHhq%2BT8Je4cqJ7%2BkHL3AEW';// 'xToGS9oNSOLq6vWhYPq0yKJ7%2BkHL3AEW';//'JKfITYvryQjsilCPCq9i%2BaJ7%2BkHL3AEW';//'om1NH6rCWmhHhq%2BT8Je4cqJ7%2BkHL3AEW';
        // $res = $taobao_model->TbkDgVegasTljInstanceReportRequest($rightsId);
         echo '<pre>';

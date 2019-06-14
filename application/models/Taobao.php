@@ -449,12 +449,12 @@ class TaobaoModel{
         $req->setName("券购APP专属福利");
         $req->setUserTotalWinNumLimit("1");
         $req->setSecuritySwitch("true");//启用安全
-        $req->setPerFace("2.8");//现阶段单个红包面额必须大于或等于1元，小于49999元，可支持2位小数点
-        $req->setSendStartTime("2018-05-27 00:00:00");
-        $req->setSendEndTime("2019-05-29 00:00:00");
+        $req->setPerFace("1.3");//现阶段单个红包面额必须大于或等于1元，小于49999元，可支持2位小数点
+        $req->setSendStartTime("2019-06-14 00:00:00");
+        $req->setSendEndTime("2019-06-16 00:00:00");
         $req->setUseEndTime("1");
         $req->setUseEndTimeMode("1");
-        $req->setUseStartTime("2019-05-27");
+        $req->setUseStartTime("2019-06-14");
         $resp = $this->apiClient->execute($req);
         $resp = json_decode(json_encode($resp),true);
         echo '<pre>';
