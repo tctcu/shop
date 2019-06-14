@@ -364,7 +364,7 @@ echo $url;die;
         $taobao_model = new TaobaoModel(5);
         $refreshToken = '';
         $start = '2019-05-31 09:20:00';
-        $end = '2019-05-31 10:20:00';
+        $end = '2019-05-31 12:20:00';
         //$res = $taobao_model->TbkOrderGetRequest($start,1,20);
         //$res = $taobao_model->TbkOrderDetailsGetRequest($start,$end,1,20);
         //$res = $taobao_model->TbkDgMaterialOptionalRequest();
