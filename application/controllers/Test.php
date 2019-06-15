@@ -22,7 +22,7 @@ class TestController extends Yaf_Controller_Abstract
 
 
     function testAction(){
-
+echo 111;die;
         $model = new UserModel();
         $userId = 923520;
         echo $model->uid2code($userId);
