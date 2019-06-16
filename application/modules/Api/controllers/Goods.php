@@ -245,6 +245,9 @@ class GoodsController extends ApiController
                 }
             } else if(mb_strlen($content)>10){//标题
                 $item_info = $taobao_model->TbkDgMaterialOptionalRequest(['q'=>$content]);
+                if(empty($item_info)){
+                    $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
+                }
                 $data = $taobao_model->makeMaterialTb($item_info);
                 $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
             } else {
