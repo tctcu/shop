@@ -652,8 +652,8 @@ class TaobaoModel{
     {
         $data = [
             'itemid' => $item_info['item_id'].'',
-            'itemshorttitle' => $item_info['short_title'],
-            'itemdesc' => $item_info['title'],
+            'itemshorttitle' => $item_info['title'],//提示淘宝一致标题更友好
+            'itemdesc' => $item_info['short_title'],
             'itemprice' => $item_info['reserve_price'].'',
             'itemsale' => $item_info['volume'].'',
             'itempic' => $item_info['pict_url'],
