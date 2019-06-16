@@ -271,6 +271,9 @@ class GoodsController extends ApiController
             $data = $tb_model->makeItem($tb_info);
         } else {
             $item_info = $taobao_model->TbkDgMaterialOptionalRequest(['q'=>$content]);
+            if(empty($item_info)){
+                $this->responseJson('20189', '抱歉!识别不到该商品优惠信息');
+            }
             $data = $taobao_model->makeMaterialTb($item_info);
             $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
         }
