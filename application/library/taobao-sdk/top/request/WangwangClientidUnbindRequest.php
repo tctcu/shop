@@ -3,7 +3,7 @@
  * TOP API: taobao.wangwang.clientid.unbind request
  * 
  * @author auto create
- * @since 1.0, 2015.06.05
+ * @since 1.0, 2018.07.26
  */
 class WangwangClientidUnbindRequest
 {

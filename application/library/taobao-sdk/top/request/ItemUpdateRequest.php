@@ -3,7 +3,7 @@
  * TOP API: taobao.item.update request
  * 
  * @author auto create
- * @since 1.0, 2019.04.28
+ * @since 1.0, 2019.05.28
  */
 class ItemUpdateRequest
 {
@@ -38,7 +38,7 @@ class ItemUpdateRequest
 	private $barcode;
 	
 	/** 
-	 * 基础色数据
+	 * 基础色数据，淘宝不使用
 	 **/
 	private $changeProp;
 	
@@ -83,7 +83,7 @@ class ItemUpdateRequest
 	private $desc;
 	
 	/** 
-	 * 商品描述模块化，模块列表，由List转化成jsonArray存入，后端逻辑验证通过，拼装成模块内容+锚点导航后存入desc中。数据结构具体参见Item_Desc_Module
+	 * 已废弃
 	 **/
 	private $descModules;
 	
@@ -103,7 +103,7 @@ class ItemUpdateRequest
 	private $expressFee;
 	
 	/** 
-	 * 宝贝特征值，格式为：【key1:value1;key2:value2;key3:value3;】，key和value用【:】分隔，key&value之间用【;】分隔，只有在Top支持的特征值才能保存到宝贝上，目前支持的Key列表为：mysize_tp
+	 * 宝贝特征值，格式为：【key1:value1;key2:value2;key3:value3;】，key和value用【:】分隔，key&value之间用【;】分隔，只有在Top支持的特征值才能保存到宝贝上，目前支持的Key列表为：mysize_tp,是指尺码库对应的key
 	 **/
 	private $features;
 	
@@ -583,7 +583,7 @@ class ItemUpdateRequest
 	private $skuSpecIds;
 	
 	/** 
-	 * 手机类目spu 确认信息字段
+	 * 手机类目spu 产品信息确认声明
 	 **/
 	private $spuConfirm;
 	

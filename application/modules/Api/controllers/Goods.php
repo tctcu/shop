@@ -261,6 +261,7 @@ class GoodsController extends ApiController
         $json = file_get_contents($url);
         $tb_info = json_decode($json, true)['data'];
         $tb_model = new TbModel();
+
         if(empty($tb_info)){//查库
             $tb_info = $tb_model->getDataByItemId($itemid);
 
@@ -286,7 +287,9 @@ class GoodsController extends ApiController
             $condition = [
                 $itemid
             ];
+            $taobao_model  = new TaobaoModel(2);
             $item_info = $taobao_model->TbkItemInfoGetRequest($condition);
+            print_r($item_info);die;
             $data = $taobao_model->makeTb($item_info,$url_info);
         }
 

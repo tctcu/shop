@@ -189,13 +189,21 @@ class TaobaoModel{
         if(empty($num_iids) && !is_array($num_iids)){
             return [];
         }
+
+
+        $req = new TbkItemInfoGetRequest;
+        $req->setNumIids("592792155095");
+        $resp = $this->apiClient->execute($req);
+        print_r($resp);die;
         $req = new TbkItemInfoGetRequest;
         //$req->setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url");
-        $req->setPlatform("2");
+       // $req->setPlatform("2");
+
         $req->setNumIids("".implode(',',$num_iids)."");
+
         $resp = $this->apiClient->execute($req);
         $resp = json_decode(json_encode($resp),true);
-
+print_r($resp);die;
         if(isset($resp['results']['n_tbk_item'][0]) && !empty($resp['results']['n_tbk_item'][0])){
             $retData = $resp['results']['n_tbk_item'][0];
         } else {
@@ -293,6 +301,7 @@ class TaobaoModel{
 
         $resp = $this->apiClient->execute($req);
         $resp = json_decode(json_encode($resp),true);
+
         $retData = [];
         if (isset($resp['data']['num_iid'])) {
             $retData = $resp['data']['num_iid'];

@@ -3,7 +3,7 @@
  * TOP API: alipay.xiaodai.user.permit request
  * 
  * @author auto create
- * @since 1.0, 2015.04.17
+ * @since 1.0, 2018.07.25
  */
 class AlipayXiaodaiUserPermitRequest
 {

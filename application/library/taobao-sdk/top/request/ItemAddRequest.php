@@ -3,7 +3,7 @@
  * TOP API: taobao.item.add request
  * 
  * @author auto create
- * @since 1.0, 2019.05.15
+ * @since 1.0, 2019.06.12
  */
 class ItemAddRequest
 {
@@ -48,7 +48,7 @@ class ItemAddRequest
 	private $brokerage;
 	
 	/** 
-	 * 基础色数据
+	 * 基础色数据，淘宝不使用
 	 **/
 	private $changeProp;
 	
@@ -98,7 +98,7 @@ class ItemAddRequest
 	private $desc;
 	
 	/** 
-	 * 商品描述模块化，模块列表，由List转化成jsonArray存入，后端逻辑验证通过，拼装成模块内容+锚点导航后存入desc中。数据结构具体参见Item_Desc_Module
+	 * 已废弃
 	 **/
 	private $descModules;
 	

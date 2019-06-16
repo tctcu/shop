@@ -3,7 +3,7 @@
  * TOP API: taobao.itempropvalues.get request
  * 
  * @author auto create
- * @since 1.0, 2018.10.15
+ * @since 1.0, 2019.06.05
  */
 class ItempropvaluesGetRequest
 {

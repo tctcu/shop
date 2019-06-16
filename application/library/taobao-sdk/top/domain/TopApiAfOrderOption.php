@@ -23,7 +23,7 @@ class TopApiAfOrderOption
 	public $punish_status;
 	
 	/** 
-	 * 渠道管理id
+	 * 渠道关系id
 	 **/
 	public $relation_id;
 	

@@ -82,6 +82,7 @@ class YuQueModel{
 
         $url = 'http://gateway.kouss.com/tbpub/privilegeGet';
         $resp = $this->curl($url,$resp);
+
         if(isset($resp['result']['data']) && !empty($resp['result']['data'])){
             $retData = $resp['result']['data'];
         } else {
