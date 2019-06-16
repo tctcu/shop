@@ -417,7 +417,7 @@ class TaobaoModel{
         $req->setQ($condition['q']);
         $req->setAdzoneId("73240000099");
         //$req->setStartDsr("10");
-        $req->setPageSize("20");
+        $req->setPageSize("100");
         $req->setPageNo("1");
         $req->setPlatform("2");
         //$req->setEndTkRate("1234");
@@ -448,8 +448,8 @@ class TaobaoModel{
         $resp = json_decode(json_encode($resp),true);
 
         if(isset($resp['result_list']['map_data'][0]) && !empty($resp['result_list']['map_data'][0])){
-            $retData = $resp['result_list']['map_data'][0];
-            foreach($resp['results']['n_tbk_item'] as $val){
+            $retData = '';
+            foreach($resp['result_list']['map_data'] as $val){
                 if($val['title'] == $condition['q']){
                     $retData = $val;
                     break;
@@ -677,7 +677,8 @@ class TaobaoModel{
             $data['couponstarttime'] = strtotime($item_info['coupon_start_time']).'';
             $data['couponendtime'] = strtotime($item_info['coupon_end_time']).'';
         }
-        $data['rebate'] = sprintf("%.2f",$item_info['commission_rate'] * ConfigModel::RATE * $data['itemendprice'] * ConfigModel::REBATE);
+
+        $data['rebate'] = sprintf("%.2f",ConfigModel::RATE * $item_info['commission_rate'] * ConfigModel::RATE * $data['itemendprice'] * ConfigModel::REBATE);
         return $data;
     }
 
