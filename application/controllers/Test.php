@@ -339,8 +339,9 @@ echo $url;die;
         if(empty($session)){
             echo 'empty session';die;
         }
-        $taobao_model = new TaobaoModel(4);
-        $res = $taobao_model->TbkDgMaterialOptionalRequest(['q'=>'睡大觉第五季']);
+        $taobao_model = new TaobaoModel(1);
+       // $res = $taobao_model->TbkDgMaterialOptionalRequest(['q'=>'睡大觉第五季']);
+        $res = $taobao_model->TbkScMaterialOptionalRequest(566055119627,81454300411);
         //$res = $taobao_model->TbkScInvitecodeGetRequest($session);//获取邀请码
         //$res = $taobao_model->code2token('Ma8Q3uPfNsPuadl12nLnC1vT23966469');//code 换取 token
         //$res = $taobao_model->OpenuidGetRequest($session);//

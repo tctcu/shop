@@ -466,6 +466,39 @@ class TaobaoModel{
         return $retData;
     }
 
+    //通用物料工具(转高佣)
+    function TbkScMaterialOptionalRequest($item_id,$adzoneId){
+        $q = 'https://item.taobao.com/item.htm?id='.$item_id;
+        $session = '6101f289408a6ad0cd510ec7423b04005246198251c62a34227738592';//川律
+        $req = new TbkScMaterialOptionalRequest;
+        $req->setPageSize("20");
+        $req->setPageNo("1");
+        $req->setPlatform("2");
+        $req->setQ("$q");
+        $req->setAdzoneId("$adzoneId");
+        $req->setSiteId("289650269");//导购 1002
+
+        $resp = $this->apiClient->execute($req, $session);
+        $resp = json_decode(json_encode($resp),true);
+        print_r($resp);die;
+        if (count($resp['result_list']['map_data']) == 1 ){
+            $retData = $resp['result_list']['map_data'][0];
+        } else if(count($resp['result_list']['map_data']) > 1){
+            $retData = '';
+            foreach($resp['result_list']['map_data'] as $val){
+                if($val['item_id'] == $item_id){
+                    $retData = $val;
+                    break;
+                }
+            }
+        } else {
+            $retData = array();
+        }
+        print_r($retData);die;
+
+        return $retData;
+    }
+
     #获取渠道关系列表
     function TbkScPublisherInfoGetRequest($page = 1, $pageSize = 10){
         $session = '6101f289408a6ad0cd510ec7423b04005246198251c62a34227738592';//川律
