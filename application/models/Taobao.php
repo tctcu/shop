@@ -446,11 +446,15 @@ class TaobaoModel{
 
         $resp = $this->apiClient->execute($req);
         $resp = json_decode(json_encode($resp),true);
-
-        if(isset($resp['result_list']['map_data'][0]) && !empty($resp['result_list']['map_data'][0])){
+        if (count($resp['result_list']['map_data']) == 1 ){
+            $retData = $resp['result_list']['map_data'][0];
+        } else if(count($resp['result_list']['map_data']) > 1){
             $retData = '';
             foreach($resp['result_list']['map_data'] as $val){
                 if($val['title'] == $condition['q']){
+                    $retData = $val;
+                    break;
+                } elseif('https://item.taobao.com/item.htm?id='.$val['item_id'] == $condition['q']){
                     $retData = $val;
                     break;
                 }
@@ -649,7 +653,7 @@ class TaobaoModel{
         $data = [
             'itemid' => $item_info['item_id'].'',
             'itemshorttitle' => $item_info['short_title'],
-            'itemdesc' => $item_info['item_description'],
+            'itemdesc' => $item_info['title'],
             'itemprice' => $item_info['reserve_price'].'',
             'itemsale' => $item_info['volume'].'',
             'itempic' => $item_info['pict_url'],
