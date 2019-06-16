@@ -359,8 +359,7 @@ class TaobaoModel{
         $req->setOrderScene("1");//1:常规订单，2:渠道订单，3:会员运营订单，默认为1
         $resp = $this->apiClient->execute($req);
         $resp = json_decode(json_encode($resp),true);
-        echo '<pre>';
-        print_r($resp);die;
+
         $retData = [];
         if (isset($resp['results']['n_tbk_order'])) {
             $retData = $resp['results']['n_tbk_order'];
@@ -412,14 +411,55 @@ class TaobaoModel{
         return $retData;
     }
 
-
-    function TbkDgMaterialOptionalRequest(){
+    //通用物料搜索API（导购）
+    function TbkDgMaterialOptionalRequest($condition = array()){
         $req = new TbkDgMaterialOptionalRequest;
-        $req->setQ("手机壳");
-        $req->setAdzoneId("108937250396");
+        $req->setQ($condition['q']);
+        $req->setAdzoneId("73240000099");
+        //$req->setStartDsr("10");
+        $req->setPageSize("20");
+        $req->setPageNo("1");
+        $req->setPlatform("2");
+        //$req->setEndTkRate("1234");
+        //->setStartTkRate("1234");
+        //$req->setEndPrice("10");
+        //$req->setStartPrice("10");
+        //$req->setIsOverseas("false");
+        //$req->setIsTmall("false");
+        //$req->setSort("tk_rate_des");
+        //$req->setItemloc("杭州");
+        //$req->setCat("16,18");
+        //$req->setMaterialId("2836");
+        //$req->setHasCoupon("false");//是否优惠券
+        //$req->setIp("13.2.33.4");
+        //$req->setNeedFreeShipment("true");//是否包邮
+        //$req->setNeedPrepay("true");
+        //$req->setIncludePayRate30("true");
+        //$req->setIncludeGoodRate("true");
+        //$req->setIncludeRfdRate("true");
+        //$req->setNpxLevel("2");
+        //$req->setEndKaTkRate("1234");
+        //$req->setStartKaTkRate("1234");
+        //$req->setDeviceEncrypt("MD5");
+        //$req->setDeviceValue("xxx");
+        //$req->setDeviceType("IMEI");
+
         $resp = $this->apiClient->execute($req);
         $resp = json_decode(json_encode($resp),true);
-        return $resp;
+
+        if(isset($resp['result_list']['map_data'][0]) && !empty($resp['result_list']['map_data'][0])){
+            $retData = $resp['result_list']['map_data'][0];
+            foreach($resp['results']['n_tbk_item'] as $val){
+                if($val['title'] == $condition['q']){
+                    $retData = $val;
+                    break;
+                }
+            }
+        } else {
+            $retData = array();
+        }
+
+        return $retData;
     }
 
     #获取渠道关系列表
@@ -600,6 +640,44 @@ class TaobaoModel{
             $data['couponendtime'] = strtotime($url_info['coupon_end_time']).'';
         }
         $data['rebate'] = sprintf("%.2f",$url_info['max_commission_rate'] * ConfigModel::RATE * $data['itemendprice'] * ConfigModel::REBATE);
+        return $data;
+    }
+
+    #格式化淘宝数据
+    function makeMaterialTb($item_info)
+    {
+        $data = [
+            'itemid' => $item_info['item_id'].'',
+            'itemshorttitle' => $item_info['short_title'],
+            'itemdesc' => $item_info['item_description'],
+            'itemprice' => $item_info['reserve_price'].'',
+            'itemsale' => $item_info['volume'].'',
+            'itempic' => $item_info['pict_url'],
+            'itemendprice' => $item_info['zk_final_price'],
+            'url' => $item_info['url'],
+            'coupon_type' => '0',//券状态
+            'couponmoney' => '',
+            'couponexplain' => '',
+            'couponstarttime' => '',
+            'couponendtime' => '',
+            'shoptype' => $item_info['user_type'] == 1 ? 'B': 'C',
+            'taobao_image' => $item_info['small_images']['string']
+        ];
+        if($item_info['coupon_id']){ //有券
+            $couponmoney = $item_info['coupon_amount'];
+            #获取券价格
+            if(empty($couponmoney) && preg_match ('#减([\d]+)元#is', $item_info['coupon_info'], $m) !== false ){//券价
+                $couponmoney = $m[1];
+            }
+            $data['coupon_type'] = '1';
+            $data['itemendprice'] = ($data['itemendprice']-$couponmoney).'';
+            $data['url'] = $item_info['coupon_share_url'];
+            $data['couponmoney'] = $couponmoney.'';
+            $data['couponexplain'] = $item_info['coupon_info'];
+            $data['couponstarttime'] = strtotime($item_info['coupon_start_time']).'';
+            $data['couponendtime'] = strtotime($item_info['coupon_end_time']).'';
+        }
+        $data['rebate'] = sprintf("%.2f",$item_info['commission_rate'] * ConfigModel::RATE * $data['itemendprice'] * ConfigModel::REBATE);
         return $data;
     }
 

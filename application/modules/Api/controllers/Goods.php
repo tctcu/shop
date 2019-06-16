@@ -233,38 +233,31 @@ class GoodsController extends ApiController
         }
 
         $taobao_model = new TaobaoModel(4);
-        $yuque_model = new YuQueModel();
         $itemid = $this->quid($content);//链接
         if(empty($itemid)) {
             if (preg_match('#\x{ffe5}([a-zA-Z0-9]{11})\x{ffe5}#isu', $content, $m)) {//淘口令
                 $itemid = $taobao_model->TbkTpwdConvertRequest($m[0]);
                 //暂时淘汰语雀识别淘口令
-//                $condition = [
-//                    'password_content' => $m[0]
-//                ];
-//                $itemid = $yuque_model->tpwdConvert($condition);
+                //$yuque_model = new YuQueModel();
+                //$itemid = $yuque_model->tpwdConvert(['password_content' => $m[0]]);
+                if(empty($itemid)){
+                    $this->responseJson('20189', '抱歉!识别不到该商品优惠信息');
+                }
             } else if(mb_strlen($content)>10){//标题
-                $condition = [
-                    'keyword' => $content
-                ];
-                $item_info = $taobao_model->TbkItemGetRequest($condition);
-                $itemid = $item_info['num_iid'];
+                $item_info = $taobao_model->TbkDgMaterialOptionalRequest(['q'=>$content]);
+                $data = $taobao_model->makeMaterialTb($item_info);
+                $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
             } else {
                 $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG);
             }
-        }
-        if(empty($itemid)){
-            $this->responseJson('20189', '抱歉!识别不到该商品优惠信息');
         }
 
         $url = "http://v2.api.haodanku.com/item_detail/apikey/allfree/itemid/" . $itemid;
         $json = file_get_contents($url);
         $tb_info = json_decode($json, true)['data'];
         $tb_model = new TbModel();
-
         if(empty($tb_info)){//查库
             $tb_info = $tb_model->getDataByItemId($itemid);
-
             if($tb_info['status']<>1 || $tb_info['couponendtime']<=time()){//过滤失效的商品
                 $tb_info = [];
             }
@@ -277,19 +270,9 @@ class GoodsController extends ApiController
         if($tb_info) {
             $data = $tb_model->makeItem($tb_info);
         } else {
-            $condition = [
-                'item_id' => $itemid
-            ];
-            $url_info = $yuque_model->privilegeGet($condition);
-            if(empty($url_info)){
-                $this->responseJson('20189', '抱歉!识别不到该商品优惠信息');
-            }
-            $condition = [
-                $itemid
-            ];
-            $item_info = $taobao_model->TbkItemInfoGetRequest($condition);
-
-            $data = $taobao_model->makeTb($item_info,$url_info);
+            $item_info = $taobao_model->TbkDgMaterialOptionalRequest(['q'=>$content]);
+            $data = $taobao_model->makeMaterialTb($item_info);
+            $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);
         }
 
         $this->responseJson(self::SUCCESS_CODE, self::SUCCESS_MSG, $data);

@@ -340,6 +340,7 @@ echo $url;die;
             echo 'empty session';die;
         }
         $taobao_model = new TaobaoModel(4);
+        $res = $taobao_model->TbkDgMaterialOptionalRequest(['q'=>'睡大觉第五季']);
         //$res = $taobao_model->TbkScInvitecodeGetRequest($session);//获取邀请码
         //$res = $taobao_model->code2token('Ma8Q3uPfNsPuadl12nLnC1vT23966469');//code 换取 token
         //$res = $taobao_model->OpenuidGetRequest($session);//
@@ -352,7 +353,7 @@ echo $url;die;
         //$res = $taobao_model->TbkOrderDetailsGetRequest($start, $end, $page = 1, $pageSize = 100);
         //$res = $taobao_model->TbkItemConvertRequest($itemid);
         $itemid = 596492665151;//566569778934;//594539807516;//594413180913;//568127651115;//589123348070;
-        $res = $taobao_model->TbkDgVegasTljCreateRequest($itemid);
+        //$res = $taobao_model->TbkDgVegasTljCreateRequest($itemid);
         $rightsId ='om1NH6rCWmhHhq%2BT8Je4cqJ7%2BkHL3AEW';// 'xToGS9oNSOLq6vWhYPq0yKJ7%2BkHL3AEW';//'JKfITYvryQjsilCPCq9i%2BaJ7%2BkHL3AEW';//'om1NH6rCWmhHhq%2BT8Je4cqJ7%2BkHL3AEW';
        // $res = $taobao_model->TbkDgVegasTljInstanceReportRequest($rightsId);
         echo '<pre>';
@@ -363,12 +364,22 @@ echo $url;die;
 
         $taobao_model = new TaobaoModel(5);
         $refreshToken = '';
-        $start = '2019-05-31 09:20:00';
-        $end = '2019-05-31 12:20:00';
+        $now = time()-(100*3600*3);
+        for($i=1;$i<100;$i++){
+            $start = date('Y-m-d H:i:s',$now-($i*3600*3));
+            $end = date('Y-m-d H:i:s',$now-(($i-1)*3600*3));
+
+            $res = $taobao_model->TbkOrderDetailsGetRequest($start,$end,1,20);
+           print_r($res);
+            if($i%3==0){
+                sleep(1);
+            }
+        }
+        die;
         //$res = $taobao_model->TbkOrderGetRequest($start,1,20);
-        //$res = $taobao_model->TbkOrderDetailsGetRequest($start,$end,1,20);
+        $res = $taobao_model->TbkOrderDetailsGetRequest($start,$end,1,20);
         //$res = $taobao_model->TbkDgMaterialOptionalRequest();
-        $res = $taobao_model->TbkScPublisherInfoGetRequest(1,20);
+        //$res = $taobao_model->TbkScPublisherInfoGetRequest(1,20);
         echo json_encode($res);die;
         echo '<pre>';
         print_r($res);die;
