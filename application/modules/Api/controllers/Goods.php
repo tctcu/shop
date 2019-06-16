@@ -287,9 +287,8 @@ class GoodsController extends ApiController
             $condition = [
                 $itemid
             ];
-            $taobao_model  = new TaobaoModel(2);
             $item_info = $taobao_model->TbkItemInfoGetRequest($condition);
-            print_r($item_info);die;
+
             $data = $taobao_model->makeTb($item_info,$url_info);
         }
 
